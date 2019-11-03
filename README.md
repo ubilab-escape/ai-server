@@ -28,7 +28,11 @@ Our responsibilities are:
 Highly volatile.
 
 ## Look-a-like
+### Lighting
+### The "Athomsphere" thing
 
 ## Puzzles
+### Send data
+### Kill STASIS
 
  
