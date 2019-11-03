@@ -7,12 +7,28 @@ The information contained in this readme document ~~is highly classified and~~ w
 
 Our responsibilities are: 
 
-* The manufacture of the technical equipment that allows STASIS to remain in operation, through the use of state-of-the-art materials and technology.
+* The manufacture of the technical equipment that allows STASIS to remain in operation, through the use of state-of-the-art materials and technologies.
 
-* The design and implementation of complex algorithms to prevent access to the STASIS source code and the cables that allow it to be shut down directly and "casually" open all the doors leading to a direct exit from the high-security complex.
-
+* The design and implementation of complex algorithms to prevent access to STASIS source code and the two wires that allow it to be shut down directly and "casually" open all the doors leading to a safe and direct exit from the high-security complex.
 
 ### Team
-* **Cristina Maurette**
-* **Konstantin Kuliabin**
-* **Claudio Ray** 
+* Cristina Maurette
+* Konstantin Kuliabin
+* Claudio Ray 
+
+### Work done and on-going
+- [x] Discuss and define server room theme
+- [x] Every one ready on slack
+- [ ] Puzzles! 
+- [ ] Everyone should commit at least once
+- [ ] Speak with @ubilab-escape/environment about lighting inside room.
+- [ ] Speak with @ubilab-escape/prototype about prototype shape and puzzle integration.
+
+# The Server Room
+Highly volatile.
+
+## Look-a-like
+
+## Puzzles
+
+ 
