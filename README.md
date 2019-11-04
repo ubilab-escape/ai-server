@@ -38,10 +38,8 @@ This puzzle contains a set of the small mini puzzles on the control panels, whic
 ### 1. Maze
 Control panel contains an RGB LED matrix and 4 buttons. Task is to move green marker to the red position. The problem is – obstacles. Operator of the control panel can’t see the maze itself, but know the position of the markers. Obstacles are drawn in other room. Team should help operator to find a right way.
 ![alt text](https://i.ibb.co/rp1gkPp/Operator-view.png) 
-
 Figure 1.1 Operator side
 ![alt text](https://i.ibb.co/8zSGD9x/Team-view.png)
-
 Figure 1.2 Hint poster
 
 If operator made a mistake, puzzle will reset and positions of the markers will change.
@@ -49,7 +47,6 @@ If operator made a mistake, puzzle will reset and positions of the markers will 
 ### 2. Morse
 Control panel contain LED, buzzer and several buttons of different colours. LED and buzzer transfers some sequence which represents a word (colour or other word which corresponds to this colour) in Morse codes. Goal of the operator is to determine a word and press corresponding button on the panel which corresponds to the named colour. If operator makes a mistake, than word changes.
 ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png)
-
 Figure 2.1 Morse codes
 
 ### 3. Simon didnt tell that
