@@ -64,7 +64,7 @@ White   -> Green
 So is sequence is Red -> White -> Pink -> Green, operator should press Yellow -> Green -> White -> Pink buttons.
 
 ### Send data
-
+a
 
 ### Kill STASIS
 
