@@ -20,7 +20,7 @@ Our responsibilities are:
 - [x] Discuss and define server room theme
 - [x] Every one ready on slack
 - [ ] Puzzles! 
-- [ ] Everyone should commit at least once
+- [x] Everyone should commit at least once
 - [ ] Speak with @ubilab-escape/environment about lighting inside room.
 - [ ] Speak with @ubilab-escape/prototype about prototype shape and puzzle integration.
 
@@ -50,37 +50,43 @@ The control panel contains an RGB LED matrix and 4 buttons which mimics a board.
 
 The difficulty is that the operator cannot see the labyrinth, only the position of the markers, so to complete the puzzle, the operator depends completely on the instructions given by the instructor to press the correct buttons in the correct sequence, thus taking the green marker to red.
 
-<p float="left">
-  <img src="https://i.ibb.co/rp1gkPp/Operator-view.png" width="250" />
-  <img src="https://i.ibb.co/8zSGD9x/Team-view.png" width="250" /> 
+<p align="center">
+  <img src="https://i.ibb.co/L06nvSF/maze.png" width="400" />
+  Figure: Left, what the operator faces. Right, Hint image for solving.
 </p>
-
-
- 
-Figure 1.1 Operator side Figure 1.2 Hint poster
 
 If the operator presses a button in the wrong sequence, the puzzle is restarted with the markers in different positions. 
 
 **2. Morse**
-Control panel contain LED, buzzer and several buttons of different colours. LED and buzzer transfers some sequence which represents a word (colour or other word which corresponds to this colour) in Morse codes. Goal of the operator is to determine a word and press corresponding button on the panel which corresponds to the named colour. If operator makes a mistake, than word changes.
+The operator is presented with a control panel containing an LED, a buzzer and several buttons of different colors. The LED and the buzzer generate a sequence that represents a word that represents a color (color or other word that corresponds to this color) in Morse code. The objective of this game is that the entire team is able to identify the color given the code using the Morse dictionary. If the operator makes a mistake, the color changes.
 
+<p align="center">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png" width="400">
-Figure 2.1 Morse codes
+Figure: Morse code chart.
 
-**3. Simon didnt tell that**
-A bit more complecated version of the Simon says game. The operator should repeat sequence of colours by pressing corresponding buttons. But it is a bit harder than you expect. Colours are shifted.
 
-For example there could be following rules:
+**3. Simon didn't tell that**
+A slightly more complex version of the traditional "Simon Says" game. Here, the operator must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
 
-Red     -> Yellow
-Green   -> Pink
-Blue    -> Red
-Yellow  -> Blue
-Pink    -> White
-White   -> Green
+As an example:  
 
-So is sequence is Red -> White -> Pink -> Green, operator should press Yellow -> Green -> White -> Pink buttons.
-
+The operator faces the following sequence of colors: 
+```
+Red → White → Pink → Green    
+```
+And the instructor has the following relation:  
+```
+Red     → Yellow 
+Green   → Pink 
+Blue    → Red 
+Yellow  → Blue 
+Pink    → White 
+White   → Green 
+```
+The instructor should tell to the operator to press the following sequence:  
+```
+Yellow → Green → White → Pink
+```
 ### Send data
 a
 
