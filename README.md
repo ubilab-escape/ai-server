@@ -63,7 +63,8 @@ If the operator presses a button in the wrong sequence, the puzzle is restarted 
 
 **2. Morse**
 Control panel contain LED, buzzer and several buttons of different colours. LED and buzzer transfers some sequence which represents a word (colour or other word which corresponds to this colour) in Morse codes. Goal of the operator is to determine a word and press corresponding button on the panel which corresponds to the named colour. If operator makes a mistake, than word changes.
-![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png)
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png" width="400">
 Figure 2.1 Morse codes
 
 **3. Simon didnt tell that**
