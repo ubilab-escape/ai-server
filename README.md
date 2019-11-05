@@ -50,9 +50,10 @@ The control panel contains an RGB LED matrix and 4 buttons which mimics a board.
 
 The difficulty is that the operator cannot see the labyrinth, only the position of the markers, so to complete the puzzle, the operator depends completely on the instructions given by the instructor to press the correct buttons in the correct sequence, thus taking the green marker to red.
 
-![alt text](https://i.ibb.co/rp1gkPp/Operator-view.png | width=250) 
+<img src="https://i.ibb.co/rp1gkPp/Operator-view.png" width="250">
+ 
 Figure 1.1 Operator side
-![alt text](https://i.ibb.co/8zSGD9x/Team-view.png | width=250)
+<img src="https://i.ibb.co/8zSGD9x/Team-view.png" width="250">
 Figure 1.2 Hint poster
 
 If the operator presses a button in the wrong sequence, the puzzle is restarted with the markers in different positions. 
