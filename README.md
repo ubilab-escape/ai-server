@@ -83,7 +83,7 @@ Yellow  → Blue
 Pink    → White 
 White   → Green 
 ```
-The instructor should tell to the operator to press the following sequence:  
+The instructor should tell the operator to press the following sequence:  
 ```
 Yellow → Green → White → Pink
 ```
