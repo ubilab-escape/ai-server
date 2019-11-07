@@ -56,9 +56,9 @@ This is not a proper stage, but a sequence of event which we think is good for s
 
 Since STASIS detects a data/security breach, it inferes (is an artificial inteligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator arrives soon enough.  
 
-```
-Note: With enviroment team -if they agree- we can design a sort of agressive enviroment with light and sound. The idea is to increase stress level of players.     
-```
+
+> Note: With enviroment team -if they agree- we can design a sort of agressive enviroment with light and sound. The idea is to increase stress level of players.     
+
 
 ### Stage 2 (Kill Stasis)
 In this final stage, players must locate STASIS core and solve the puzzle in order to shut it down (eliminate). 
