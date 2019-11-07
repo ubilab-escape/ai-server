@@ -29,13 +29,13 @@ Information here is highly volatile.
 ## Dynamic
 We analyze the Escape Room (ER) as a sequence of stages, being in our responsability, the last one. Thus, given the following flow chart, we infere this sequence:
 <p align="center">
-  <img src="https://i.ibb.co/JHLJ5KH/Flow-Diagram.png" width="85%" /> 
+  <img src="[url=https://i.ibb.co/swF6Yc1/Flow-Diagram.png" width="85%" /> 
 </p>
 
 ### Stage 0
 This stage is like the preamble or the conditions that are needed to start the next stage. 
 
-* Since mission briefieng was self destroyed, players must have memorized the encrypted "IP" (Since that sequence has a sort of encryption, we have to provide it to **Team ¿?**).
+* Since mission briefieng was self destroyed, players must have memorized the encrypted "IP" (Since that sequence has a sort of encryption, we have to provide it to **Group 3**).
 * Participants satisfactorily resolve the previous stage.
 
 ### Stage 1 (Send Data)
@@ -56,7 +56,7 @@ This is not a proper stage, but a sequence of event which we think is good for s
 Since STASIS detects a data/security breach, it inferes (is an artificial inteligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator arrives soon enough.  
 
 
-> Note: With enviroment team -if they agree- we can design a sort of agressive enviroment with light and sound. The idea is to increase stress level of players.     
+> Note: With enviroment team (**Group 2**) -if they agree- we can design a sort of agressive enviroment with light and sound. The idea is to increase stress level of players.     
 
 
 ### Stage 2 (Kill Stasis)
@@ -64,7 +64,7 @@ In this final stage, players must locate STASIS core and solve the puzzle in ord
 
 At the same time, we think that STASIS should not have a silent death, so it creates a lot of noise and variates the illumination (that decision is not ours) like a kid outburs.  
 
-The final puzzle (yet to be defined) once it is solved, a LED button turns ON, and once pressed, the escape room is resolved, the doors open and the lights return to normal.
+The final puzzle (yet to be defined) once it is solved, a LED button turns ON, and once pressed, the escape room is resolved, the doors open (talk to **Group 4**) and the lights return to normal.
 
 ## Puzzles
 
@@ -96,7 +96,7 @@ If the operator presses a button leading to a wrong sequence, the puzzle is rest
 <br/>
 
 #### 2. Morse
-The operator is presented with a control panel containing an LED, a buzzer and several buttons of different colors. The LED and the buzzer generate a sequence that represents a word which also represents a color (or other word that corresponds to this color) in Morse code. The aim of this puzzle is that the entire team is able to identify the color given the code using the Morse dictionary. If the operator makes a mistake, the color changes.
+The operator is presented with a control panel containing an LED, a buzzer and a keyboard. The LED and the buzzer generate a sequence of letters in Morse code. The aim of this puzzle is that the entire team is able to identify the letters in the right order given the code using the Morse dictionary. If the operator makes a mistake, the sequence changes.
 
 <p align="center">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png" width="400">
@@ -128,6 +128,8 @@ The instructor should tell the operator to press the following sequence:
 ```
 Yellow → Green → White → Pink
 ```
+
+## Environment Design
 
 
  
