@@ -81,19 +81,28 @@ Given the above, at least two people must solve the room tasks together in const
 
 
 #### 1. Maze
-The control panel contains an RGB LED matrix and 4 buttons which mimics a board. The task is to move the green marker to the red position. The problem are the obstacles (walls) which give the appearance of a labyrinth. 
+In this puzzle the operator faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the operator can move one point to the position of the other without making mistakes. 
 
-The difficulty is that the operator cannot see the labyrinth, only the position of the markers; so, to complete the puzzle, the operator depends completely on the instructor's indications in order to press the buttons in the correct sequence, thus leading the green marker to the red one.
+How do errors occur? It turns out that both points are actually inside a maze, which the operator cannot see on his interface. To solve the maze, the instructor must find the solution hidden somewhere and point out the solution correctly.
+
+Example:
+
+In the figure, on the left is the operator's side and on the right is the solution for the instructor. Once the operator indicates the position of both points, the instructor will be able to identify the solution and deliver it.
 
 <p align="center">
-  <img src="https://i.ibb.co/L06nvSF/maze.png" width="400" />
- 
+  <img src="https://i.ibb.co/qjjNtwR/maze.png" width="85%" />
 </p>
 <p align="center">
-Figure: Left, what the operator faces. Right, Hint image for instructor.
+Figure: Left, what the operator faces. Right, solution map for instructor.
 </p> 
-If the operator presses a button leading to a wrong sequence, the puzzle is restarted with the markers in different positions.<br/>
+
+**Note:** If the operator presses a button leading to a wrong sequence, the puzzle is restarted with the markers in different positions.<br/>
 <br/>
+
+The solution for the maze showed the figure above would be:
+```
+↑ → ↑ ← ↑ ↑ ↑ ↑ ↑ ← ← ← ↓ ← ← ↑
+```
 
 #### 2. Morse
 The operator is presented with a control panel containing an LED, a buzzer and a keyboard. The LED and the buzzer generate a sequence of letters in Morse code. The aim of this puzzle is that the entire team is able to identify the letters in the right order given the code using the Morse dictionary. If the operator makes a mistake, the sequence changes.
