@@ -29,7 +29,7 @@ Information here is highly volatile.
 ## Dynamic
 We analyze the Escape Room (ER) as a sequence of stages, being in our responsability, the last one. Thus, given the following flow chart, we infere this sequence:
 <p align="center">
-  <img src="[url=https://i.ibb.co/Xsz3R65/Flow-Diagram.png" width="85%" /> 
+  <img src="https://i.ibb.co/Xsz3R65/Flow-Diagram.png" width="85%" /> 
 </p>
 
 ### Stage 0
