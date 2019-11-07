@@ -99,11 +99,21 @@ Figure: Left, what the operator faces. Right, solution map for instructor.
 **Note:** If the operator presses a button leading to a wrong sequence, the puzzle is restarted with the markers in different positions.<br/>
 <br/>
 
-The solution for the maze showed the figure above would be:
+The solution for the maze showed in the figure above would be:
 ```
 ↑ → ↑ ← ↑ ↑ ↑ ↑ ↑ ← ← ← ↓ ← ← ↑
 ```
 
+In addition, the complexity of the labyrinths may vary depending on what is defined in previous tests. 
+<p align="center">
+  <img src="https://i.ibb.co/71gz9Xd/maze2.png" width="85%" />
+</p>
+<p align="center">
+
+The solution to that maze is: 
+```
+← ↑ → ↑ → ↓ → ↓ → ↑ ↑ → → ↑ ← ↑ ← ↓ ← ← ↑ → ↑ ← ↑ → ↑ ← ← ↓ ↓ ← ↑ ↑
+```
 #### 2. Morse
 The operator is presented with a control panel containing an LED, a buzzer and a keyboard. The LED and the buzzer generate a sequence of letters in Morse code. The aim of this puzzle is that the entire team is able to identify the letters in the right order given the code using the Morse dictionary. If the operator makes a mistake, the sequence changes.
 
