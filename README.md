@@ -25,24 +25,60 @@ Our responsibilities are:
 - [ ] Speak with @ubilab-escape/prototype about prototype shape and puzzle integration.
 
 # The Server Room
-Highly volatile.
+Information here is highly volatile.
 
-## Look-a-like
-### Lighting
-### The "Atmosphere" thing
+## Dynamic
+We analyze the Escape Room (ER) as a sequence of stages, being in our responsability, the last one. Thus, given the following flow chart, we infere this sequence:
+<p align="center">
+  <img src="https://i.ibb.co/JHLJ5KH/Flow-Diagram.png" width="85%" /> 
+</p>
+
+### Stage 0
+This stage is like the preamble or the conditions that are needed to start the next stage. 
+
+* Since mission briefieng was self destroyed, players must have memorized the encrypted "IP" (Since that sequence has a sort of encryption, we have to provide it to **Team ¿?**).
+* Participants satisfactorily resolve the previous stage.
+
+### Stage 1 (Send Data)
+Once players can access the prototype data, the next stage is to send that to the client. In order to do that, first they must successfully resolve two puzzles:
+
+* Decode encrypted IP
+* Solve first puzzle "Maze"
+
+In this case, the order of solving the puzzles is not that important since at the end (both puzzles resolved) players must introduce the decrypted IP into a fake terminal, and with fake we mean a screen with a keyboard which only compare the input with a given reference.
+
+Once the input matches the reference, a mock "Sending..." progress bar will appear, which means that the data is being sent properly until...
+
+Stastis goes rouge.
+
+### Stage 1.5
+This is not a proper stage, but a sequence of event which we think is good for story developing.
+
+Since STASIS detects a data/security breach, it inferes (is an artificial inteligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator arrives soon enough.  
+
+```
+Note: With enviroment team -if they agree- we can design a sort of agressive enviroment with light and sound. The idea is to increase stress level of players.     
+```
+
+### Stage 2 (Kill Stasis)
+In this final stage, players must locate STASIS core and solve the puzzle in order to shut it down (eliminate). 
+
+At the same time, we think that STASIS should not have a silent death, so it creates a lot of noise and variates the illumination (that decision is not ours) like a kid outburs.  
+
+The final puzzle (yet to be defined) once it is solved, a LED button turns ON, and once pressed, the escape room is resolved, the doors open and the lights return to normal.
 
 ## Puzzles
-### Keep talking a-like puzzle
-The main idea is to have a set of small puzzles distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence: each time a mini puzzle is solved, the next one is activated. In order to complete the tasks in the room, all puzzles must be solved.
 
-The dynamic of the puzzles is based on a constant communication of the participants where two roles are identified:
+The main idea behind these puzzles is composed of a set of small puzzles, which are distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence, each time a mini puzzle is solved, the next one is activated. To finish the room, all puzzles must be solved.
+
+The dynamic of the puzzles is based on a constant communication similar to a "Keep talking an nobody dies". The participants can adopt two roles:
 
 * Operator: Is the one who physically faces the puzzle. His role is to describe the characteristics of the puzzle and according to the commands of the instructor, solve it. 
 * Instructor: Can be one or more people. Given the description given by the operator, his responsibility is to interpret the information received, decrypt the solution of the puzzle and tell the operator how to solve it.
 
-The instructions for the puzzles must be located outside the server room (photos on the wall, posters, etc.). 
+The instructions for the puzzles can be located outside the server room (photos on the wall, posters, etc.). 
 
-Given the above, at least two people must solve the room's tasks together in constant communication and also constant under pressure, which can lead to errors in their execution. 
+Given the above, at least two people must solve the room tasks together in constant communication and also constant under pressure, which can lead to errors in their execution. 
 
 
 #### 1. Maze
@@ -59,7 +95,6 @@ Figure: Left, what the operator faces. Right, Hint image for instructor.
 </p> 
 If the operator presses a button leading to a wrong sequence, the puzzle is restarted with the markers in different positions.<br/>
 <br/>
-
 
 #### 2. Morse
 The operator is presented with a control panel containing an LED, a buzzer and several buttons of different colors. The LED and the buzzer generate a sequence that represents a word which also represents a color (or other word that corresponds to this color) in Morse code. The aim of this puzzle is that the entire team is able to identify the color given the code using the Morse dictionary. If the operator makes a mistake, the color changes.
@@ -94,10 +129,6 @@ The instructor should tell the operator to press the following sequence:
 ```
 Yellow → Green → White → Pink
 ```
-### Send data
 
-
-
-### Kill STASIS
 
  
