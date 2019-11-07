@@ -17,7 +17,6 @@ Our responsibilities are:
 * Claudio Ray 
 
 ### Work done and on-going
-- [x] Discuss and define server room theme
 - [x] Every one ready on slack
 - [ ] Puzzles! 
 - [x] Everyone should commit at least once
@@ -40,12 +39,12 @@ This stage is like the preamble or the conditions that are needed to start the n
 * Participants satisfactorily resolve the previous stage.
 
 ### Stage 1 (Send Data)
-Once players can access the prototype data, the next stage is to send that to the client. In order to do that, first they must successfully resolve two puzzles:
+Once players can access the prototype data, the next stage is to send that to the client. To do that, they must first successfully solve two puzzles:
 
 * Decode encrypted IP
 * Solve first puzzle "Maze"
 
-In this case, the order of solving the puzzles is not that important since at the end (both puzzles resolved) players must introduce the decrypted IP into a fake terminal, and with fake we mean a screen with a keyboard which only compare the input with a given reference.
+In this case, the order of resolution of the puzzles is not so important because at the end, when the players resolve the maze, they must enter the decrypted IP in a fake terminal, and by fake we mean a screen with a keyboard that only compares the input with a given reference.
 
 Once the input matches the reference, a mock "Sending..." progress bar will appear, which means that the data is being sent properly until...
 
@@ -118,12 +117,12 @@ Red → White → Pink → Green
 ```
 And the instructor has the following relation:  
 ```
-Red     → Yellow 
-Green   → Pink 
-Blue    → Red 
-Yellow  → Blue 
-Pink    → White 
-White   → Green 
+Red     →  Yellow 
+Green   →  Pink 
+Blue    →  Red 
+Yellow  →  Blue 
+Pink    →  White 
+White   →  Green 
 ```
 The instructor should tell the operator to press the following sequence:  
 ```
