@@ -90,7 +90,7 @@ Example:
 In the figure, on the left is the operator's side and on the right is the solution for the instructor. Once the operator indicates the position of both points, the instructor will be able to identify the solution and deliver it.
 
 <p align="center">
-  <img src="https://i.ibb.co/qjjNtwR/maze.png" width="85%" />
+  <img src="https://i.ibb.co/qjjNtwR/maze.png" width="70%" />
 </p>
 <p align="center">
 Figure: Left, what the operator faces. Right, solution map for instructor.
@@ -106,7 +106,7 @@ The solution for the maze showed in the figure above would be:
 
 In addition, the complexity of the labyrinths may vary depending on what is defined in previous tests. 
 <p align="center">
-  <img src="https://i.ibb.co/71gz9Xd/maze2.png" width="85%" />
+  <img src="https://i.ibb.co/71gz9Xd/maze2.png" width="70%" />
 </p>
 <p align="center">
 
@@ -149,6 +149,36 @@ Yellow → Green → White → Pink
 ```
 
 ## Environment Design
+First, let's start by defining how we imagine the server part and how the components of each puzzle will be distributed. 
+
+In the sketch below (kudos to Cristina), it is possible to identify the server (1), which is where the puzzle "MAZE" and the IP sequence will be developed. A little lower, it is possible to identify the table or "desk" (2) where the puzzle "Simon didn't say" will be developed. Also, it may seem strange the gap that exists in one of the servers (the right one), but the purpose of that space is to give a defined volume to group 6 so they can implement their puzzle. 
+
+<p align="center">
+  <img src="https://i.ibb.co/qFjp7jR/SR-G8.png" width="85%" /> 
+</p>
+
+The main construction material will be wood, due to its price and ease of work. The servers and the table will be constructed by means of an internal wooden frame, which will be covered with other wood planks and then painted. In addition, since these structures will be hollow inside, the lighting will be given by a large internal light source (led strip) and a series of holes in the external structure, thus avoiding the installation of individual LEDs. 
+
+#### Bill of Materials
+|  Name  | Qty. | Link | Price |
+| ------------- | :---:  |------------- |:---  |
+| ESP32  | 2  | https://amzn.to/33NX7Im  |€ 20,00  |
+| LCD  | 1  | https://amzn.to/354K7hw  |€ 17,00  |
+| Big button*  | 1  | https://amzn.to/2QhkmGH  | € 10,00  |
+| Small button  | 1  | https://amzn.to/2CH2TPV  | € 13,00  |
+| Numpad  | 1  | https://amzn.to/2OpIu7N  | € 6,00  |
+| Charger  | 1  | https://amzn.to/355zCLg  | € 10,00  |
+| Jumpers  | 1  | https://amzn.to/2CHOzXt  | € 10,00  |
+| Buzzer  | 1  | https://amzn.to/2qfmEeP  | € 7,00  |
+| Protoboard**  | 1  | -  |  - |
+| Transistors**  | 1  | -  | -  |
+| Step-Up  | 1  | https://amzn.to/352Vy9M  | € 6,00  |
+| Led Strip  | 1  | https://amzn.to/352Vy9M  | € 19,00  |
+| **TOTAL**  |  |   | € 118,00  |
+
+\* We find the purchase of this product crucial. Science has shown no one can resist pressing its shiny surface and saying "beep!".
+
+\** The university will probably have more than one in stock or its price is negligible in the budget.  
 
 
  
