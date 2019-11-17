@@ -179,17 +179,19 @@ The main construction material will be wood, due to its price and ease of work. 
 For a detailed view of what is being ordered in the first and second items, please refer to the pdf documents of the chipboard and Rahmenholz cutting list.The name of the documents is Cutlist_1 and Cutlist_2 respectively. 
 
 |  Name  | Qty. | Link | Price | Comment |
-| ------------- | :---:  |------------- |:---:  | ------------- |
+| ------------- | :---:  |------------- |:---  | ------------- |
 | Chipboard (10mm) | 10 m² | https://bit.ly/2NTelyw |€ 79,00  | € 7,9 per m². Final price should be calculated at Bauhaus or Obi. |
 | Rahmenholz | 9 | https://bit.ly/2XnkWEl | € 19,71 | € 2,19 each 300 x 3,8 x 3,8 cm |
 | Nagel | 1 | https://bit.ly/37gvzxd | € 2,80 | Ø x L: 1.6 x 30 mm, 400 pcs |
 | Nagel | 1  | https://bit.ly/33YbGcy | € 4,20 | Ø x L: 2.8 x 65 mm, 1.000 pcs |
 | Buntlack | 1  | https://bit.ly/37bTcXS | € 14,95   | Anthrazitgrau, 750 ml, Seidenmatt |
-| Pinsel | 2  | https://bit.ly/359oJIc | € 3,90 | € 1,95 each  |
+| Pinsel-Set | 1  | https://bit.ly/2qcAor2 | € 5,99 | -  |
 | Stuhlwinkel | 2  | https://bit.ly/2OoOQ76 | € 0,50  | € 0,25 each |
 | Montageband | 1  | https://bit.ly/2pqh1Ku | € 7,50 |  1,5 m x 19 mm; 10 kg/m |
 | Hinge | 4  | https://bit.ly/2Qyiee5 | € 4,80 | € 1,20 each, 60 x 34 mm |
-| Glasfolie* | 1  | https://bit.ly/2QrldER | € 6,49  | 150 x 45 cm, Milchglas, Frost |
+| Glasfolie* | 1  | https://bit.ly/2Kukcs0 | € 5,45  | 200 x 45 cm, opal, self-adhesive |
 | Kunstglas* | 1  | https://bit.ly/2NVYorb | € 14,90 | 50 cm x 100 cm x 2.5 mm, plain, opal |
+| Klebefolie | 1  | https://bit.ly/2XoukHY |€ 8,85  | Black, 200 x 67,5 cm |
+| **TOTAL**  |  |   | € 168,65  |
 
  \* The choice between Kunstglas or Glasfolie is based on whether the Kunstglas can be cut with a CNC in the faculty. In the case of not being able, the glasfolie is chosen.
