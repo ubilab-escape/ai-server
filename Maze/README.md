@@ -17,11 +17,11 @@ To find right path, players should find a drawing of the maze. Then they shoud d
 
 
 ### Work done and on-going
-- [*] Create plan of implementation
+- [x] Create plan of implementation
 - [ ] Create maps
-- [*] Implement maze game class
+- [x] Implement maze game class
 - [ ] Implement MQTT connecction and control
-- [*] Implement chidish mode ~~for very stupid players~~
+- [x] Implement chidish mode ~~for very stupid players~~
 - [ ] Implement nightmare mode for crazy people
 - [ ] Implement button control
 - [ ] Implement comfortable high-level interface for the library
