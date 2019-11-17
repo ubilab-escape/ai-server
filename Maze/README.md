@@ -33,11 +33,12 @@ Nightmare mode is an nightmare mode. Instead of using existing maps they will be
 
 ## Compilation of the project
 
-1. Install [Arduino IDE]
-(https://www.arduino.cc/en/Main/Software)
+1. Install Arduino IDE
+https://www.arduino.cc/en/Main/Software
 2. Install ESP32 board in Arduino IDE using following ling for the board manager:
 > https://dl.espressif.com/dl/package_esp32_index.json
+
 Select ESP32 Dev module.
-3. Install library for the WS2812b from [here]
-(https://github.com/adafruit/Adafruit_NeoPixel)
+3. Install library for the WS2812b from here:
+https://github.com/adafruit/Adafruit_NeoPixel
 
