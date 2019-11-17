@@ -35,7 +35,7 @@ We analyze the Escape Room (ER) as a sequence of stages, being in our responsabi
 ### Stage 0
 This stage is like the preamble or the conditions that are needed to start the next stage. 
 
-* Since mission briefieng was self destroyed, players must have memorized the encrypted "IP" (Since that sequence has a sort of encryption, we have to provide it to **Group 3**).
+* Since mission briefing was self destroyed, players must have memorized the encrypted "IP" (Since that sequence has a sort of encryption, we have to provide it to **Group 3**).
 * Participants satisfactorily resolve the previous stage.
 
 ### Stage 1 (Send Data)
@@ -48,23 +48,23 @@ In this case, the order of resolution of the puzzles is not so important because
 
 Once the input matches the reference, a mock "Sending..." progress bar will appear, which means that the data is being sent properly until...
 
-Stastis goes rouge.
+Statis goes rouge.
 
 ### Stage 1.5
 This is not a proper stage, but a sequence of event which we think is good for story developing.
 
-Since STASIS detects a data/security breach, it inferes (is an artificial inteligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator arrives soon enough.  
+Since STASIS detects a data/security breach, it infers (is an artificial intelligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator arrives soon enough.  
 
 
-> Note: With enviroment team (**Group 2**) -if they agree- we can design a sort of agressive enviroment with light and sound. The idea is to increase stress level of players.     
+> Note: With environment team (**Group 2**) -if they agree- we can design a sort of aggressive environment with light and sound. The idea is to increase stress level of players.     
 
 
 ### Stage 2 (Kill Stasis)
 In this final stage, players must locate STASIS core and solve the puzzle in order to shut it down (eliminate). 
 
-At the same time, we think that STASIS should not have a silent death, so it creates a lot of noise and variates the illumination (that decision is not ours) like a kid outburs.  
+At the same time, we think that STASIS should not have a silent death, so it creates a lot of noise and variates the illumination (that decision is not ours) like a kid outburst.  
 
-The final puzzle (yet to be defined) once it is solved, a LED button turns ON, and once pressed, the escape room is resolved, the doors open (talk to **Group 4**) and the lights return to normal.
+The final puzzle (yet to be defined) once it is solved, a LED button turns ON, and once pressed the escape room is resolved, the doors open (talk to **Group 4**) and the lights return to normal.
 
 ## Puzzles
 
@@ -80,7 +80,7 @@ The instructions for the puzzles can be located outside the server room (photos 
 Given the above, at least two people must solve the room tasks together in constant communication and also constant under pressure, which can lead to errors in their execution. 
 
 
-#### 1. Maze
+#### Maze
 In this puzzle the operator faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the operator can move one point to the position of the other without making mistakes. 
 
 How do errors occur? It turns out that both points are actually inside a maze, which the operator cannot see on his interface. To solve the maze, the instructor must find the solution hidden somewhere and point out the solution correctly.
@@ -114,18 +114,9 @@ The solution to that maze is:
 ```
 ← ↑ → ↑ → ↓ → ↓ → ↑ ↑ → → ↑ ← ↑ ← ↓ ← ← ↑ → ↑ ← ↑ → ↑ ← ← ↓ ↓ ← ↑ ↑
 ```
-#### 2. Morse
-The operator is presented with a control panel containing an LED, a buzzer and a keyboard. The LED and the buzzer generate a sequence of letters in Morse code. The aim of this puzzle is that the entire team is able to identify the letters in the right order given the code using the Morse dictionary. If the operator makes a mistake, the sequence changes.
-
-<p align="center">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png" width="400">
-</p> 
-<p align="center">
-Figure: Morse code chart.
-</p> 
 
 
-#### 3. Simon didn't say that
+#### Simon didn't say that
 A slightly more complex version of the traditional "Simon Says" game. Here, the operator must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
 
 As an example:  
@@ -159,26 +150,46 @@ In the sketch below (kudos to Cristina), it is possible to identify the server (
 
 The main construction material will be wood, due to its price and ease of work. The servers and the table will be constructed by means of an internal wooden frame, which will be covered with other wood planks and then painted. In addition, since these structures will be hollow inside, the lighting will be given by a large internal light source (led strip) and a series of holes in the external structure, thus avoiding the installation of individual LEDs. 
 
-#### Bill of Materials
+### Bill of Materials
+
+#### Electronics
+
 |  Name  | Qty. | Link | Price |
 | ------------- | :---:  |------------- |:---  |
-| ESP32  | 2  | https://amzn.to/33NX7Im  |€ 20,00  |
+| ESP32  | 3  | https://amzn.to/33NX7Im  |€ 23,00  | 
 | LCD  | 1  | https://amzn.to/354K7hw  |€ 17,00  |
 | Big button*  | 1  | https://amzn.to/2QhkmGH  | € 10,00  |
 | Small button  | 1  | https://amzn.to/2CH2TPV  | € 13,00  |
 | Numpad  | 1  | https://amzn.to/2OpIu7N  | € 6,00  |
-| Charger  | 1  | https://amzn.to/355zCLg  | € 10,00  |
+| Power  | 1  | https://amzn.to/355zCLg  | € 10,00  |
 | Jumpers  | 1  | https://amzn.to/2CHOzXt  | € 10,00  |
 | Buzzer  | 1  | https://amzn.to/2qfmEeP  | € 7,00  |
-| Protoboard**  | 1  | -  |  - |
-| Transistors**  | 1  | -  | -  |
+| Breadboards  | 1  | https://amzn.to/2rOlh7j  | € 5,50 |
+| Prototype Boards  | 1  | https://amzn.to/2rOlh7j | € 6,00  |
+| Transistors  | 10  | https://bit.ly/2OorPkZ  | € 7,50  |
 | Step-Up  | 1  | https://amzn.to/352Vy9M  | € 6,00  |
-| Led Strip  | 1  | https://amzn.to/352Vy9M  | € 19,00  |
-| **TOTAL**  |  |   | € 118,00  |
+| Led Strip  | 1  | https://amzn.to/2CO8WT2 | € 27,00  |
+| **TOTAL**  |  |   | € 129,00  |
 
 \* We find the purchase of this product crucial. Science has shown no one can resist pressing its shiny surface and saying "beep!".
 
-\** The university will probably have more than one in stock or its price is negligible in the budget.  
 
+#### Fabrication
 
- 
+For a detailed view of what is being ordered in the first and second items, please refer to the pdf documents of the chipboard and Rahmenholz cutting list.The name of the documents is Cutlist_1 and Cutlist_2 respectively. 
+
+|  Name  | Qty. | Link | Price | Comment |
+| ------------- | :---:  |------------- |:---:  | ------------- |
+| Chipboard (10mm) | 10 m² | https://bit.ly/2NTelyw |€ 79,00  | € 7,9 per m². Final price should be calculated at Bauhaus or Obi. |
+| Rahmenholz | 9 | https://bit.ly/2XnkWEl | € 19,71 | € 2,19 each 300 x 3,8 x 3,8 cm |
+| Nagel | 1 | https://bit.ly/37gvzxd | € 2,80 | Ø x L: 1.6 x 30 mm, 400 pcs |
+| Nagel | 1  | https://bit.ly/33YbGcy | € 4,20 | Ø x L: 2.8 x 65 mm, 1.000 pcs |
+| Buntlack | 1  | https://bit.ly/37bTcXS | € 14,95   | Anthrazitgrau, 750 ml, Seidenmatt |
+| Pinsel | 2  | https://bit.ly/359oJIc | € 3,90 | € 1,95 each  |
+| Stuhlwinkel | 2  | https://bit.ly/2OoOQ76 | € 0,50  | € 0,25 each |
+| Montageband | 1  | https://bit.ly/2pqh1Ku | € 7,50 |  1,5 m x 19 mm; 10 kg/m |
+| Hinge | 4  | https://bit.ly/2Qyiee5 | € 4,80 | € 1,20 each, 60 x 34 mm |
+| Glasfolie* | 1  | https://bit.ly/2QrldER | € 6,49  | 150 x 45 cm, Milchglas, Frost |
+| Kunstglas* | 1  | https://bit.ly/2NVYorb | € 14,90 | 50 cm x 100 cm x 2.5 mm, plain, opal |
+
+ \* The choice between Kunstglas or Glasfolie is based on whether the Kunstglas can be cut with a CNC in the faculty. In the case of not being able, the glasfolie is chosen.
