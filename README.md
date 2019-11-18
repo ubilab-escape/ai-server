@@ -169,7 +169,7 @@ The main construction material will be wood, due to its price and ease of work. 
 | Transistors  | 10  | https://bit.ly/2OorPkZ  | € 7,50  |
 | Step-Up  | 1  | https://amzn.to/352Vy9M  | € 6,00  |
 | Led Strip  | 1  | https://amzn.to/2CO8WT2 | € 27,00  |
-| **TOTAL**  |  |   | € 129,00  |
+| **TOTAL**  |  |   | € 148,00  |
 
 \* We find the purchase of this product crucial. Science has shown no one can resist pressing its shiny surface and saying "beep!".
 
@@ -192,9 +192,9 @@ For a detailed view of what is being ordered in the first and second items, plea
 | Glasfolie* | 1  | https://bit.ly/2Kukcs0 | € 5,45  | 200 x 45 cm, opal, self-adhesive |
 | Kunstglas* | 1  | https://bit.ly/2NVYorb | € 14,90 | 50 cm x 100 cm x 2.5 mm, plain, opal |
 | Klebefolie | 1  | https://bit.ly/2XoukHY |€ 8,85  | Black, 200 x 67,5 cm |
-| **TOTAL**  |  |   | € 168,65  |
+| **TOTAL**  |  |   | € 163.2  |
 
- \* The choice between Kunstglas or Glasfolie is based on whether the Kunstglas can be cut with a CNC in the faculty. In the case of not being able, the glasfolie is chosen.
+ \* The choice between Kunstglas or Glasfolie is based on whether the Kunstglas can be cut with a CNC in the faculty. In the case of not being able, the glasfolie is chosen. (The Kunstglass was sumed in the BOM total, not the Glasfolie)
 
 
 Regarding the Chipboard, if € 79,00 is too much, there is also the option of use wood with 8mm thickness. Cutlist_1 (8mm).pdf
