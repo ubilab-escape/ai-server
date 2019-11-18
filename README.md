@@ -195,3 +195,10 @@ For a detailed view of what is being ordered in the first and second items, plea
 | **TOTAL**  |  |   | € 168,65  |
 
  \* The choice between Kunstglas or Glasfolie is based on whether the Kunstglas can be cut with a CNC in the faculty. In the case of not being able, the glasfolie is chosen.
+
+
+Regarding the Chipboard, if € 79,00 is too much, there is also the option of use wood with 8mm thickness. Cutlist_1 (8mm).pdf
+
+|  Name  | Qty. | Link | Price | Comment |
+| ------------- | :---:  |------------- |:---  | ------------- |
+| Chipboard (8mm) | 10 m² | https://bit.ly/2NZDLdY |€ 69,50  | € 6,95 per m². |
