@@ -67,6 +67,15 @@ At the same time, we think that STASIS should not have a silent death, so it cre
 The final puzzle (yet to be defined) once it is solved, a LED button turns ON, and once pressed the escape room is resolved, the doors open (talk to **Group 4**) and the lights return to normal.
 
 ## Puzzles
+<<<<<<< .mine
+### Keep talking a-like puzzle
+
+The main idea behind these puzzle is composed of a set of small puzzles, which are distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence, each time a mini puzzle is solved, the next one is activated. To finish the room, all puzzles must be solved.
+||||||| .r19
+### Keep talking a-like puzzle
+The main idea behind these puzzle is composed of a set of small puzzles, which are distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence, each time a mini puzzle is solved, the next one is activated. To finish the room, all puzzles must be solved.
+=======
+>>>>>>> .r39
 
 The main idea behind these puzzles is composed of a set of small puzzles, which are distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence, each time a mini puzzle is solved, the next one is activated. To finish the room, all puzzles must be solved.
 
@@ -80,17 +89,36 @@ The instructions for the puzzles can be located outside the server room (photos 
 Given the above, at least two people must solve the room tasks together in constant communication and also constant under pressure, which can lead to errors in their execution. 
 
 
+<<<<<<< .mine
+**1. Maze**
+
+The control panel contains an RGB LED matrix and 4 buttons which mimics a board. The task is to move the green marker to the red position.  The problem is obstacles (walls) given the appearance of a labyrinth. 
+||||||| .r19
+**1. Maze**
+The control panel contains an RGB LED matrix and 4 buttons which mimics a board. The task is to move the green marker to the red position.  The problem is obstacles (walls) given the appearance of a labyrinth. 
+=======
 #### Maze
 In this puzzle the operator faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the operator can move one point to the position of the other without making mistakes. 
+>>>>>>> .r39
 
 How do errors occur? It turns out that both points are actually inside a maze, which the operator cannot see on his interface. To solve the maze, the instructor must find the solution hidden somewhere and point out the solution correctly.
 
+<<<<<<< .mine
+<p float="center">
+  <img src="https://i.ibb.co/rp1gkPp/Operator-view.png" width="250" />
+  <img src="https://i.ibb.co/8zSGD9x/Team-view.png" width="250" /> 
+||||||| .r19
+<p float="left">
+  <img src="https://i.ibb.co/rp1gkPp/Operator-view.png" width="250" />
+  <img src="https://i.ibb.co/8zSGD9x/Team-view.png" width="250" /> 
+=======
 Example:
 
 In the figure, on the left is the operator's side and on the right is the solution for the instructor. Once the operator indicates the position of both points, the instructor will be able to identify the solution and deliver it.
 
 <p align="center">
   <img src="https://i.ibb.co/qjjNtwR/maze.png" width="70%" />
+>>>>>>> .r39
 </p>
 <p align="center">
 Figure: Left, what the operator faces. Right, solution map for instructor.
@@ -110,16 +138,51 @@ In addition, the complexity of the labyrinths may vary depending on what is defi
 </p>
 <p align="center">
 
+<<<<<<< .mine
+**2. Morse**
+
+Control panel contain LED, buzzer and several buttons of different colours. LED and buzzer transfers some sequence which represents a word (colour or other word which corresponds to this colour) in Morse codes. Goal of the operator is to determine a word and press corresponding button on the panel which corresponds to the named colour. If operator makes a mistake, than word changes.
+||||||| .r19
+**2. Morse**
+Control panel contain LED, buzzer and several buttons of different colours. LED and buzzer transfers some sequence which represents a word (colour or other word which corresponds to this colour) in Morse codes. Goal of the operator is to determine a word and press corresponding button on the panel which corresponds to the named colour. If operator makes a mistake, than word changes.
+=======
 The solution to that maze is: 
 ```
 ← ↑ → ↑ → ↓ → ↓ → ↑ ↑ → → ↑ ← ↑ ← ↓ ← ← ↑ → ↑ ← ↑ → ↑ ← ← ↓ ↓ ← ↑ ↑
 ```
+>>>>>>> .r39
 
+<<<<<<< .mine
+<p float="center">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png" width="400">
+</p>
+||||||| .r19
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/International_Morse_Code.svg/800px-International_Morse_Code.svg.png" width="400">
+Figure 2.1 Morse codes
+=======
+>>>>>>> .r39
 
+<<<<<<< .mine
+Figure 2.1 Morse code.
+
+**3. Simon didnt tell that**
+||||||| .r19
+**3. Simon didnt tell that**
+A bit more complecated version of the Simon says game. The operator should repeat sequence of colours by pressing corresponding buttons. But it is a bit harder than you expect. Colours are shifted.
+=======
 #### Simon didn't say that
 A slightly more complex version of the traditional "Simon Says" game. Here, the operator must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
+>>>>>>> .r39
 
+<<<<<<< .mine
+A bit more complicated version of the Simon says game. The operator should repeat sequence of colours by pressing corresponding buttons. But it is a bit harder than you expect. Colours are shifted.
+
+For example there could be following rules:
+||||||| .r19
+For example there could be following rules:
+=======
 As an example:  
+>>>>>>> .r39
 
 The operator faces the following sequence of colors: 
 ```
@@ -182,7 +245,7 @@ For a detailed view of what is being ordered in the first and second items, plea
 | ------------- | :---:  |------------- |:---  | ------------- |
 | Chipboard (10mm) | 10 m² | https://bit.ly/2NTelyw |€ 79,00  | € 7,9 per m². Final price should be calculated at Bauhaus or Obi. |
 | Rahmenholz | 9 | https://bit.ly/2XnkWEl | € 19,71 | € 2,19 each 300 x 3,8 x 3,8 cm |
-| Nagel | 1 | https://bit.ly/37gvzxd | € 2,80 | Ø x L: 1.6 x 30 mm, 400 pcs |
+| Nagel | 1 | https://bit.ly/2Omgim9 | € 2,80 | Ø x L: 1.4 x 25 mm, 400 pcs |
 | Nagel | 1  | https://bit.ly/33YbGcy | € 4,20 | Ø x L: 2.8 x 65 mm, 1.000 pcs |
 | Buntlack | 1  | https://bit.ly/37bTcXS | € 14,95   | Anthrazitgrau, 750 ml, Seidenmatt |
 | Pinsel-Set | 1  | https://bit.ly/2qcAor2 | € 5,99 | -  |
