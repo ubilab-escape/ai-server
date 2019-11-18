@@ -182,7 +182,7 @@ For a detailed view of what is being ordered in the first and second items, plea
 | ------------- | :---:  |------------- |:---  | ------------- |
 | Chipboard (10mm) | 10 m² | https://bit.ly/2NTelyw |€ 79,00  | € 7,9 per m². Final price should be calculated at Bauhaus or Obi. |
 | Rahmenholz | 9 | https://bit.ly/2XnkWEl | € 19,71 | € 2,19 each 300 x 3,8 x 3,8 cm |
-| Nagel | 1 | https://bit.ly/37gvzxd | € 2,80 | Ø x L: 1.6 x 30 mm, 400 pcs |
+| Nagel | 1 | https://bit.ly/2Omgim9 | € 2,80 | Ø x L: 1.4 x 25 mm, 400 pcs |
 | Nagel | 1  | https://bit.ly/33YbGcy | € 4,20 | Ø x L: 2.8 x 65 mm, 1.000 pcs |
 | Buntlack | 1  | https://bit.ly/37bTcXS | € 14,95   | Anthrazitgrau, 750 ml, Seidenmatt |
 | Pinsel-Set | 1  | https://bit.ly/2qcAor2 | € 5,99 | -  |
