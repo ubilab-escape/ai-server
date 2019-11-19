@@ -168,8 +168,8 @@ The main construction material will be wood, due to its price and ease of work. 
 | Prototype Boards  | 1  | https://amzn.to/2rOlh7j | € 6,00  |
 | Transistors  | 10  | https://bit.ly/2OorPkZ  | € 7,50  |
 | Step-Up  | 1  | https://amzn.to/352Vy9M  | € 6,00  |
-| Led Strip  | 1  | https://amzn.to/2CO8WT2 | € 27,00  |
-| **TOTAL**  |  |   | € 148,00  |
+| Led Strip  | 1  | https://amzn.to/2rQ7eOD | € 38.99  |
+| **TOTAL**  |  |   | € 159,99  |
 
 \* We find the purchase of this product crucial. Science has shown no one can resist pressing its shiny surface and saying "beep!".
 
