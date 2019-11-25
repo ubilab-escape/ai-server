@@ -26,7 +26,7 @@ Our responsibilities are:
 - [x] Bill of materials
 - [ ] Software of puzzle 1
 - [ ] Hardware of puzzle 1
-- [ ] Coding of puzzle 2 
+- [ ] Software of puzzle 2 
 - [ ] Hardware of puzzle 2
 - [ ] Contruct both mock server 
 
@@ -55,6 +55,10 @@ Once players can access the prototype data, the next stage is to send that to th
 In this case, the order of resolution of the puzzles is not so important because at the end, when the players resolve the maze, they must enter the decrypted IP in a fake terminal, and by fake we mean a screen with a keyboard that only compares the input with a given reference.
 
 Once the input matches the reference, a mock "Sending..." progress bar will appear, which means that the data is being sent properly until...
+
+<p align="center">
+  <img src="https://media1.tenor.com/images/3f8b9aec89d8fc5395f3ad3d82f0d697/tenor.gif?itemid=14560182" width="35%" /> 
+</p>
 
 Statis goes rouge.
 
@@ -88,7 +92,7 @@ The instructions for the puzzles can be located outside the server room (photos 
 Given the above, at least two people must solve the room tasks together in constant communication and also constant under pressure, which can lead to errors in their execution. 
 
 
-#### Maze
+### Maze
 In this puzzle the operator faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the operator can move one point to the position of the other without making mistakes. 
 
 How do errors occur? It turns out that both points are actually inside a maze, which the operator cannot see on his interface. To solve the maze, the instructor must find the solution hidden somewhere and point out the solution correctly.
@@ -124,7 +128,7 @@ The solution to that maze is:
 ```
 
 
-#### Simon didn't say that
+### Simon didn't say that
 A slightly more complex version of the traditional "Simon Says" game. Here, the operator must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
 
 As an example:  
