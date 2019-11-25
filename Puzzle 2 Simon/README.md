@@ -7,9 +7,9 @@
 * **Plan C**: Manual generation of color sequence and solution considering conditions. (Code compares user input with solution array)
 
 ### Hardware
-- [] ESP32
-- [] 5x push type buttons 
-- [] Buzzer
-- [] 5V Power supply (micro usb) 
-- [] Step-up 
+- &#9745; ESP32
+- &#9746; 5x push type buttons 
+- &#9746; Buzzer
+- &#9746; 5V Power supply (micro usb) 
+- &#9746; Step-up 
 
