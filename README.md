@@ -171,7 +171,7 @@ The main construction material will be wood, due to its price and ease of work. 
 | Led Strip  | 1  | https://amzn.to/2rQ7eOD | € 38.99  |
 | **TOTAL**  |  |   | € 159,99  |
 
-\* We find the purchase of this product crucial. Science has shown no one can resist pressing its shiny surface and saying "beep!".
+\* We find the purchase of this product crucial. Science has shown no one can resist pressing its shiny surface.
 
 
 #### Fabrication
@@ -180,25 +180,14 @@ For a detailed view of what is being ordered in the first and second items, plea
 
 |  Name  | Qty. | Link | Price | Comment |
 | ------------- | :---:  |------------- |:---  | ------------- |
-| Chipboard (10mm) | 10 m² | https://bit.ly/2NTelyw |€ 79,00  | € 7,9 per m². Final price should be calculated at Bauhaus or Obi. |
 | Rahmenholz | 9 | https://bit.ly/2XnkWEl | € 19,71 | € 2,19 each 300 x 3,8 x 3,8 cm |
 | Nagel | 1 | https://bit.ly/2Omgim9 | € 2,80 | Ø x L: 1.4 x 25 mm, 400 pcs |
 | Nagel | 1  | https://bit.ly/33YbGcy | € 4,20 | Ø x L: 2.8 x 65 mm, 1.000 pcs |
-| Buntlack | 1  | https://bit.ly/37bTcXS | € 14,95   | Anthrazitgrau, 750 ml, Seidenmatt |
-| Pinsel-Set | 1  | https://bit.ly/2qcAor2 | € 5,99 | -  |
 | Stuhlwinkel | 2  | https://bit.ly/2OoOQ76 | € 0,50  | € 0,25 each |
 | Montageband | 1  | https://bit.ly/2pqh1Ku | € 7,50 |  1,5 m x 19 mm; 10 kg/m |
 | Hinge | 4  | https://bit.ly/2Qyiee5 | € 4,80 | € 1,20 each, 60 x 34 mm |
-| Glasfolie* | 1  | https://bit.ly/2Kukcs0 | € 5,45  | 200 x 45 cm, opal, self-adhesive |
-| Kunstglas* | 1  | https://bit.ly/2NVYorb | € 14,90 | 50 cm x 100 cm x 2.5 mm, plain, opal |
-| Klebefolie | 1  | https://bit.ly/2XoukHY |€ 8,85  | Black, 200 x 67,5 cm |
-| **TOTAL**  |  |   | € 163.2  |
-
- \* The choice between Kunstglas or Glasfolie is based on whether the Kunstglas can be cut with a CNC in the faculty. In the case of not being able, the glasfolie is chosen. (The Kunstglass was sumed in the BOM total, not the Glasfolie)
+| Glasfolie | 1  | https://bit.ly/2Kukcs0 | € 5,45  | 200 x 45 cm, opal, self-adhesive |
+| **TOTAL**  |  |   | € 44.96  |
 
 
-Regarding the Chipboard, if € 79,00 is too much, there is also the option of use wood with 8mm thickness. Cutlist_1 (8mm).pdf
-
-|  Name  | Qty. | Link | Price | Comment |
-| ------------- | :---:  |------------- |:---  | ------------- |
-| Chipboard (8mm) | 10 m² | https://bit.ly/2NZDLdY |€ 69,50  | € 6,95 per m². |
+Regarding the boards, it was decided to use the one available at the faculty, and the cutlist was updated in order to build a simpler design.
