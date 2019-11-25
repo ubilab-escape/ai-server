@@ -18,10 +18,18 @@ Our responsibilities are:
 
 ### Work done and on-going
 - [x] Every one ready on slack
-- [ ] Puzzles! 
 - [x] Everyone should commit at least once
-- [ ] Speak with @ubilab-escape/environment about lighting inside room.
-- [ ] Speak with @ubilab-escape/prototype about prototype shape and puzzle integration.
+- [x] Speak with @ubilab-escape/environment about lighting inside room.
+- [x] Speak with @ubilab-escape/prototype about prototype shape and puzzle integration.
+- [x] Design puzzles 
+- [x] Design server racks
+- [x] Bill of materials
+- [ ] Software of puzzle 1
+- [ ] Hardware of puzzle 1
+- [ ] Coding of puzzle 2 
+- [ ] Hardware of puzzle 2
+- [ ] Contruct both mock server 
+
 
 # The Server Room
 Information here is highly volatile.
@@ -190,4 +198,4 @@ For a detailed view of what is being ordered in the first and second items, plea
 | **TOTAL**  |  |   | € 44.96  |
 
 
-Regarding the boards, it was decided to use the one available at the faculty, and the cutlist was updated in order to build a simpler design.
+Regarding the wood boards, it was decided to use the ones available at the faculty, and the cutlist was updated in order to build a simpler design.
