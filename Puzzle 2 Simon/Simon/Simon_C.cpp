@@ -39,6 +39,7 @@ int pinCount = 5; // Should be constant since is the button counter, but maybe i
 int buzz = 7;  
 int code;
 int randnum; // Random selection of row
+int error;
         
 unsigned long previousMillis = 0;
 
@@ -57,11 +58,15 @@ void loop()
   unsigned long currentMillis = millis(); 
   //code = choosecode();
   code = 1;
+  error = 0;
   preamble(); // The condition to only run at the beggining is pending. (Loop until button is pressed missing ~ search for "attachinterrupt" function) 
            // Cristina's option is smarter (while(1) check all buttons break)
-
-  sequence_show(); // Here is where simon[][] is showed to the user.
-  sequence_read(); // Here is where input_sequence[] is compared with sol[][]
+  while(error < 3)
+  {
+    sequence_show(error); // Here is where simon[][] is showed to the user.
+  
+    sequence_read(); // Here is where input_sequence[] is compared with sol[][]
+  }
 }
 
 int choosecode()
@@ -155,6 +160,7 @@ void sequence_read()
         delay(200);
         if (input_sequence[i] != sol[code][i])
         {
+          digitalWrite(5, LOW);
           wrong_input();
           return;
         }
@@ -182,14 +188,14 @@ void sequence_read()
 
 }// end of sequence_read()
 
-void sequence_show()
+void sequence_show(int x)
 {
 
-  for (int i = 0; i < pinCount; i++) 
+  for (int s = 0; s < pinCount; s++) 
     {
-      digitalWrite(simon[code][i], HIGH);
-      delay(2000);
-      digitalWrite(simon[code][i], LOW);
+      digitalWrite(simon[code][s], HIGH);
+      delay(200-x*10);
+      digitalWrite(simon[code][s], LOW);
       delay(200);
       //tone(buzz,800,10); //Commented bcz is super annoying
     }
@@ -197,15 +203,20 @@ void sequence_show()
 
 int wrong_input()
 {
-  // error++;
-  // if error > 3 just skip or simplify puzzle?
-  // 
-
+  error++;
+for (int w = 0; w < 10; w++) 
+      {
+        digitalWrite(6, HIGH);
+        delay(250);
+        digitalWrite(6, LOW);
+        delay(350);
+        //tone(buzz,800,10); //Commented bcz is super annoying
+      }
 } // end of wrong_input()
 
 void puzzle_correct()
 {
-      for (int out = 0; out < 15; out++) 
+      for (int out = 0; out < 10; out++) 
       {
         digitalWrite(show[0], HIGH);
         delay(250);
