@@ -1,9 +1,9 @@
 //    ____   _               __                                  
-//   / ___| (_) _ __ ___    /_/   _ __    ___   __ _  _   _  ___ 
-//   \___ \ | || '_ ` _ \  / _ \ | '_ \  / __| / _` || | | |/ __|
-//    ___) || || | | | | || (_) || | | | \__ \| (_| || |_| |\__ \
-//   |____/ |_||_| |_| |_| \___/_|_| |_| |___/ \__,_| \__, ||___/
-//   |  _ \ | |  __ _  _ __    / ___|                 |___/      
+//   / ___| (_) _ __ ___    /_/   _ __      ___   __ _  _   _  ___ 
+//   \___ \ | || '_ ` _ \  / _ \ | '_ \    / __| / _` || | | |/ __|
+//    ___) || || | | | | || (_) || | | |   \__ \| (_| || |_| |\__ \
+//   |____/ |_||_| |_| |_| \___/_|_| |_|   |___/ \__,_| \__, ||___/
+//   |  _ \ | |  __ _  _ __    / ___|                   |___/      
 //   | |_) || | / _` || '_ \  | |                                
 //   |  __/ | || (_| || | | | | |___                             
 //   |_|    |_| \__,_||_| |_|  \____|                            
@@ -56,24 +56,22 @@ void setup()
 void loop() 
 {
   unsigned long currentMillis = millis(); 
-  //code = choosecode();
-  code = 1;
+  code = choosecode();
+  //code = 1;
   error = 0;
-  preamble(); // The condition to only run at the beggining is pending. (Loop until button is pressed missing ~ search for "attachinterrupt" function) 
-           // Cristina's option is smarter (while(1) check all buttons break)
+  preamble(); // The condition to only run at the beggining is pending.  Cristina's option is smarter (while(1) check all buttons break) 
+           		
   while(error < 3)
   {
     sequence_show(error); // Here is where simon[][] is showed to the user.
-  
     sequence_read(); // Here is where input_sequence[] is compared with sol[][]
   }
-}
+} // end of loop()
 
 int choosecode()
 {
     randnum = random(0,5); // random(0,pinCount-1)??; 
     return randnum;
-
 } // end of choosecode()
 
 void preamble() 
@@ -97,7 +95,6 @@ void preamble()
       }
     }
   delay(1000);
-
 } // end of preamble()
 
 void sequence_read()
@@ -118,6 +115,7 @@ void sequence_read()
         delay(200);
         if (input_sequence[i] != sol[code][i]) //input comparisson with solution
         {
+          digitalWrite(2, LOW);
           wrong_input();
           return;
         }
@@ -132,6 +130,7 @@ void sequence_read()
         delay(200);
         if (input_sequence[i] != sol[code][i])
         {
+          digitalWrite(3, LOW);
           wrong_input();
           return;
         }
@@ -146,6 +145,7 @@ void sequence_read()
         delay(200);
         if (input_sequence[i] != sol[code][i])
         {
+          digitalWrite(4, LOW);
           wrong_input();
           return;
         }
@@ -160,10 +160,10 @@ void sequence_read()
         delay(200);
         if (input_sequence[i] != sol[code][i])
         {
-          digitalWrite(5, LOW);
-          wrong_input();
-          return;
-        }
+	    	digitalWrite(5, LOW);
+	    	wrong_input();
+	    	return;
+	    }
         digitalWrite(5, LOW);
       }
 
@@ -175,54 +175,52 @@ void sequence_read()
         delay(200);
         if (input_sequence[i] != sol[code][i])
         {
-          wrong_input();
-          return;
+	        digitalWrite(6, LOW);
+	        wrong_input();
+	        return;
         }
         digitalWrite(6, LOW);
       }
-
     } 
   }
-
- puzzle_correct(); // This is the puzzle ending sequence. 
-
-}// end of sequence_read()
+  puzzle_correct(); // This is the puzzle ending sequence. 
+} // end of sequence_read()
 
 void sequence_show(int x)
 {
-
   for (int s = 0; s < pinCount; s++) 
     {
       digitalWrite(simon[code][s], HIGH);
-      delay(200-x*10);
+      delay(1000-x*10);
       digitalWrite(simon[code][s], LOW);
-      delay(200);
+      delay(300);
       //tone(buzz,800,10); //Commented bcz is super annoying
     }
-}
+} // end of sequence_show()
 
 int wrong_input()
 {
   error++;
-for (int w = 0; w < 10; w++) 
-      {
+	for (int w = 0; w < 10; w++) 
+    {
         digitalWrite(6, HIGH);
         delay(250);
         digitalWrite(6, LOW);
         delay(350);
         //tone(buzz,800,10); //Commented bcz is super annoying
-      }
+    }
 } // end of wrong_input()
 
 void puzzle_correct()
 {
-      for (int out = 0; out < 10; out++) 
-      {
-        digitalWrite(show[0], HIGH);
-        delay(250);
-        digitalWrite(show[0], LOW);
-        delay(350);
-        //tone(buzz,800,10); //Commented bcz is super annoying
-      }
-}
+  for (int out = 0; out < 10; out++) 
+  {
+    digitalWrite(show[0], HIGH);
+    delay(250);
+    digitalWrite(show[0], LOW);
+    delay(350);
+    //tone(buzz,800,10); //Commented bcz is super annoying
+  }
+   error=4; // This is for testing purposes (continuity). gives a new maze.  
+} // end of puzzle_correct()
 
