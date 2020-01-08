@@ -11,19 +11,18 @@
 //   By Group 8                              
 // 
 //
-// Color = Out_Pin   // Green = 13 / White = 12 / Yellow = 14  / Blue = 27  / Red = 26
+// Color = Out_Pin   // Green = 13 / White = 12 / Yellow = 2  / Blue = 27  / Red = 26
 // Color = Input_Pin // Green = 18 / White = 19 / Yellow = 21  / Blue = 22  / Red = 23
 //
 //
 
 int timer=150; 
 
-
-int show[]={13,12,14,27,26}; //Initial led wave to draw user attention (also used in setup() to define output pins)
+int show[]={13,12,2,27,26}; //Initial led wave to draw user attention (also used in setup() to define output pins)
 int input[]={18,19,21,22,23}; //Used in setup() to define input pins
 
 
-int simon[5][5]={{27,14,14,13,13},  //Different sequences matrix. 
+int simon[5][5]={{27,2,2,13,13},  //Different sequences matrix. 
                  {12,26,13,14,12},
                  {13,26,27,12,12},
                  {27,14,26,13,13},
@@ -44,6 +43,11 @@ int error;
         
 unsigned long previousMillis = 0;
 
+const int brb = 5; // BRB because it is a big red button
+const int freq = 5000;
+const int ledChannel = 0;
+const int resolution = 8;
+
 void setup() 
 {
   Serial.begin(115200);
@@ -53,12 +57,16 @@ void setup()
     pinMode(show[i], OUTPUT);
     pinMode(input[i], INPUT_PULLUP);
   }
+  pinMode(14,INPUT_PULLUP);
+  ledcSetup(ledChannel, freq, resolution);  
+  ledcAttachPin(brb, ledChannel);
 }
 
 void loop() 
 {
   unsigned long currentMillis = millis(); 
   code = choosecode();
+  //code = 0;
   Serial.print("Simon didn't say puzzle nº ");
   Serial.println(code);
   //code = 1;
@@ -149,17 +157,17 @@ void sequence_read()
       if (digitalRead(21) == LOW)
       {
         Serial.print("21 ");
-        digitalWrite(14, HIGH);
+        digitalWrite(2, HIGH);
         input_sequence[i] = 21;
         flag = 1;
         delay(200);
         if (input_sequence[i] != sol[code][i])
         {
-          digitalWrite(14, LOW);
+          digitalWrite(2, LOW);
           w_input();
           return;
         }
-        digitalWrite(14, LOW);
+        digitalWrite(2, LOW);
       }
 
       if (digitalRead(22) == LOW)
@@ -233,13 +241,32 @@ void puzzle_correct()
 {
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
-  for (int out = 0; out < 10; out++) 
+  while(digitalRead(14) != LOW)
   {
-    digitalWrite(show[0], HIGH);
-    delay(250);
-    digitalWrite(show[0], LOW);
-    delay(350);
-    //tone(buzz,800,10); //Commented bcz is super annoying
+    for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
+    {     
+      ledcWrite(ledChannel, dutyCycle);
+      delay(4);
+      if (digitalRead(14) == LOW) //input comparisson with solution
+        {
+          dutyCycle = 0;
+          ledcWrite(ledChannel, dutyCycle);
+          break;
+        }
+    }
+      
+    for(int dutyCycle = 255; dutyCycle >= 0; dutyCycle--)
+    {
+      // changing the LED brightness with PWM
+      ledcWrite(ledChannel, dutyCycle);   
+      delay(4);
+      if (digitalRead(14) == LOW) //input comparisson with solution
+        {
+          dutyCycle = 0;
+          ledcWrite(ledChannel, dutyCycle);
+          break;
+        }
+    }
   }
    error=4; // This is for testing purposes (continuity). gives a new maze.  
 } // end of puzzle_correct()
