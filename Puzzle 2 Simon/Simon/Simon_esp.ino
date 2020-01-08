@@ -22,6 +22,7 @@ int timer=150;
 int show[]={13,12,14,27,26}; //Initial led wave to draw user attention (also used in setup() to define output pins)
 int input[]={18,19,21,22,23}; //Used in setup() to define input pins
 
+
 int simon[5][5]={{27,14,14,13,13},  //Different sequences matrix. 
                  {12,26,13,14,12},
                  {13,26,27,12,12},
@@ -45,6 +46,7 @@ unsigned long previousMillis = 0;
 
 void setup() 
 {
+  Serial.begin(115200);
  // pinMode(buzz, OUTPUT);
   for (int i = 0; i < pinCount; i++) 
   {
@@ -56,15 +58,19 @@ void setup()
 void loop() 
 {
   unsigned long currentMillis = millis(); 
-  //code = choosecode();
-  code = 0;
+  code = choosecode();
+  Serial.print("Simon didn't say puzzle nº ");
+  Serial.println(code);
+  //code = 1;
   error = 0;
   preamble(); 
                
   while(error < 3)
   {
     sequence_show(error); // Here is where simon[][] is showed to the user.
+    Serial.print("User input: ");
     sequence_read(); // Here is where input_sequence[] is compared with sol[][]
+    Serial.println(" ");
   }
 } // end of loop()
 
@@ -76,6 +82,7 @@ int choosecode()
 
 void preamble() 
 {
+    Serial.println("Showing preamble");
     for (int k = 0; k < 3; k++) 
     {
       for (int out = 0; out < pinCount; out++) 
@@ -109,8 +116,9 @@ void sequence_read()
     {
       if (digitalRead(18) == LOW) 
       {
+        Serial.print("18 ");
         digitalWrite(13, HIGH); // When the button is pressed, the led turns on... because why not
-        input_sequence[i] = 8;
+        input_sequence[i] = 18;
         flag = 1; // exit while
         delay(200);
         if (input_sequence[i] != sol[code][i]) //input comparisson with solution
@@ -124,8 +132,9 @@ void sequence_read()
 
       if (digitalRead(19) == LOW)
       {
+        Serial.print("19 ");
         digitalWrite(12, HIGH);
-        input_sequence[i] = 9;
+        input_sequence[i] = 19;
         flag = 1;
         delay(200);
         if (input_sequence[i] != sol[code][i])
@@ -139,8 +148,9 @@ void sequence_read()
 
       if (digitalRead(21) == LOW)
       {
+        Serial.print("21 ");
         digitalWrite(14, HIGH);
-        input_sequence[i] = 10;
+        input_sequence[i] = 21;
         flag = 1;
         delay(200);
         if (input_sequence[i] != sol[code][i])
@@ -154,8 +164,9 @@ void sequence_read()
 
       if (digitalRead(22) == LOW)
       {
+        Serial.print("22 ");
         digitalWrite(27, HIGH);
-        input_sequence[i] = 11;
+        input_sequence[i] = 22;
         flag = 1;
         delay(200);
         if (input_sequence[i] != sol[code][i])
@@ -169,8 +180,9 @@ void sequence_read()
 
       if (digitalRead(23) == LOW)
       {
+        Serial.print("23 ");
         digitalWrite(26, HIGH);
-        input_sequence[i] = 12;
+        input_sequence[i] = 23;
         flag = 1;
         delay(200);
         if (input_sequence[i] != sol[code][i])
@@ -188,18 +200,24 @@ void sequence_read()
 
 void sequence_show(int x)
 {
+  Serial.print("Sequence: ");
   for (int s = 0; s < pinCount; s++) 
     {
+      Serial.print(simon[code][s]);
+      Serial.print(" ");
       digitalWrite(simon[code][s], HIGH);
       delay(1000-x*10);
       digitalWrite(simon[code][s], LOW);
       delay(300);
       //tone(buzz,800,10); //Commented bcz is super annoying
     }
+    Serial.println(" ");
 } // end of sequence_show()
 
 void w_input()
 {
+  Serial.println(" ");
+  Serial.println("Input error, puzzle incorrect");
   error++;
   for (int w = 0; w < 10; w++) 
     {
@@ -213,6 +231,8 @@ void w_input()
 
 void puzzle_correct()
 {
+  Serial.println(" ");
+  Serial.println("Puzzle correctly solved");
   for (int out = 0; out < 10; out++) 
   {
     digitalWrite(show[0], HIGH);
