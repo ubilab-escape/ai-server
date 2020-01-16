@@ -1,14 +1,9 @@
-//    ____   _               __                                  
-//   / ___| (_) _ __ ___    /_/   _ __      ___   __ _  _   _  ___ 
-//   \___ \ | || '_ ` _ \  / _ \ | '_ \    / __| / _` || | | |/ __|
-//    ___) || || | | | | || (_) || | | |   \__ \| (_| || |_| |\__ \
-//   |____/ |_||_| |_| |_| \___/_|_| |_|   |___/ \__,_| \__, ||___/
-//                                                      |___/                             
-//                                   
+                                
 //   Group 8                              
 // 
 //
 //    Color = Out_Pin   // Green = 13 / White = 12 / Yellow = 2   / Blue = 27  / Red = 26
+
 //    Color = Input_Pin // Green = 18 / White = 19 / Yellow = 21  / Blue = 22  / Red = 23
 //
 //
@@ -44,7 +39,7 @@ const int brb = 5; // BRB because it is a big red button
 const int freq = 2000;
 const int channel = 0;
 const int resolution = 8;
-
+int tggl = 0;
 
 int channel1 = 1;
 const int buzz = 4;
@@ -68,13 +63,26 @@ void setup()
 
 void loop() 
 {
-  unsigned long currentMillis = millis(); 
   //code = choosecode();
   code = 0;
   Serial.print("Simon didn't say puzzle nº ");
   Serial.println(code);
-  //code = 1;
   error = 0;
+  while(tggl==0) //input[]={18,19,21,22,23}
+  {
+    Serial.println("while loop");
+    if (digitalRead(18) == LOW){
+      break;}
+    if (digitalRead(19) == LOW){
+      break;}
+    if (digitalRead(21) == LOW){
+      break;}
+    if (digitalRead(22) == LOW){
+      break;}
+    if (digitalRead(23) == LOW){
+      break;}
+  }
+  tggl = 1;
   preamble(); 
                
   while(error < 3)
@@ -95,7 +103,7 @@ int choosecode()
 void preamble() 
 {
   Serial.println("Showing preamble");
-  for (int k = 0; k < 3; k++) 
+  for (int k = 0; k < 4; k++) 
   {
     
       digitalWrite(13, HIGH);
@@ -103,15 +111,16 @@ void preamble()
       digitalWrite(2, HIGH);
       digitalWrite(27, HIGH);
       digitalWrite(26, HIGH);
-      delay(200);
+      delay(400);
       digitalWrite(13, LOW);
       digitalWrite(12, LOW);
       digitalWrite(2, LOW);
       digitalWrite(27, LOW);
       digitalWrite(26, LOW);
+      delay(400);      
       //tone(buzz,800,10); //Commented bcz is super annoying
   }
-  delay(1000);
+  delay(1500);
 } // end of preamble()
 
 void sequence_read()
@@ -221,7 +230,11 @@ void sequence_show(int x)
       Serial.print(simon[code][s]);
       Serial.print(" ");
       digitalWrite(simon[code][s], HIGH);
-      delay(1000-x*10);
+      ledcWriteTone(channel1, 600);
+      delay(400);
+      ledcWriteTone(channel1, 0);
+      delay(600-x*10);
+      ledcWriteTone(channel1, 0);
       digitalWrite(simon[code][s], LOW);
       delay(300);
       //tone(buzz,800,10); //Commented bcz is super annoying
@@ -241,7 +254,7 @@ void w_input()
      ledcWriteTone(channel1, 100);
      delay(500);
      ledcWriteTone(channel1, 0);
-     delay(10);
+     delay(2000);
       
 }
 
@@ -255,7 +268,7 @@ void puzzle_correct()
     {     
       ledcWrite(channel, dutyCycle);
       delay(4);
-      if (digitalRead(14) == LOW) //input comparisson with solution
+      if (digitalRead(14) == LOW) 
         {
           dutyCycle = 0;
           ledcWrite(channel, dutyCycle);
