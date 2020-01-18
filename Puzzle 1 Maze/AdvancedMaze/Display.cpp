@@ -10,10 +10,11 @@ Adafruit_NeoPixel Display::strip = Adafruit_NeoPixel(LED_COUNT , LED_PIN, LED_TY
 uint32_t Display::i = 0;
 uint32_t Display::j = 0;
 byte Display::animationType = GAME;
+volatile SemaphoreHandle_t timerSemaphore = NULL;
 portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
 Colour Display::animCol=Colour(0,0,120);
 Maze Display::maze = Maze();
-
+volatile float interrupt = false;
 volatile bool Display::frame;
 
 byte Display::neopix_gamma[256] = {
@@ -35,13 +36,13 @@ byte Display::neopix_gamma[256] = {
       215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 }; // This array is used by several animations
   
 
-Display::Display() // Init of the LED display
+void Display::DisplayInit() // Init of the LED display
 {
   
   strip.setBrightness(LED_BRITENESS);
   strip.begin();
   hw_timer_t *timer = NULL;
-  timer = timerBegin(0, 80, true);                  //timer 0, div 80
+  timer = timerBegin(1, 80, true);                  //timer 0, div 80
   timerAttachInterrupt(timer, &animationHandler, true);  //attach callback
   timerAlarmWrite(timer, LED_UPDATE_TIME * 1000, true); //set time in us
   // enable timer 
@@ -106,16 +107,28 @@ void Display::calculateAndShowAnimation()
     j++;
 
   //critical part. Nobody can interrupt writing to LEDs
-  
+  portMUX_TYPE myMutex = portMUX_INITIALIZER_UNLOCKED;
+taskENTER_CRITICAL(&myMutex);
+strip.show();
+taskEXIT_CRITICAL(&myMutex);
+    
 
+}
+void Display::SetColour(int r, int g, int b)
+{
+   for(uint16_t i=0; i<strip.numPixels(); i++) {
+          strip.setPixelColor(i, strip.Color(r,g,b, LED_BRITENESS )) ;
+        }
+        strip.show();
 }
 void IRAM_ATTR Display::animationHandler() // Interrupt handler called by timer. Here animations are updating
 {
    
   portENTER_CRITICAL_ISR(&timerMux);
-  calculateAndShowAnimation();
+  interrupt = true;
+  
   portEXIT_CRITICAL_ISR(&timerMux);
-  strip.show();
+  // xSemaphoreGiveFromISR(timerSemaphore, NULL);
   
 }
 
@@ -138,4 +151,16 @@ void Display::updateGameField() // Function which updates gaming field and displ
   {
     strip.setPixelColor(i, strip.Color(maze.colourArray[i][1],maze.colourArray[i][0],maze.colourArray[i][2], LED_BRITENESS ) );
   }
+}
+
+void Display::processInterrupt()
+{
+ 
+ if (interrupt){
+  calculateAndShowAnimation();
+  
+  interrupt=false;
+  
+  }
+  
 }

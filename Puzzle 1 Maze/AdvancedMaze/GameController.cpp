@@ -1,9 +1,11 @@
 #include "GameController.h"
+#include "MQTT.h"
 
 
 void GameController::startGame(byte mod, byte lifes)
 {
-  Display(); // initialization of the display class
+  MQTT().MQTTPublish("Group8/Maze/Compleated", "Game Started");
+  //Display(); // initialization of the display class
   Display().startAnimation(GAME, 0, 0, 0); // Start animation with selected type
   Display().maze.InitMaze(mod, lifes);
   isCompleted = false;
@@ -14,22 +16,27 @@ void GameController::checkState()
   
   if (Display().maze.failFlag && !Display().maze.deathFlag)
   {
-    Display().startAnimation(PULSE, 120, 120, 0);
+    Display().SetColour(120,120,0);
+    MQTT().MQTTPublish("Group8/Maze/Fail", "Failed");
     delay(1000);
+    MQTT().MQTTPublish("Group8/Maze/Fail", "Ok");
     Display().startAnimation(GAME, 0, 0, 0);
     Display().maze.resurect();
     
   }
   if (Display().maze.deathFlag)
   {
-    Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
+   Display().SetColour(0,120,0);
+   MQTT().MQTTPublish("Group8/Maze/Death", "Dead");
     delay(3000);
+   MQTT().MQTTPublish("Group8/Maze/Death", "Reborned");
     Display().startAnimation(GAME, 0, 0, 0);
     Display().maze.CreateMaze();
   }
   
   if (Display().maze.completedFlag)
   {
+    MQTT().MQTTPublish("Group8/Maze/Compleated", "Compleated");
     Display().startAnimation(RANDOM_BLINKING, 120,0 , 0);
     isCompleted = true;
   }

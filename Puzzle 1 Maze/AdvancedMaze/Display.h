@@ -28,14 +28,15 @@
 {
   
   public:
-  Display();
+  static void DisplayInit();
   static Adafruit_NeoPixel strip;
   static void startAnimation(byte type, byte r, byte g, byte b);
   static void updateGameField();
   static void calculateAndShowAnimation();
   static volatile bool frame;
-  
+  static void processInterrupt();
   static Maze maze;
+  static void SetColour(int r, int g, int b);
   private:
   static uint32_t i,j;
   static void IRAM_ATTR animationHandler();

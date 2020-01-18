@@ -12,7 +12,7 @@
 
 void Maze::getColorArray() // Generates table of data for the LED stripe from tile matrix
 {
-  bool dir = true;
+  bool dir = false;
   for (int y = 0; y <MAZE_Y;y++)
   {
     if (dir)
@@ -28,9 +28,9 @@ void Maze::getColorArray() // Generates table of data for the LED stripe from ti
     {
       for (int x = MAZE_X-1; x >-1;x--)
       {
-        colourArray[x+y*MAZE_Y][0] = getTileColour(field[x][y]).r;
-        colourArray[x+y*MAZE_Y][1] = getTileColour(field[x][y]).g;
-        colourArray[x+y*MAZE_Y][2] = getTileColour(field[x][y]).b;
+        colourArray[7-x+y*MAZE_Y][0] = getTileColour(field[x][y]).r;
+        colourArray[7-x+y*MAZE_Y][1] = getTileColour(field[x][y]).g;
+        colourArray[7-x+y*MAZE_Y][2] = getTileColour(field[x][y]).b;
       }
     }
     dir = !dir;
