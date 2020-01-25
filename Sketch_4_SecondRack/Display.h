@@ -28,7 +28,6 @@
 //#include <Adafruit_NeoPixel.h>
 #include <FastLED.h>
 #include "Colour.h"
-#include "Maze.h"
 
 
 
@@ -40,21 +39,13 @@
   static void DisplayInit();
  // static Adafruit_NeoPixel strip;
   static void startAnimation(byte type, byte r, byte g, byte b);
-  static void updateGameField();
   static void calculateAndShowAnimation();
-  static volatile bool frame;
-  static void processInterrupt();
-  static Maze maze;
-  static void SetColour(int r, int g, int b);
   static byte animationType;
   private:
   static uint32_t i,j;
-  static void IRAM_ATTR animationHandler();
-  //static uint32_t Wheel(byte WheelPos);
   
   static uint32_t colour;
   static Colour animCol;
-  static uint32_t  gameField[LED_COUNT];
   
   
   

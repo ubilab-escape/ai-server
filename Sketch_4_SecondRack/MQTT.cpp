@@ -13,15 +13,13 @@ PubSubClient client(espClient);
 const char*  mqtt_server =  "10.0.0.2";
 
 
-const char* MQTTclientName =  "8_Maze";
-const char* MQTTtpoic =  "8/Maze";
+const char* MQTTclientName =  "8_Rack";
 
 
-const char* previousPuzzleTopic =  "GroupN/Puzzle";
+
+
 const char* LightControllerTopic =  "2/ledstrip/serverroom";
 
-bool  MQTT::arrived = false;
-int  MQTT::state =0;
 
 void MQTT::Setup() 
 {
@@ -47,15 +45,7 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
     Serial.println(error.c_str());
     return;
   }
-    if (topic == previousPuzzleTopic&&doc["METHOD"]== "STATUS" && doc["STATE"] == "solved") // this should be changed to required topic name
-    {
-     //here you can process incoming messages on specific topic
-      
-      arrived = true;
-      state = 1;
-      
-     
-    }
+   
     if (topic == LightControllerTopic&&doc["METHOD"]== "TRIGGER" && doc["STATE"] == "rgb") // this should be changed to required topic name
     {
      //here you can process incoming messages on specific topic
@@ -80,7 +70,7 @@ void MQTT::Reconnect() // this void resubscribes to topics on start or in case o
     { // change clientName to name of your device
       Serial.println("connected");
       // Subscribe to all Topicks you need here
-      client.subscribe(previousPuzzleTopic);
+     
       client.subscribe(LightControllerTopic);
    
     } 
@@ -94,31 +84,7 @@ void MQTT::Reconnect() // this void resubscribes to topics on start or in case o
     }
     }
 }
-void MQTT::MQTTPublish( char* state) // this void is used to send messages in topic
-{
-  Serial.print("Message sent on topic: ");
-  Serial.println(MQTTtpoic);
-  Serial.print(". Message: ");
-  doc["METHOD"] = "STATUS";
-  doc["STATE"] = state;
-  char output[128];
-  serializeJson(doc, output);
-  Serial.println(output);
-  client.publish(MQTTtpoic, output);
-}
-void MQTT::MQTTLightControl(char* state, char* dat)
-{
-  Serial.print("Message sent on topic: ");
-  Serial.println(LightControllerTopic);
-  Serial.print(". Message: ");
-  doc["METHOD"] = "TRIGGER";
-  doc["STATE"] = state;
-  doc["DATA"] = dat;
-  char output[128];
-  serializeJson(doc, output);
-  Serial.println(output);
-  client.publish(LightControllerTopic, output);
-}
+
 String MQTT::split(String s, char parser, int index) {
   String rs="";
   int parserIndex = index;

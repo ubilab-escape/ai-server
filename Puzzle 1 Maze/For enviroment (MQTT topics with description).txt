@@ -1,7 +1,0 @@
-1. MQTT().Publish("Group8/Maze/IP_Compleated", "Compleated"); --> Green light
-2. MQTT().Publish("Group8/Maze/IP_Compleated", "MazeStarted"); --> Stasys understood, that important data has been sending. So it should go mad. (Whatever you want)
-3. MQTT().Publish("Group8/Maze/Fail", "Failed"); --> light effect on fail (when person made a misstake but still has spare lifes) something like yellow light blinking
-4. MQTT().Publish("Group8/Maze/Fail", "Ok"); --> Ylight effect on fail switch off (when misstake ended)
-5. MQTT().Publish("Group8/Maze/Death", "Dead"); --> light effect on death | something like red light blinking
-6. MQTT().Publish("Group8/Maze/Death", "Reborned"); --> light effect on death can be switched off
-7. MQTT().Publish("Group8/Maze/Compleated", "Compleated"); --> light effect on win like green blinking

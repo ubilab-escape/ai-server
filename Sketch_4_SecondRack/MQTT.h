@@ -17,10 +17,6 @@
   static void Setup();
   static void Callback(char* topic, byte* message, unsigned int length);
   static void Reconnect();
-  static void MQTTPublish(char* state);
-  static void MQTTLightControl(char* state, char* dat);
-  static bool arrived;
-  static int state;
   static String split (String s, char parser, int index);
   private:
   

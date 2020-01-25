@@ -18,18 +18,12 @@ To find right path, players should find a drawing of the maze. Then they shoud d
 
 ### Work done and on-going
 - [x] Create plan of implementation
-- [ ] Create maps
+- [x] Create maps
 - [x] Implement maze game class
-- [ ] Implement MQTT connecction and control
-- [x] Implement chidish mode ~~for very stupid players~~
-- [ ] Implement nightmare mode for crazy people
-- [ ] Implement button control
-- [ ] Implement comfortable high-level interface for the library
-- [ ] Make the greates poster with map and instructions
+- [x] Implement MQTT connecction and control
+- [x] Implement button control
+- [x] Make the poster with map and instructions
 
-Chidish mode is a super easy mode, where all walls are visible. Can be enabled after several fails.
-
-Nightmare mode is an nightmare mode. Instead of using existing maps they will be randomly generated. Only luck will help you.
 
 ## Compilation of the project
 
@@ -37,8 +31,9 @@ Nightmare mode is an nightmare mode. Instead of using existing maps they will be
 https://www.arduino.cc/en/Main/Software
 2. Install ESP32 board in Arduino IDE using following ling for the board manager:
 > https://dl.espressif.com/dl/package_esp32_index.json
-
 Select ESP32 Dev module.
-3. Install library for the WS2812b from here:
-https://github.com/adafruit/Adafruit_NeoPixel
 
+3. Install library for the FastLED from here:
+https://github.com/FastLED/FastLED
+4. Install library for the Keypad from here:
+https://www.arduinolibraries.info/libraries/keypad

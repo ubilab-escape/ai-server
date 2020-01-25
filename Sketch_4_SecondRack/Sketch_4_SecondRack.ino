@@ -1,35 +1,17 @@
-#include <Keypad.h>
+
 #include <WiFi.h>
 #include <ESPmDNS.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include <WiFi.h>
 #include <PubSubClient.h>
-#include "HardwareSerial.h"
-#include "GameController.h";
-#include "IP.h";
 #include "MQTT.h";
+#include "Display.h"
 
 HardwareSerial MySerial(1);
 
 TaskHandle_t WiFi_Task_handle;
 TaskHandle_t MQTT_Task_handle;
-
-GameController maze;
-
-const byte rows = 4; //four rows
-const byte cols = 4; //three columns
-char keys[rows][cols] = {
-  {'1','2','3', 'A'},
-  {'4','5','6', 'B'},
-  {'7','8','9', 'C'},
-  {'#','0','*', 'D'}
-};
-byte rowPins[rows] = {21, 19, 18, 5}; //connect to the row pinouts of the keypad
-byte colPins[cols] = {12, 22, 4, 0}; //connect to the column pinouts of the keypad
-Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
-
-IP ip = IP();
 
 
 //const char* ssid = "ubilab_wifi";
@@ -38,13 +20,12 @@ const char* ssid = "WirelessMan";
 const char* password = "Rahatlukum75";
 
 
-int workmode  = 0;
 
 
 void setup() {
-MySerial.begin(115200, SERIAL_8N1, 16, 17);
+
 Serial.begin(115200);
-MySerial.println("S1");
+
 
 xTaskCreate(
                     WiFi_Task,          /* Task function. */
@@ -88,157 +69,8 @@ vTaskSuspend(MQTT_Task_handle);
 }
 
 void loop() {
-//MQTT().Reconnect();
-//Display().processInterrupt();
 
-
-char key = keypad.getKey();
- if (key != NO_KEY){
-    //Serial.println(key);
- switch (workmode)
- { 
-  case 2:
-{
-  if (maze.isCompleted)
-  {
-     MySerial.println("S3");
-     workmode=0;
-  }
- switch(key)
-  {
-   
-    case('2'):
-    {
-      maze.step_up();
-    }
-    break;
-    case('4'):
-    {
-      maze.step_left();
-    }
-    break;
-    case('8'):
-    {
-      maze.step_down();
-    }
-    break;
-    case('6'):
-    {
-      maze.step_right();
-    }
-    break;
-    
-  }
-  
-  }
-  break;
-  case 1:
-  {
-    MySerial.println("S1");
-    switch(key)
-  {
-    case('A'):
-    {
-      ip.currentGroup = 0;
-    }
-    break;
-    case('B'):
-    {
-      ip.currentGroup = 1;
-    }
-    break;
-    case('C'):
-    {
-      ip.currentGroup = 2;
-    }
-    break;
-    case('D'):
-    {
-      ip.currentGroup = 3;
-    }
-    break;
-    default:
-    {
-      ip.addDigit(key);
-      //Serial.println(ip.getIP());
-      MySerial.println("I"+ip.getIP()+"E");
-      if (ip.check()) 
-      {
-      MySerial.println("S4");
-      workmode =2;
-      ip.clearIP();
-      Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
-      MQTT().MQTTPublish("active");
-      delay(10000);
-      MQTT().MQTTPublish("active");
-      
-      maze.startGame(MODE_NORMAL_TEAMPLAY,1);
-  }
-    }
-    
-  }
-  
-  }
-  }
-  
- }
-
-if (Serial.available()) //Checking available serial data to control maze (temporary feature)
-{
-  byte b;
-  b = Serial.read();
-  switch(b)
-  {
-    case('q'):
-    {
-      Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
-      workmode = 0;
-    }
-     break;
-     case('m'):
-    {
-      Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
-      workmode = 1;
-      MySerial.println("S1");
-    }
-     break;
-    case('g'):
-    {
-      Display().startAnimation(GAME, 0, 0, 120);
-      maze.startGame(MODE_CHILDISH,5);
-      workmode = 2;
-    }
-     break;
-    case('t'):
-    {
-       maze.startGame(MODE_NORMAL_TEAMPLAY, 3);
-       workmode = 2;
-    }
-     break;
-    case('w'):
-    {
-      maze.step_up();
-    }
-    break;
-    case('a'):
-    {
-      maze.step_left();
-    }
-    break;
-    case('s'):
-    {
-      maze.step_down();
-    }
-    break;
-    case('d'):
-    {
-      maze.step_right();
-    }
-    break;
-    
-  }
- 
-}
+ delay(1000);
 
 }
 
@@ -272,23 +104,17 @@ void MQTT_Task( void * parameter )
 {
 delay(2000);
 MQTT().Setup() ;
-MQTT().Reconnect();
-MQTT().MQTTPublish("inactive");
  for(;;)
   {
-    
+    delay(2000);
     MQTT().Reconnect();
-    delay(200);
-    if (MQTT().arrived)
-    {
-      MQTT().arrived = false;
-      workmode = MQTT().state;
-    }
+    
+    
   }
 }
 void OTA_Task( void * parameter )
 {
- ArduinoOTA.setHostname("Maze");
+ ArduinoOTA.setHostname("Rack");
  ArduinoOTA.onStart([]() 
     {
       String type;
