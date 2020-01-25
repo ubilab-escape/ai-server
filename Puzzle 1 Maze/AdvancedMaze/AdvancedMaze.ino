@@ -32,10 +32,6 @@ Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
 IP ip = IP();
 
 
-//const char* ssid = "ubilab_wifi";
-//const char* password = "ohg4xah3oufohreiPe7e";
-const char* ssid = "WirelessMan";
-const char* password = "Rahatlukum75";
 
 
 int workmode  = 0;
