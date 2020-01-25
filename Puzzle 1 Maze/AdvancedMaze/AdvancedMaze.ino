@@ -17,6 +17,14 @@ TaskHandle_t MQTT_Task_handle;
 
 GameController maze;
 
+
+
+//const char* ssid = "ubilab_wifi";
+//const char* password = "ohg4xah3oufohreiPe7e";
+const char* ssid = "WirelessMan";
+const char* password = "Rahatlukum75";
+
+
 const byte rows = 4; //four rows
 const byte cols = 4; //three columns
 char keys[rows][cols] = {
@@ -275,6 +283,7 @@ MQTT().MQTTPublish("inactive");
     
     MQTT().Reconnect();
     delay(200);
+
     if (MQTT().arrived)
     {
       MQTT().arrived = false;

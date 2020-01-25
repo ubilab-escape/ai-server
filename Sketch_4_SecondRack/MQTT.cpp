@@ -10,21 +10,22 @@ const int capacity = JSON_OBJECT_SIZE(3);
 WiFiClient espClient;
 PubSubClient client(espClient);
  
-const char*  mqtt_server =  "10.0.0.2";
+//const char*  mqtt_server =  "10.0.0.2";
+const char*  mqtt_server =  "192.168.0.199";
 
 
 const char* MQTTclientName =  "8_Rack";
 
 
-
-
+String  MQTT::state = "inactive";
+const char* MQTTtopic =  "8/Rack";
 const char* LightControllerTopic =  "2/ledstrip/serverroom";
 
 
 void MQTT::Setup() 
 {
   client.setServer(mqtt_server, 1883); // Setting server by ip address and port
-  client.setCallback(MQTT().Callback); // Setting callback for recieved packets
+  client.setCallback(Callback); // Setting callback for recieved packets
 }
 /*
  * This void is processing incoming messages as soon as they arrived. 
@@ -36,7 +37,7 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
   Serial.print("Message arrived on topic: ");
   Serial.println(topic);
   Serial.print(". Message: ");
-  //Serial.println(message);
+  Serial.println((char *) message);
   Serial.println();
   DeserializationError error = deserializeJson(doc, message);
   // Test if parsing succeeds.
@@ -45,19 +46,19 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
     Serial.println(error.c_str());
     return;
   }
-   
-    if (topic == LightControllerTopic&&doc["METHOD"]== "TRIGGER" && doc["STATE"] == "rgb") // this should be changed to required topic name
+    String da = doc["DATA"];
+    String me = doc["METHOD"];
+    String st = doc["STATE"];
+    String t = topic;
+    if (t == LightControllerTopic&&me== "TRIGGER" && st== "rgb") // this should be changed to required topic name
     {
-     //here you can process incoming messages on specific topic
-      if (Display().animationType == RANDOM_BLINKING)
-      {
-      String da = doc["DATA"];
+     //here you can process incoming messages on specific topic     
       Display().startAnimation(RANDOM_BLINKING, split(da,',',0).toInt(), split(da,',',1).toInt(), split(da,',',2).toInt());
-      }
-      
-     
-    }
    
+    }
+    
+      
+      
     // add as much cases as you have a subscriptions
 }
 
@@ -72,7 +73,7 @@ void MQTT::Reconnect() // this void resubscribes to topics on start or in case o
       // Subscribe to all Topicks you need here
      
       client.subscribe(LightControllerTopic);
-   
+      
     } 
     else {
       Serial.print("failed, rc=");
@@ -83,7 +84,26 @@ void MQTT::Reconnect() // this void resubscribes to topics on start or in case o
       yield();
     }
     }
+    else
+    {
+          client.loop();
+    }
 }
+void MQTT::MQTTPublish( String state) // this void is used to send messages in topic
+{
+  //doc.clear();
+  Serial.print("Message sent on topic: ");
+  Serial.println(MQTTtopic);
+  Serial.print(". Message: ");
+  doc["METHOD"] = "STATUS";
+  doc["STATE"] = state;
+  char output[128];
+  serializeJson(doc, output);
+  Serial.println(output);
+  client.publish(MQTTtopic, output);
+  //doc.clear();
+}
+
 
 String MQTT::split(String s, char parser, int index) {
   String rs="";
@@ -98,5 +118,5 @@ String MQTT::split(String s, char parser, int index) {
       return s.substring(rFromIndex,rToIndex);
     } else parserCnt++;
   }
-  return rs;
+  return s.substring(rFromIndex,s.length());;
 }

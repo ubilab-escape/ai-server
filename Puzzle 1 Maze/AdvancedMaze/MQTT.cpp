@@ -47,7 +47,11 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
     Serial.println(error.c_str());
     return;
   }
-    if (topic == previousPuzzleTopic&&doc["METHOD"]== "STATUS" && doc["STATE"] == "solved") // this should be changed to required topic name
+    String da = doc["DATA"];
+    String me = doc["METHOD"];
+    String st = doc["STATE"];
+    String t = topic;
+    if (t == previousPuzzleTopic&&me== "STATUS" && st == "solved") // this should be changed to required topic name
     {
      //here you can process incoming messages on specific topic
       
@@ -56,16 +60,12 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
       
      
     }
-    if (topic == LightControllerTopic&&doc["METHOD"]== "TRIGGER" && doc["STATE"] == "rgb") // this should be changed to required topic name
+    
+    if (t == LightControllerTopic&&me== "TRIGGER" && st== "rgb"&&(Display().animationType!=GAME)) // this should be changed to required topic name
     {
-     //here you can process incoming messages on specific topic
-      if (Display().animationType == RANDOM_BLINKING)
-      {
-      String da = doc["DATA"];
+     //here you can process incoming messages on specific topic     
       Display().startAnimation(RANDOM_BLINKING, split(da,',',0).toInt(), split(da,',',1).toInt(), split(da,',',2).toInt());
-      }
-      
-     
+   
     }
    
     // add as much cases as you have a subscriptions
@@ -92,6 +92,11 @@ void MQTT::Reconnect() // this void resubscribes to topics on start or in case o
       
       yield();
     }
+    
+    }
+    else
+    {
+      client.loop();
     }
 }
 void MQTT::MQTTPublish( char* state) // this void is used to send messages in topic

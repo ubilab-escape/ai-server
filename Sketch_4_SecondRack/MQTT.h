@@ -18,8 +18,10 @@
   static void Callback(char* topic, byte* message, unsigned int length);
   static void Reconnect();
   static String split (String s, char parser, int index);
+  static void MQTTPublish(String state);
+   static String state;
   private:
-  
+ 
   
 };
 

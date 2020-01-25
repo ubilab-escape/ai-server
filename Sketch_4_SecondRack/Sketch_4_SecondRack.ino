@@ -14,6 +14,10 @@ TaskHandle_t WiFi_Task_handle;
 TaskHandle_t MQTT_Task_handle;
 
 
+//const char* ssid = "ubilab_wifi";
+//const char* password = "ohg4xah3oufohreiPe7e";
+const char* ssid = "WirelessMan";
+const char* password = "Rahatlukum75";
 
 
 
@@ -104,7 +108,8 @@ MQTT().Setup() ;
   {
     delay(2000);
     MQTT().Reconnect();
-    
+    MQTT().MQTTPublish(MQTT().state);
+   
     
   }
 }
