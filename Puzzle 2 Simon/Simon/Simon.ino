@@ -1,14 +1,51 @@
-                                
-//   Group 8                              
-// 
-//
-//    Color = Out_Pin   // Green = 13 / White = 12 / Yellow = 2   / Blue = 27  / Red = 26
+/*
+//----------------------------------------------------------------------------------------------------------------//                            
+                                        Group 8                               
+                  _____ _                          _____                 
+                 / ____(_)                        / ____|                
+                | (___  _ _ __ ___   ___  _ __   | (___   __ _ _   _ ___ 
+                 \___ \| | '_ ` _ \ / _ \| '_ \   \___ \ / _` | | | / __|
+                 ____) | | | | | | | (_) | | | |  ____) | (_| | |_| \__ \
+                |_____/|_|_| |_| |_|\___/|_| |_| |_____/ \__,_|\__, |___/
+                                                                __/ |    
+                                                               |___/     
 
-//    Color = Input_Pin // Green = 18 / White = 19 / Yellow = 21  / Blue = 22  / Red = 23
-//
-//
-
+//----------------------------------------------------------------------------------------------------------------//   
+  
+   This Code Does:
+     - Play Simon didn't say puzzle with 5 different combinations
+      - Connects to WiFI
+      - Handles Over The Air code updates           
  
+   This Code Doesnt:
+      - Handles MQTT comunication (yet)  
+
+//----------------------------------------------------------------------------------------------------------------//  
+   
+    Color = Out_Pin   // Green = 13 / White = 12 / Yellow = 2   / Blue = 27  / Red = 26
+    Color = Input_Pin // Green = 18 / White = 19 / Yellow = 21  / Blue = 22  / Red = 23
+
+//-----------------------------------------------------------------------------------------------------------------//  
+*/
+#include <WiFi.h>
+#include <WiFiUdp.h>
+#include <ArduinoJson.h>
+#include <ArduinoOTA.h>
+#include <PubSubClient.h>
+#include "MQTT.h"
+#include <EEPROM.h>
+#include <ESPmDNS.h>
+
+#define DEBUG
+
+// WiFi + OTA 
+//const char* ssid = "Guaripolo 2.4GHz";
+//const char* password = "Internet1";
+
+const char* ssid = "ubilab_wifi";
+const char* password = "ohg4xah3oufohreiPe7e";
+ 
+// Buttons 
 
 int show[]={13,12,2,27,26}; // Initial led wave to draw user attention (also used in setup() to define output pins)
 int input[]={18,19,21,22,23}; // Used in setup() to define input pins
@@ -28,28 +65,74 @@ int sol[5][5]={{18,23,23,21,21}, // Solutions for each sequence (solution wrt th
 
 int input_sequence[5];
 int pinCount = 5; // Should be constant since is the button counter, but maybe in tests we use less buttons.
-//int buzz = 7;  
 int code;
 int randnum; // Random selection of puzzle (row of matrix)
 int error;
         
-unsigned long previousMillis = 0;
-
+// Buzzer 
 const int brb = 5; // BRB because it is a big red button
 const int freq = 2000;
 const int channel = 0;
 const int resolution = 8;
-int tggl = 0;
-
 int channel1 = 1;
 const int buzz = 4;
 
+unsigned long previousMillis = 0;
+int tggl = 0;
 
 
 void setup() 
 {
+  #ifdef DEBUG
   Serial.begin(115200);
- // pinMode(buzz, OUTPUT);
+  #endif
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  mdnsUpdate = millis();
+  while (WiFi.waitForConnectResult() != WL_CONNECTED) 
+  {
+    Serial.println("Connection Failed! Rebooting...");
+    delay(5000);
+    ESP.restart();
+  }
+
+  ArduinoOTA.setHostname("Simon");
+  ArduinoOTA.setPassword("1");
+  ArduinoOTA
+    .onStart([]() {
+      String type;
+      if (ArduinoOTA.getCommand() == U_FLASH)
+        type = "sketch";
+      else // U_SPIFFS
+        type = "filesystem";
+
+      // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
+      Serial.println("Start updating " + type);
+    })
+    .onEnd([]() {
+      Serial.println("\nEnd");
+    })
+    .onProgress([](unsigned int progress, unsigned int total) {
+      Serial.printf("Progress: %u%%\r", (progress / (total / 100)));
+    })
+    .onError([](ota_error_t error) {
+      Serial.printf("Error[%u]: ", error);
+      if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+      else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+      else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+      else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+      else if (error == OTA_END_ERROR) Serial.println("End Failed");
+    });
+    
+  ArduinoOTA.begin();
+
+  Serial.println("Ready");
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  Setup();
+  
+
   for (int i = 0; i < pinCount; i++) 
   {
     pinMode(show[i], OUTPUT);
@@ -63,14 +146,25 @@ void setup()
 
 void loop() 
 {
-  //code = choosecode();
-  code = 0;
+   if (WiFi.status() != WL_CONNECTED) {
+      wifi();
+  }
+  ArduinoOTA.handle();
+  Reconnect(); 
+
+
+   
+  code = choosecode();
+  //code = 0;
   Serial.print("Simon didn't say puzzle nº ");
   Serial.println(code);
   error = 0;
-  while(tggl==0) //input[]={18,19,21,22,23}
+
+  // tggl debe ser kostya outcome (pub/sub)
+  Publish("8/puzzle/simon", "STATUS", "inactive", "");
+  while(tggl==0 && mazesolved==false) //input[]={18,19,21,22,23}
   {
-    Serial.println("while loop");
+    //Serial.println("while loop");
     if (digitalRead(18) == LOW){
       break;}
     if (digitalRead(19) == LOW){
@@ -262,6 +356,7 @@ void puzzle_correct()
 {
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
+  Publish("MQTT_8_puzzle_simon", "STATUS", "solved", "");
   while(digitalRead(14) != LOW)
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
