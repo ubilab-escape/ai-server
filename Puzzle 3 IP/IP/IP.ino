@@ -46,7 +46,7 @@ void setup() {
  tft.fillScreen(BLACK);
  frame = 0;
  percentage = 0;
- Serial.begin(115200);
+ Serial.begin(9600);
 }
 
 void loop() {

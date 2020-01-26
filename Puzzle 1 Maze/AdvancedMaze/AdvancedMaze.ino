@@ -33,7 +33,7 @@ const byte cols = 4; //three columns
   {'#','0','*', 'D'}
 };
  byte colPins[cols] = {12, 14, 27, 26}; //connect to the row pinouts of the keypad
- byte rowPins[rows] = {15, 2, 4, 16}; //connect to the column pinouts of the keypad
+ byte rowPins[rows] = {5, 18, 19, 21}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
 
@@ -44,9 +44,11 @@ int workmode  = 0;
 
 
 void setup() {
-MySerial.begin(115200, SERIAL_8N1, 17, 16);
-Serial.begin(115200);
-MySerial.println("S1");
+MySerial.begin(9600, SERIAL_8N1, 17, 16);
+Serial.begin(9600);
+delay(1000);
+Serial.println("S4");
+
 
 xTaskCreate(
                     WiFi_Task,          /* Task function. */
@@ -96,16 +98,19 @@ vTaskSuspend(MQTT_Task_handle);
 
 void loop() {
 delay(500);
-
-
 if (workmode == 1)
 {
   if (ip.check()) 
       {
-      MySerial.println("S2");
+      Serial.println("S3");
       workmode =0;
       ip.clearIP();
       Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
+      MQTT().MQTTLightControlRack("0,120,0");
+      delay(5000);
+      Display().startAnimation(RANDOM_BLINKING, 0, 0, 0);
+      MQTT().MQTTLightControlRack("0,0,0");
+      MQTT().MQTTLightControl("rgb","0,0,0");
       MQTT().MQTTPublish("solved");
       }
 }
@@ -114,70 +119,12 @@ if (workmode == 2)
   if (maze.isCompleted)
   {
      workmode =1;
-     MySerial.println("S1");
+     Serial.println("S1");
      Display().startAnimation(RANDOM_BLINKING, 120, 120, 0);
      MQTT().MQTTLightControlRack("120,120,0");
   }
 }
-    
 
-
-if (Serial.available()) //Checking available serial data to control maze (temporary feature)
-{
-  byte b;
-  b = Serial.read();
-  switch(b)
-  {
-    case('q'):
-    {
-      Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
-      workmode = 0;
-    }
-     break;
-     case('m'):
-    {
-      Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
-      workmode = 1;
-      MySerial.println("S1");
-    }
-     break;
-    case('g'):
-    {
-      Display().startAnimation(GAME, 0, 0, 120);
-      maze.startGame(MODE_CHILDISH,5);
-      workmode = 2;
-    }
-     break;
-    case('t'):
-    {
-       maze.startGame(MODE_NORMAL_TEAMPLAY, 3);
-       workmode = 2;
-    }
-     break;
-    case('w'):
-    {
-      maze.step_up();
-    }
-    break;
-    case('a'):
-    {
-      maze.step_left();
-    }
-    break;
-    case('s'):
-    {
-      maze.step_down();
-    }
-    break;
-    case('d'):
-    {
-      maze.step_right();
-    }
-    break;
-    
-  }
- 
-}
 
 }
 
@@ -187,19 +134,19 @@ void WiFi_Task( void * parameter )
  WiFi.begin(ssid, password);
  while (WiFi.waitForConnectResult() != WL_CONNECTED) 
   {
-    Serial.println("Connection Failed! Rebooting...");
+    //Serial.println("Connection Failed! Rebooting...");
     ESP.restart();
   }
    if(WiFi.waitForConnectResult() == WL_CONNECTED)  
    {
-    Serial.println("Connected!!!");
+    //Serial.println("Connected!!!");
     vTaskResume(MQTTcon_Task_handle);
   }
  for(;;)
   {
   if (WiFi.waitForConnectResult() != WL_CONNECTED) 
   {
-    Serial.println("Connection Failed! Rebooting...");
+    //Serial.println("Connection Failed! Rebooting...");
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
   }
@@ -281,12 +228,12 @@ void OTA_Task( void * parameter )
     })
     .onError([](ota_error_t error) 
     {
-      Serial.printf("Error[%u]: ", error);
+      /*Serial.printf("Error[%u]: ", error);
       if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
       else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
       else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
       else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
-      else if (error == OTA_END_ERROR) Serial.println("End Failed");
+      else if (error == OTA_END_ERROR) Serial.println("End Failed");*/
     });
 
  ArduinoOTA.begin();
@@ -369,7 +316,7 @@ void LED_Task( void * parameter )
       default:
       {
         ip.addDigit(key);
-        MySerial.println("I"+ip.getIP()+"E");
+        Serial.println("I"+ip.getIP()+"E");
       }
   }
   }
