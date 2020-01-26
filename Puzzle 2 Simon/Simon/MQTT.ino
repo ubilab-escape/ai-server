@@ -29,7 +29,7 @@ char mdnsName[MAX_MDNS_LEN] = {'\0'};
 const IPAddress mqttServerIP(10,0,0,2); //Main server Ip 
 
 const String clientId = "Group8_puzzle_simon";
-const char* Maze = "MQTT_8_puzzle_maze";
+const char* Maze = "8/puzzle/maze";
 
 
 WiFiClient wifiClient;
@@ -101,15 +101,22 @@ void Callback(char* topic, byte* payload, unsigned int length)
   String State = doc["state"];
   String Data = doc["data"]; //should be 0 if not data argument was received (see https://arduinojson.org/v6/doc/deserialization/ --> 3.3.3 in pdf) 
 
-  if(Method == "trigger" && State == "solved")
+  if(Method == "STATUS" && State == "solved")
   { // waiting for maze to be solved
 
     //set 
     mazesolved = true;
-
+    Serial.println();
+    Serial.println();
+    Serial.println();
+    Serial.print(mazesolved);
+    Serial.println();
+    Serial.println();
+    Serial.println();
+    
     //respond to activation message
     //{"method":"STATUS","state":"active", "data":"opening"}
-    Publish("MQTT_8_puzzle_simon", "STATUS", "active", "");
+    //Publish("MQTT_8_puzzle_simon", "status", "active", "");
 
   }
   

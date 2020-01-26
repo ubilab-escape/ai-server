@@ -50,18 +50,19 @@ const char* password = "ohg4xah3oufohreiPe7e";
 int show[]={13,12,2,27,26}; // Initial led wave to draw user attention (also used in setup() to define output pins)
 int input[]={18,19,21,22,23}; // Used in setup() to define input pins
 
+// Sequences
+int simon[5][5]={{27,2,2,13,13},   // B, Y, Y, G, G
+                 {12,26,13,2,12},  // W, R, G, Y, W
+                 {13,26,27,12,12}, // G, R, B, W, W
+                 {27,2,26,13,13},  // B, Y, R, G, G
+                 {12,27,2,2,27}};  // W, B, Y, Y, B
 
-int simon[5][5]={{27,2,2,13,13},  // Different sequences matrix. 
-                 {12,26,13,2,12},
-                 {13,26,27,12,12},
-                 {27,2,26,13,13},
-                 {12,27,2,2,27}};
-
-int sol[5][5]={{18,23,23,21,21}, // Solutions for each sequence (solution wrt the input pin (look under the ascii text))
-               {19,23,18,21,19},
-               {23,23,18,19,19},
-               {21,18,18,21,23},
-               {22,21,19,22,21}};
+// Solutions
+int sol[5][5]={{18,23,23,21,21},   // G, R, R, Y, Y 
+               {19,23,18,21,19},   // W, R, G, Y, W
+               {23,23,18,19,19},   // R, R, G, W, W
+               {21,18,18,21,23},   // Y, G, G, Y, R
+               {22,21,19,22,21}};  // B, Y, W, B, Y
 
 int input_sequence[5];
 int pinCount = 5; // Should be constant since is the button counter, but maybe in tests we use less buttons.
@@ -79,10 +80,12 @@ const int buzz = 4;
 
 unsigned long previousMillis = 0;
 int tggl = 0;
+bool inactive_flag = true;
 
 
 void setup() 
 {
+  
   #ifdef DEBUG
   Serial.begin(115200);
   #endif
@@ -142,7 +145,28 @@ void setup()
   ledcSetup(channel, freq, resolution);  
   ledcAttachPin(brb, channel);
   ledcAttachPin(buzz, channel1);
+
+  xTaskCreate(
+                    Connectivity_Task,          /* Task function. */
+                    "Connectivity_Task",        /* String with name of task. */
+                    10000,            /* Stack size in bytes. */
+                    NULL,             /* Parameter passed as input of the task */
+                    3,                /* Priority of the task. */
+                    NULL);            /* Task handle. */
+  
 }
+
+void Connectivity_Task( void * parameter )
+{
+  delay(5000);
+  for(;;)
+  {
+  Reconnect(); 
+  Publish("8/puzzle/simon", "STATUS", sta, "");
+  delay(500);
+  }
+}
+
 
 
 void loop() 
@@ -151,19 +175,17 @@ void loop()
       wifi();
   }
   ArduinoOTA.handle();
-  Reconnect(); 
+/*Reconnect(); 
 
-
-   
-  code = choosecode();
-  //code = 0;
-  Serial.print("Simon didn't say puzzle nº ");
-  Serial.println(code);
-  error = 0;
+ /* if (inactive_flag)
+ {
+  Publish("8/puzzle/simon", "STATUS", "inactive", "");
+  inactive_flag=false;
+ }
 
   // tggl debe ser kostya outcome (pub/sub)
-  Publish("8/puzzle/simon", "STATUS", "inactive", "");
-  while(tggl==0 && mazesolved==false) //input[]={18,19,21,22,23}
+  
+  /*while(tggl==0) //input[]={18,19,21,22,23}
   {
     //Serial.println("while loop");
     if (digitalRead(18) == LOW){
@@ -176,9 +198,19 @@ void loop()
       break;}
     if (digitalRead(23) == LOW){
       break;}
+  
   }
-  tggl = 1;
-  Publish("8/puzzle/simon", "STATUS", "active", "");
+ */
+  if (mazesolved==true)
+  {
+  sta = "active";
+ // Publish("8/puzzle/simon", "STATUS", "active", "");
+  
+  code = choosecode();
+  //code = 0;
+  Serial.print("Simon didn't say puzzle nº ");
+  Serial.println(code);
+  error = 0;
   preamble(); 
                
   while(error < 3)
@@ -187,6 +219,7 @@ void loop()
     Serial.print("User input: ");
     sequence_read(); // Here is where input_sequence[] is compared with sol[][]
     Serial.println(" ");
+  }
   }
 } // end of loop()
 
@@ -320,6 +353,7 @@ void sequence_read()
 
 void sequence_show(int x)
 {
+  Publish("8/puzzle/simon", "STATUS", "active", "Showing pattern");
   Serial.print("Sequence: ");
   for (int s = 0; s < pinCount; s++) 
     {
@@ -342,6 +376,7 @@ void w_input()
 {
   Serial.println(" ");
   Serial.println("Input error, puzzle incorrect");
+  Publish("8/puzzle/simon", "STATUS", "active", "Wrong button");
   error++;
   
   
@@ -386,7 +421,7 @@ void puzzle_correct()
       }
     }
   }
-  error=4; // This is for testing purposes (continuity). gives a new maze.  
+  //error=4; // This is for testing purposes (continuity). gives a new maze.  
 } // end of puzzle_correct()
 
 void c_input()

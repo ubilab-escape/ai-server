@@ -7,6 +7,7 @@ long mdnsUpdate = millis();
 
 // definir puzzle ad/hoc
 bool mazesolved = false;
+const char* sta = "inactive";
 
 //bool closeDoor = false;
 
