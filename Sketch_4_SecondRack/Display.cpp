@@ -23,7 +23,7 @@ void Display::DisplayInit() // Init of the LED display
   FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, LED_COUNT);
   FastLED.setBrightness(LED_BRITENESS);
 }
-void Display::startAnimation(byte type, byte r, byte g, byte b) // Starts timer and animation on the display
+void Display::startAnimation(byte type, byte g, byte r, byte b) // Starts timer and animation on the display
 {
   
   animationType = type;
@@ -32,6 +32,10 @@ void Display::startAnimation(byte type, byte r, byte g, byte b) // Starts timer 
   animCol.b = b;
  
 
+}
+void Display::setBriteness(int br)
+{
+  FastLED.setBrightness(br);
 }
 void Display::calculateAndShowAnimation()
 {

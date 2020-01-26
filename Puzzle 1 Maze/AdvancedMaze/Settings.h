@@ -19,5 +19,9 @@
 #define MAZE_X 8 //length of the maze
 #define MAZE_Y 8 // width of the maze
 
+//Wifi settings
+
+
+//Buttons settings
 
 #endif

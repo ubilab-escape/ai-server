@@ -19,6 +19,7 @@
   static void Reconnect();
   static String split (String s, char parser, int index);
   static void MQTTPublish(String state);
+  static void clientloop();
    static String state;
   private:
  

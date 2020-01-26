@@ -32,9 +32,13 @@ void Display::DisplayInit() // Init of the LED display
   // enable timer 
   //timerAlarmEnable(timer);
 }
+void Display::setBriteness(int br)
+{
+  FastLED.setBrightness(br);
+}
 void Display::startAnimation(byte type, byte r, byte g, byte b) // Starts timer and animation on the display
 {
-  
+  setBriteness(LED_BRITENESS);
   animationType = type;
   animCol.r = r;
   animCol.g = g;

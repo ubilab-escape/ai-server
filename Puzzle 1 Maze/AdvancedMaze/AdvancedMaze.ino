@@ -10,43 +10,41 @@
 #include "IP.h";
 #include "MQTT.h";
 
+
+const char* ssid = "ubilab_wifi";
+const char* password = "ohg4xah3oufohreiPe7e";
+//const char* ssid = "WirelessMan";
+//const char* password = "Rahatlukum75";
+
 HardwareSerial MySerial(1);
 
 TaskHandle_t WiFi_Task_handle;
 TaskHandle_t MQTT_Task_handle;
+TaskHandle_t MQTTcon_Task_handle;
 
 GameController maze;
 
-
-
-//const char* ssid = "ubilab_wifi";
-//const char* password = "ohg4xah3oufohreiPe7e";
-const char* ssid = "WirelessMan";
-const char* password = "Rahatlukum75";
-
-
 const byte rows = 4; //four rows
 const byte cols = 4; //three columns
-char keys[rows][cols] = {
+ char keys[rows][cols] = {
   {'1','2','3', 'A'},
   {'4','5','6', 'B'},
   {'7','8','9', 'C'},
   {'#','0','*', 'D'}
 };
-byte rowPins[rows] = {21, 19, 18, 5}; //connect to the row pinouts of the keypad
-byte colPins[cols] = {12, 22, 4, 0}; //connect to the column pinouts of the keypad
+ byte colPins[cols] = {12, 14, 27, 26}; //connect to the row pinouts of the keypad
+ byte rowPins[rows] = {15, 2, 4, 16}; //connect to the column pinouts of the keypad
+
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
 
 IP ip = IP();
-
-
 
 
 int workmode  = 0;
 
 
 void setup() {
-MySerial.begin(115200, SERIAL_8N1, 16, 17);
+MySerial.begin(115200, SERIAL_8N1, 17, 16);
 Serial.begin(115200);
 MySerial.println("S1");
 
@@ -58,12 +56,12 @@ xTaskCreate(
                     3,                /* Priority of the task. */
                     &WiFi_Task_handle);            /* Task handle. */
 xTaskCreate(
-                    MQTT_Task,          /* Task function. */
-                    "MQTT_Task",        /* String with name of task. */
-                    20000,            /* Stack size in bytes. */
+                    MQTTcon_Task,          /* Task function. */
+                    "MQTTcon_Task",        /* String with name of task. */
+                    40000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
-                    &MQTT_Task_handle);            /* Task handle. */
+                    &MQTTcon_Task_handle);            /* Task handle. */
 xTaskCreate(
                     LED_Task,          /* Task function. */
                     "LED_Task",        /* String with name of task. */
@@ -77,115 +75,52 @@ xTaskCreate(
                     10000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
-                    NULL);            /* Task handle. */                                              
+                    NULL);            /* Task handle. */  
+xTaskCreate(
+                    MQTT_Task,          /* Task function. */
+                    "MQTT_Task",        /* String with name of task. */
+                    30000,            /* Stack size in bytes. */
+                    NULL,             /* Parameter passed as input of the task */
+                    1,                /* Priority of the task. */
+                    &MQTT_Task_handle);            /* Task handle. */  
+xTaskCreate(
+                    Keyboard_Task,          /* Task function. */
+                    "Keyboard_Task",        /* String with name of task. */
+                    30000,            /* Stack size in bytes. */
+                    NULL,             /* Parameter passed as input of the task */
+                    1,                /* Priority of the task. */
+                    NULL);            /* Task handle. */                                                      
+vTaskSuspend(MQTTcon_Task_handle);
 vTaskSuspend(MQTT_Task_handle);
-
-
-
-
-
-
-
-
-
-//maze.startGame(MODE_NORMAL_TEAMPLAY,1);
 }
 
 void loop() {
-//MQTT().Reconnect();
-//Display().processInterrupt();
+delay(500);
 
 
-char key = keypad.getKey();
- if (key != NO_KEY){
-    //Serial.println(key);
- switch (workmode)
- { 
-  case 2:
+if (workmode == 1)
+{
+  if (ip.check()) 
+      {
+      MySerial.println("S2");
+      workmode =0;
+      ip.clearIP();
+      Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
+      MQTT().MQTTPublish("solved");
+      }
+}
+if (workmode == 2)
 {
   if (maze.isCompleted)
   {
-     MySerial.println("S3");
-     workmode=0;
+     workmode =1;
+     MySerial.println("S1");
+     Display().startAnimation(RANDOM_BLINKING, 120, 120, 0);
+     MQTT().MQTTLightControlRack("120,120,0");
   }
- switch(key)
-  {
-   
-    case('2'):
-    {
-      maze.step_up();
-    }
-    break;
-    case('4'):
-    {
-      maze.step_left();
-    }
-    break;
-    case('8'):
-    {
-      maze.step_down();
-    }
-    break;
-    case('6'):
-    {
-      maze.step_right();
-    }
-    break;
+}
     
-  }
-  
-  }
-  break;
-  case 1:
-  {
-    MySerial.println("S1");
-    switch(key)
-  {
-    case('A'):
-    {
-      ip.currentGroup = 0;
-    }
-    break;
-    case('B'):
-    {
-      ip.currentGroup = 1;
-    }
-    break;
-    case('C'):
-    {
-      ip.currentGroup = 2;
-    }
-    break;
-    case('D'):
-    {
-      ip.currentGroup = 3;
-    }
-    break;
-    default:
-    {
-      ip.addDigit(key);
-      //Serial.println(ip.getIP());
-      MySerial.println("I"+ip.getIP()+"E");
-      if (ip.check()) 
-      {
-      MySerial.println("S4");
-      workmode =2;
-      ip.clearIP();
-      Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
-      MQTT().MQTTPublish("active");
-      delay(10000);
-      MQTT().MQTTPublish("active");
-      
-      maze.startGame(MODE_NORMAL_TEAMPLAY,1);
-  }
-    }
-    
-  }
-  
-  }
-  }
-  
- }
+
 
 if (Serial.available()) //Checking available serial data to control maze (temporary feature)
 {
@@ -253,13 +188,12 @@ void WiFi_Task( void * parameter )
  while (WiFi.waitForConnectResult() != WL_CONNECTED) 
   {
     Serial.println("Connection Failed! Rebooting...");
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+    ESP.restart();
   }
    if(WiFi.waitForConnectResult() == WL_CONNECTED)  
    {
     Serial.println("Connected!!!");
-    vTaskResume(MQTT_Task_handle);
+    vTaskResume(MQTTcon_Task_handle);
   }
  for(;;)
   {
@@ -272,22 +206,55 @@ void WiFi_Task( void * parameter )
   delay(5000);
   }
 }
-void MQTT_Task( void * parameter )
+void MQTTcon_Task( void * parameter )
 {
-delay(2000);
+delay(5000);
 MQTT().Setup() ;
 MQTT().Reconnect();
+vTaskResume(MQTT_Task_handle);
+MQTT().MQTTLightControlRack("0,0,120");
 MQTT().MQTTPublish("inactive");
  for(;;)
   {
-    
+    delay(3000);
     MQTT().Reconnect();
-    delay(200);
-
-    if (MQTT().arrived)
+    MQTT().MQTTPublish(MQTT().state);
+    if (MQTT().state == "inactive")
+      {
+        MQTT().MQTTLightControlRack("0,0,120");
+      }
+      
+  }
+}
+void MQTT_Task( void * parameter )
+{
+delay(10000);
+ for(;;)
+  {
+    delay(500);
+    MQTT().clientloop();
+    if (MQTT().statechanged)
     {
-      MQTT().arrived = false;
-      workmode = MQTT().state;
+      if (MQTT().newstate == "active")
+      {
+        maze.startGame(MODE_NORMAL_TEAMPLAY, 1);
+        workmode = 2;
+      }
+      if (MQTT().newstate == "inactive")
+      {
+        Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
+        MQTT().MQTTLightControlRack("0,0,120");
+        workmode = 0;
+      }
+      if (MQTT().newstate == "solved")
+      {
+        Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
+        MQTT().MQTTLightControlRack("0,120,0");
+        workmode = 0;
+        MQTT().MQTTPublish("solved");
+      }
+      MQTT().state ==  MQTT().newstate;
+      MQTT().statechanged = false;
     }
   }
 }
@@ -339,3 +306,73 @@ void LED_Task( void * parameter )
   delay(LED_UPDATE_TIME);
   }
  }
+ void Keyboard_Task( void * parameter )
+{
+  
+  for(;;)
+  {
+  delay(100);
+  char key = keypad.getKey();
+  if (key != NO_KEY){
+    if (workmode == 2)
+    {
+    switch(key)
+    {
+   
+      case('2'):
+      {
+        maze.step_up();
+      }
+      break;
+      case('4'):
+      {
+        maze.step_left();
+      }
+      break;
+      case('8'):
+      {
+        maze.step_down();
+      }
+      break;
+      case('6'):
+      {
+        maze.step_right();
+      }
+      break;
+   }
+  }
+  if (workmode == 1)
+  {
+  
+   switch(key)
+   {
+      case('A'):
+      {
+        ip.currentGroup = 0;
+      }
+      break;
+      case('B'):
+      {
+        ip.currentGroup = 1;
+      }
+      break;
+      case('C'):
+      {
+        ip.currentGroup = 2;
+      }
+      break;
+      case('D'):
+      {
+        ip.currentGroup = 3;
+      }
+      break;
+      default:
+      {
+        ip.addDigit(key);
+        MySerial.println("I"+ip.getIP()+"E");
+      }
+  }
+  }
+  }
+ }
+}

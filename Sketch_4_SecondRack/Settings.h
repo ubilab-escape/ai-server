@@ -12,7 +12,7 @@
 #define LED_PIN  23 //Arduino pin number (most are valid)
 #define LED_COUNT  64 //number of pixels in strip
 #define LED_UPDATE_TIME  100 // Uppdate time in ms
-#define LED_BRITENESS 50
+#define LED_BRITENESS  50
 
 
 //Maze and other

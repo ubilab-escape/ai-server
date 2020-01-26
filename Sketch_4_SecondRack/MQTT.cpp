@@ -10,15 +10,15 @@ const int capacity = JSON_OBJECT_SIZE(3);
 WiFiClient espClient;
 PubSubClient client(espClient);
  
-//const char*  mqtt_server =  "10.0.0.2";
-const char*  mqtt_server =  "192.168.0.199";
+const char*  mqtt_server =  "10.0.0.2";
+//const char*  mqtt_server =  "192.168.0.199";
 
 
-const char* MQTTclientName =  "8_Rack";
+const char* MQTTclientName =  "8_rack";
 
 
 String  MQTT::state = "inactive";
-const char* MQTTtopic =  "8/Rack";
+const char* MQTTtopic =  "8/rack";
 const char* LightControllerTopic =  "2/ledstrip/serverroom";
 
 
@@ -46,33 +46,58 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
     Serial.println(error.c_str());
     return;
   }
-    String da = doc["DATA"];
-    String me = doc["METHOD"];
-    String st = doc["STATE"];
+    String da = doc["data"];
+    String me = doc["method"];
+    String st = doc["state"];
     String t = topic;
-    if (t == LightControllerTopic&&me== "TRIGGER" && st== "rgb") // this should be changed to required topic name
+    doc.clear();
+    if (t == MQTTtopic&&me== "TRIGGER" && st== "rgb") // this should be changed to required topic name
     {
      //here you can process incoming messages on specific topic     
       Display().startAnimation(RANDOM_BLINKING, split(da,',',0).toInt(), split(da,',',1).toInt(), split(da,',',2).toInt());
    
     }
-    
+    if (t == MQTTtopic&&me== "TRIGGER" && st== "power") // this should be changed to required topic name
+    {
+     //here you can process incoming messages on specific topic     
+      if (da == "on")
+      {
+        Display().setBriteness(LED_BRITENESS);
+      }
+      if (da == "off")
+      {
+        Display().setBriteness(0);
+      }
+   
+    }
+    if (t == MQTTtopic&&me== "TRIGGER" && st== "brightness") // this should be changed to required topic name
+    {
+     //here you can process incoming messages on specific topic
+     Display().setBriteness(da.toInt());     
+     
+   
+    }
       
       
     // add as much cases as you have a subscriptions
 }
 
+void MQTT::clientloop() 
+{
+   if (client.connected()) 
+    client.loop();
+}
 void MQTT::Reconnect() // this void resubscribes to topics on start or in case of disconnection
 {
    if (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("Maze")) 
+    if (client.connect("Rack")) 
     { // change clientName to name of your device
       Serial.println("connected");
       // Subscribe to all Topicks you need here
      
-      client.subscribe(LightControllerTopic);
+      client.subscribe(MQTTtopic);
       
     } 
     else {
@@ -86,7 +111,7 @@ void MQTT::Reconnect() // this void resubscribes to topics on start or in case o
     }
     else
     {
-          client.loop();
+        
     }
 }
 void MQTT::MQTTPublish( String state) // this void is used to send messages in topic
@@ -95,8 +120,8 @@ void MQTT::MQTTPublish( String state) // this void is used to send messages in t
   Serial.print("Message sent on topic: ");
   Serial.println(MQTTtopic);
   Serial.print(". Message: ");
-  doc["METHOD"] = "STATUS";
-  doc["STATE"] = state;
+  doc["method"] = "STATUS";
+  doc["state"] = "inactive";
   char output[128];
   serializeJson(doc, output);
   Serial.println(output);

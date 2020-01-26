@@ -11,13 +11,14 @@
 HardwareSerial MySerial(1);
 
 TaskHandle_t WiFi_Task_handle;
+TaskHandle_t MQTTcon_Task_handle;
 TaskHandle_t MQTT_Task_handle;
 
 
-//const char* ssid = "ubilab_wifi";
-//const char* password = "ohg4xah3oufohreiPe7e";
-const char* ssid = "WirelessMan";
-const char* password = "Rahatlukum75";
+const char* ssid = "ubilab_wifi";
+const char* password = "ohg4xah3oufohreiPe7e";
+//const char* ssid = "WirelessMan";
+//const char* password = "Rahatlukum75";
 
 
 
@@ -35,12 +36,12 @@ xTaskCreate(
                     3,                /* Priority of the task. */
                     &WiFi_Task_handle);            /* Task handle. */
 xTaskCreate(
-                    MQTT_Task,          /* Task function. */
-                    "MQTT_Task",        /* String with name of task. */
+                    MQTTcon_Task,          /* Task function. */
+                    "MQTTcon_Task",        /* String with name of task. */
                     20000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
-                    &MQTT_Task_handle);            /* Task handle. */
+                    &MQTTcon_Task_handle);            /* Task handle. */
 xTaskCreate(
                     LED_Task,          /* Task function. */
                     "LED_Task",        /* String with name of task. */
@@ -54,7 +55,15 @@ xTaskCreate(
                     10000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
-                    NULL);            /* Task handle. */                                              
+                    NULL);            /* Task handle. */   
+xTaskCreate(
+                    MQTT_Task,          /* Task function. */
+                    "MQTT_Task",        /* String with name of task. */
+                    10000,            /* Stack size in bytes. */
+                    NULL,             /* Parameter passed as input of the task */
+                    1,                /* Priority of the task. */
+                    &MQTT_Task_handle);            /* Task handle. */                                                          
+vTaskSuspend(MQTTcon_Task_handle);
 vTaskSuspend(MQTT_Task_handle);
 
 
@@ -81,13 +90,13 @@ void WiFi_Task( void * parameter )
  while (WiFi.waitForConnectResult() != WL_CONNECTED) 
   {
     Serial.println("Connection Failed! Rebooting...");
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+    delay(2000);
+    ESP.restart();
   }
    if(WiFi.waitForConnectResult() == WL_CONNECTED)  
    {
     Serial.println("Connected!!!");
-    vTaskResume(MQTT_Task_handle);
+    vTaskResume(MQTTcon_Task_handle);
   }
  for(;;)
   {
@@ -100,17 +109,27 @@ void WiFi_Task( void * parameter )
   delay(5000);
   }
 }
-void MQTT_Task( void * parameter )
+void MQTTcon_Task( void * parameter )
 {
 delay(2000);
 MQTT().Setup() ;
+vTaskResume(MQTT_Task_handle);
  for(;;)
   {
-    delay(2000);
+    delay(5000);
     MQTT().Reconnect();
     MQTT().MQTTPublish(MQTT().state);
    
     
+  }
+}
+void MQTT_Task( void * parameter )
+{
+delay(5000);
+ for(;;)
+  {
+    delay(500);
+    MQTT().clientloop();
   }
 }
 void OTA_Task( void * parameter )

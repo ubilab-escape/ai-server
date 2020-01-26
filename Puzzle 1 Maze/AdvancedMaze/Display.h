@@ -47,6 +47,7 @@
   static Maze maze;
   static void SetColour(int r, int g, int b);
   static byte animationType;
+   static void setBriteness(int br);
   private:
   static uint32_t i,j;
   static void IRAM_ATTR animationHandler();

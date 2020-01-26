@@ -41,6 +41,7 @@
   static void startAnimation(byte type, byte r, byte g, byte b);
   static void calculateAndShowAnimation();
   static byte animationType;
+  static void setBriteness(int br);
   private:
   static uint32_t i,j;
   

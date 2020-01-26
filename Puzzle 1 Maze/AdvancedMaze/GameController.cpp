@@ -19,10 +19,12 @@ void GameController::checkState()
     Display().startAnimation(RANDOM_BLINKING, 120, 120, 0);
     MQTT().MQTTPublish("failed");
     MQTT().MQTTLightControl("rgb", "255,250,0");
+    MQTT().MQTTLightControlRack("120,120,0");
     delay(1000);
     MQTT().MQTTPublish("active");
     //MQTT().MQTTLightControl("power", "on");
     MQTT().MQTTLightControl("rgb", "0,0,0");
+    MQTT().MQTTLightControlRack("0,0,120");
     Display().startAnimation(GAME, 0, 0, 0);
     Display().maze.resurect();
     
@@ -32,17 +34,20 @@ void GameController::checkState()
    Display().startAnimation(RANDOM_BLINKING, 120, 0, 0);
    MQTT().MQTTPublish("failed");
    MQTT().MQTTLightControl("rgb", "255,0,0");
+   MQTT().MQTTLightControlRack("255,0,0");
     delay(3000);
    MQTT().MQTTPublish("active");
-    MQTT().MQTTLightControl("rgb", "0,0,0");
+    MQTT().MQTTLightControl("rgb","0,0,0");
+    MQTT().MQTTLightControlRack("0,0,120");
     Display().startAnimation(GAME, 0, 0, 0);
     Display().maze.CreateMaze();
   }
   
   if (Display().maze.completedFlag)
   {
-    MQTT().MQTTPublish("solved");
-     MQTT().MQTTLightControl("rgb", "0,255,0");
+    //MQTT().MQTTPublish("solved");
+     MQTT().MQTTLightControl("rgb", "255,0,0");
+     MQTT().MQTTLightControlRack("255,0,0");
     Display().startAnimation(RANDOM_BLINKING, 120,0 , 0);
     isCompleted = true;
   }
