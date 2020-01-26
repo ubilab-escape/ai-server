@@ -20,7 +20,7 @@
    This Code Doesnt:
       - Handles MQTT comunication (yet)  
 
-//----------------------------------------------------------------------------------------------------------------//  
+//-----------------------------------------------------------------------------------------------------------------//  
    
     Color = Out_Pin   // Green = 13 / White = 12 / Yellow = 2   / Blue = 27  / Red = 26
     Color = Input_Pin // Green = 18 / White = 19 / Yellow = 21  / Blue = 22  / Red = 23
@@ -144,6 +144,7 @@ void setup()
   ledcAttachPin(buzz, channel1);
 }
 
+
 void loop() 
 {
    if (WiFi.status() != WL_CONNECTED) {
@@ -177,6 +178,7 @@ void loop()
       break;}
   }
   tggl = 1;
+  Publish("8/puzzle/simon", "STATUS", "active", "");
   preamble(); 
                
   while(error < 3)
@@ -356,7 +358,7 @@ void puzzle_correct()
 {
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
-  Publish("MQTT_8_puzzle_simon", "STATUS", "solved", "");
+  Publish("8/puzzle/simon", "STATUS", "Solved", "");
   while(digitalRead(14) != LOW)
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
