@@ -14,12 +14,12 @@
   
    This Code Does:
      - Play Simon didn't say puzzle with 5 different combinations
-      - Connects to WiFI
-      - Handles Over The Air code updates
-      - Handles MQTT comunication            
+     - Connects to WiFI
+     - Handles Over The Air code updates
+     - Handles MQTT comunication            
  
    This code is not:
-      - yet perfect
+     - yet perfect
 
 //-----------------------------------------------------------------------------------------------------------------//  
    

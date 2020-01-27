@@ -11,7 +11,7 @@
                                                                |___/     
 
 //----------------------------------------------------------------------------------------------------------------//   
-    Code based on Group 4 "Wifi_MQTT_Json_Motor.ino"  
+    Code based on Group 4 "Wifi_MQTT_Json_Motor.ino"   
 
 //----------------------------------------------------------------------------------------------------------------// 
 */
@@ -93,8 +93,8 @@ void Callback(char* topic, byte* payload, unsigned int length)
   // Test if parsing succeeds.
   if (error) {
     Serial.print(F("deserializeJson() failed: "));
-    //Serial.println(error.c_str());
-    Serial.println(error);
+    Serial.println(error.c_str());
+    //Serial.println(error);
     return;
   }
 
@@ -136,7 +136,7 @@ void Reconnect() // this void resubscribes to topics on start or in case of disc
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
    // if (client.connect(clientId.c_str())) 
-      if (client.connect(clientId))
+      if (client.connect("Simon"))
       { // change clientName to name of your device
         Serial.println("connected");
         // Subscribe to all topics you need here
@@ -159,9 +159,9 @@ void Reconnect() // this void resubscribes to topics on start or in case of disc
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void Publish(String Topic, String Method, String State, String Data) // this void is used to send messages in topic
+void Publish(char* Topic, String Method, String State, String Data) // this void is used to send messages in topic
 {   
-  
+  StaticJsonDocument<300> doc;
   Serial.print("Message to: ");
   Serial.println(Topic);
   Serial.print("Message: ");
@@ -175,16 +175,16 @@ void Publish(String Topic, String Method, String State, String Data) // this voi
   //create a buffer that holds the serialized JSON message
   //int msg_length = measureJson(doc) + 1;                    //measureJson return value doesn't count the null-terminator
   char message[128]; 
-                          
-  // Generate the minified JSON and send it to the Serial port.
+  serializeJson(doc, message); // Generate the minified JSON                        
+  
+ 
   #ifdef DEBUG
   Serial.print("JSON message created for publishing: ");
-  serializeJson(doc, message);
-  Serial.println();
+  Serial.println(message);  
   #endif
   
   // Generate the minified JSON and save it in the message buffer
-  serializeJson(doc, message);
+  //serializeJson(doc, message);
 
   //send the JSON message to the specified topic
   if (client.publish(Topic, message) == false) 
