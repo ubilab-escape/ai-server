@@ -53,22 +53,22 @@ int show[]={13,12,2,27,26}; // Initial led wave to draw user attention (also use
 int input[]={18,19,21,22,23}; // Used in setup() to define input pins
 
 // Sequences      G:13 / W:12 / Y:2   / B:27  / R:26
-int simon[5][7]={{27,2,2,13,13},   // B, Y, Y, G, G
+int simon[7][5]={{27,2,2,13,13},   // B, Y, Y, G, G
                  {12,26,13,2,12},  // W, R, G, Y, W
                  {13,26,27,12,12}, // G, R, B, W, W
                  {27,2,26,13,13},  // B, Y, R, G, G
-                 {12,27,2,2,27}},  // W, B, Y, Y, B
-                 (12,2,27,12,13),  // W, Y, B, W, G
-                 (27,13,2,2,26);   // B, G, Y, Y, R
+                 {12,27,2,2,27},  // W, B, Y, Y, B
+                 {12,2,27,12,13},  // W, Y, B, W, G
+                 {27,13,2,2,26}};   // B, G, Y, Y, R
 
 // Solutions    G:18 / W:19 / Y:21  / B:22  / R:23
-int sol[5][7]={{18,23,23,21,21},   // G, R, R, Y, Y 
+int sol[7][5]={{18,23,23,21,21},   // G, R, R, Y, Y 
                {19,23,18,21,19},   // W, R, G, Y, W
                {23,23,18,19,19},   // R, R, G, W, W
-               (18,18,23,21,18),   // G, G, R, Y, G 
-               (22,21,19,22,21),   // B, Y, W, B, Y
-               (19,21,22,19,23),   // W, Y, B, W, R
-               (18,21,23,23,21);   // G, Y, R, R, Y
+               {18,18,23,21,18},   // G, G, R, Y, G 
+               {22,21,19,22,21},   // B, Y, W, B, Y
+               {19,21,22,19,23},   // W, Y, B, W, R
+               {18,21,23,23,21}};   // G, Y, R, R, Y
 
 
 int input_sequence[5];
@@ -119,7 +119,7 @@ void setup()
                     3,                /* Priority of the task. */
                     NULL);            /* Task handle. */
   
-}
+
 
   xTaskCreate(
                     OTA_Task,          /* Task function. */
@@ -129,7 +129,7 @@ void setup()
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
   
-}
+
 
   xTaskCreate(
                     Reconnect_Task,          /* Task function. */
@@ -139,7 +139,7 @@ void setup()
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
   
-}
+
   xTaskCreate(
                     Publish_Task,          /* Task function. */
                     "Publish_Task",        /* String with name of task. */
