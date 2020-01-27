@@ -1,3 +1,4 @@
+
 # Maze puzzle
 This folder will contain source code and other files of the Maze puzzle. 
 
@@ -29,11 +30,40 @@ To find right path, players should find a drawing of the maze. Then they shoud d
 
 1. Install Arduino IDE
 https://www.arduino.cc/en/Main/Software
+
 2. Install ESP32 board in Arduino IDE using following ling for the board manager:
 > https://dl.espressif.com/dl/package_esp32_index.json
+
 Select ESP32 Dev module.
 
 3. Install library for the FastLED from here:
 https://github.com/FastLED/FastLED
+
 4. Install library for the Keypad from here:
 https://www.arduinolibraries.info/libraries/keypad
+
+5. Install library for the Arduino JSON from here:
+https://github.com/bblanchon/ArduinoJson
+
+6. Install library for the MQTT from here:
+https://github.com/knolleary/pubsubclient
+
+7. Select ESP32 Dev Module from board manager and press compile
+
+
+All relevant vesrions of libraries are provided [here]()
+
+
+## Plagiarism
+
+All code is written based on original documentation such as:
+1. [arduino](https://www.arduino.cc/en/main/docs)
+2. [ESP32](https://docs.espressif.com/projects/esp-idf/en/latest/)
+3. [freeRTOS](https://www.freertos.org/Documentation/RTOS_book.html) 
+and examples of libraries:
+1. [FastLED](https://github.com/FastLED/FastLED)
+2. [Keypad](https://www.arduinolibraries.info/libraries/keypad)
+3. [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
+4. [PubSubClient](https://github.com/knolleary/pubsubclient)
+so it may contain some unreferenced parts/blocks of provided in documentations/examples code.
+
