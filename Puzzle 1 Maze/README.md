@@ -10,7 +10,7 @@ Maze puzzle is a advanced version of well known puzzle, when you should find a c
 To find right path, players should find a drawing of the maze. Then they shoud determine the right maze and corrent path according to the start and end point drawn on the screen.
 
 ### Required materials
-* STM 32 as a brain of the system with Wi-Fi
+* ESP 32 as a brain of the system with Wi-Fi
 * RGB address strip used as display
 * Buttons for movement
 
