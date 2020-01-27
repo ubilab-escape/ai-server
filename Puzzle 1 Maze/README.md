@@ -34,8 +34,6 @@ https://www.arduino.cc/en/Main/Software
 2. Install ESP32 board in Arduino IDE using following ling for the board manager:
 > https://dl.espressif.com/dl/package_esp32_index.json
 
-Select ESP32 Dev module.
-
 3. Install library for the FastLED from here:
 https://github.com/FastLED/FastLED
 
@@ -51,7 +49,7 @@ https://github.com/knolleary/pubsubclient
 7. Select ESP32 Dev Module from board manager and press compile
 
 
-All relevant vesrions of libraries are provided [here]()
+All relevant vesrions of libraries are provided [here](https://github.com/ubilab-escape/ai-server/tree/master/Libraries)
 
 
 ## Plagiarism
@@ -59,8 +57,10 @@ All relevant vesrions of libraries are provided [here]()
 All code is written based on original documentation such as:
 1. [arduino](https://www.arduino.cc/en/main/docs)
 2. [ESP32](https://docs.espressif.com/projects/esp-idf/en/latest/)
-3. [freeRTOS](https://www.freertos.org/Documentation/RTOS_book.html) 
+3. [freeRTOS](https://www.freertos.org/Documentation/RTOS_book.html)
+ 
 and examples of libraries:
+
 1. [FastLED](https://github.com/FastLED/FastLED)
 2. [Keypad](https://www.arduinolibraries.info/libraries/keypad)
 3. [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
