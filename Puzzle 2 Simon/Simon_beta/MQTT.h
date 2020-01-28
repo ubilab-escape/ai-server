@@ -24,9 +24,11 @@
 long mdnsUpdate = millis();
 
 
-// definir puzzle ad/hoc
+// Simon puzzle Publish-variables
 String sta = "inactive";
 String text = "";
+// Light Publish-variables
+String light_option = "";
 
   void wifi();
   void Setup();

@@ -88,6 +88,11 @@ const int buzz = 4;
 
 unsigned long previousMillis = 0;
 
+// Light control
+String red = "255,0,0";
+String dimmed = "255,255,255";
+String off = "0,0,0";
+
 
 // --------------------------------- SETUP ---------------------------------
 void setup() 
@@ -147,7 +152,14 @@ void setup()
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
-
+  
+  xTaskCreate(
+                    Light_Task,          /* Task function. */
+                    "Light_Task",        /* String with name of task. */
+                    10000,            /* Stack size in bytes. */
+                    NULL,             /* Parameter passed as input of the task */
+                    1,                /* Priority of the task. */
+                    NULL);            /* Task handle. */
 }
 
 
@@ -242,12 +254,31 @@ void Publish_Task( void * parameter )
 }
 
 
+// --------------------------------- Light Effects ---------------------------------
+void Light_Task( void * parameter )
+{
+  delay(5000);
+  for(;;)
+  {
+    if (sta == "active"){
+      if(light_option == red){
+        Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);
+        delay(2000);
+        light_option = dimmed;
+        Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // dimmed the room lights
+      }
+    }
+  }
+}
+
+
 // --------------------------------- LOOP ---------------------------------
 void loop() 
 { 
-  if (sta = "active")
+  if (sta == "active")
   {
-        
+    light_option = dimmed; 
+    Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // dimmed the room lights
     code = choosecode();
     //code = 0;
     Serial.print("Simon didn't say puzzle nº ");
@@ -399,8 +430,8 @@ void sequence_read()
         }
     } 
   }
-  
-  text = "puzzle correct";
+
+  text = "puzzle solved";
   puzzle_correct();     // This is the puzzle ending sequence. 
 } // end of sequence_read()
 
@@ -431,12 +462,12 @@ void sequence_show(int x)
 // --------------------------------- Wrong input ---------------------------------
 void w_input()
 {
+  light_option = red;     // turn red the room lights
   Serial.println(" ");
   Serial.println("Input error, puzzle incorrect");
   text = "wrong button";
   error++;
-  
-  
+    
      ledcWriteTone(channel1, 200);
      delay(200);
      ledcWriteTone(channel1, 100);
@@ -449,9 +480,11 @@ void w_input()
 // --------------------------------- BRB ---------------------------------
 void puzzle_correct()
 {
+  light_option = off;
+  Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
-  sta = "solved";
+  //sta = "solved";
   //Publish("8/puzzle/simon", "STATUS", "Solved", "");
   while(digitalRead(14) != LOW)
   {
@@ -480,7 +513,9 @@ void puzzle_correct()
       }
     }
   }
-  //error=4; // This is for testing purposes (continuity). gives a new maze.  
+    sta = "solved";
+    text = "BRB pressed";
+    //Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // turn on the safe lights
 } // end of puzzle_correct()
 
 
