@@ -153,13 +153,6 @@ void setup()
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
   
-  xTaskCreate(
-                    Light_Task,          /* Task function. */
-                    "Light_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
-                    NULL,             /* Parameter passed as input of the task */
-                    1,                /* Priority of the task. */
-                    NULL);            /* Task handle. */
 }
 
 
@@ -248,26 +241,18 @@ void Publish_Task( void * parameter )
   delay(5000);
   for(;;)
   {   
-    Publish("8/puzzle/simon", "STATUS", sta, text);
-    delay(1000);
-  }
-}
-
-
-// --------------------------------- Light Effects ---------------------------------
-void Light_Task( void * parameter )
-{
-  delay(5000);
-  for(;;)
-  {
-    if (sta == "active"){
-      if(light_option == red){
-        Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);
-        delay(2000);
-        light_option = dimmed;
-        Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // dimmed the room lights
-      }
+    if(sta == "inactive" || sta == "solved"){
+      Publish("8/puzzle/simon", "STATUS", sta, text);
+      Publish("8/puzzle/kill-button", "STATUS", brb_sta, brb_text);
+      delay(5000);
     }
+    if(sta == "active"){
+      Publish("8/puzzle/simon", "STATUS", sta, text);
+      Publish("8/puzzle/kill-button", "STATUS", brb_sta, brb_text);
+      delay(800);
+    }
+    
+    delay(10000);
   }
 }
 
@@ -275,25 +260,44 @@ void Light_Task( void * parameter )
 // --------------------------------- LOOP ---------------------------------
 void loop() 
 { 
-  if (sta == "active")
+  if (Mazesolved == true && Simonsolved == false)
   {
-    code = choosecode();
-    //code = 0;
+    Publish("8/puzzle/simon", "STATUS", sta, text);
+    puzzle_simon();
+  }
+ /* 
+  if (f_sta == true) {
+    sta == "active";
+    Publish("8/puzzle/simon", "STATUS", sta, text);
+    puzzle_simon(); 
+    f_sta = false;   
+ }*/
+  
+} // end of loop()
+
+
+
+
+// --------------------------------- SIMON ---------------------------------
+void puzzle_simon() 
+{ 
+    //code = choosecode();
+    Publish("5/safe/control", "TRIGGER", "on", "3:0"); 
+    code = 0;
     Serial.print("Simon didn't say puzzle nº ");
     Serial.println(code);
     error = 0;
-    preamble(); 
-    light_option = dimmed; 
-    Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // dimmed the room lights
+    preamble();  
+    Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
                
-    while(error < 3)
+    while(error < 3 && Simonsolved == false)
     {
       sequence_show(error);         // Here is where simon[][] is showed to the user.
       Serial.print("User input: ");
       sequence_read();              // Here is where input_sequence[] is compared with sol[][]
       Serial.println(" ");
     }
-  }
+
 } // end of loop()
 
 
@@ -309,7 +313,7 @@ int choosecode()
 void preamble() 
 {
   Serial.println("Showing preamble");
-  for (int k = 0; k < 4; k++) 
+  for (int k = 0; k < 5; k++) 
   {
     
       digitalWrite(13, HIGH);
@@ -333,7 +337,8 @@ void preamble()
 // --------------------------------- Read Sequence ---------------------------------
 void sequence_read()
 {
-  text = "wait for input";
+  text = "Waititng input..";
+  Publish("8/puzzle/simon", "STATUS", sta, text);
   int flag = 0; // This is the state toggle. Analize inputs, when detected flag == 1. 
               // The logic is while inputs are correct, while function remains. if the whole sequence is correct (correctly compared), for function ends and final sequence -puzzle_correct()- starts 
 
@@ -431,8 +436,15 @@ void sequence_read()
     } 
   }
 
+  Simonsolved = true;
+  sta = "solved";
   text = "puzzle solved";
+  Publish("8/puzzle/simon", "STATUS", sta, text);
+  
+  brb_sta = "active";
+  Publish("8/puzzle/kill-button", "STATUS", brb_sta, brb_text);
   puzzle_correct();     // This is the puzzle ending sequence. 
+  
 } // end of sequence_read()
 
 
@@ -440,6 +452,7 @@ void sequence_read()
 void sequence_show(int x)
 {
   text = "showing pattern";
+  Publish("8/puzzle/simon", "STATUS", sta, text);
   Serial.print("Sequence: ");
   for (int s = 0; s < pinCount; s++) 
     {
@@ -462,30 +475,30 @@ void sequence_show(int x)
 // --------------------------------- Wrong input ---------------------------------
 void w_input()
 {
-  light_option = red;     // turn red the room lights
   Serial.println(" ");
   Serial.println("Input error, puzzle incorrect");
   text = "wrong button";
+  Publish("8/puzzle/simon", "STATUS", sta, text);
+  
   error++;
-    
+     Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", red);   // turn red the room lights
      ledcWriteTone(channel1, 200);
      delay(200);
      ledcWriteTone(channel1, 100);
      delay(500);
      ledcWriteTone(channel1, 0);
      delay(2000);
+     Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
 }
 
 
 // --------------------------------- BRB ---------------------------------
 void puzzle_correct()
 {
-  light_option = off;
-  Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // turn off the room lights
+
+  Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
-  //sta = "solved";
-  //Publish("8/puzzle/simon", "STATUS", "Solved", "");
   while(digitalRead(14) != LOW)
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
@@ -513,9 +526,13 @@ void puzzle_correct()
       }
     }
   }
-    sta = "solved";
-    text = "BRB pressed";
-    Publish("5/safe/control", "TRIGGER", "on", "3:0");   // turn on the safe lights
+    brb_sta = "solved";
+    brb_text = "BRB pressed";
+    Publish("8/puzzle/kill-button", "STATUS", brb_sta, brb_text);
+    Publish("5/safe/control", "TRIGGER", "on", "0:0");   // turn on the safe lights
+
+    delay(2000);
+    
 } // end of puzzle_correct()
 
 
@@ -523,6 +540,7 @@ void puzzle_correct()
 void c_input()
 {
      text = "correct button";
+     Publish("8/puzzle/simon", "STATUS", sta, text);
      ledcWriteTone(channel1, 600);
      delay(200);
      ledcWriteTone(channel1, 1000);

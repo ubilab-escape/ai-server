@@ -31,6 +31,7 @@ const IPAddress mqttServerIP(10,0,0,2); //Main server Ip
 const String clientId = "Group8_puzzle_simon";
 const char* Maze = "8/puzzle/maze";
 const char* Simon = "8/puzzle/simon";
+const char* BRB = "8/puzzle/kill-button";
 
 
 WiFiClient wifiClient;
@@ -105,24 +106,32 @@ void Callback(char* topic, byte* payload, unsigned int length)
   String Topic = topic;
 
   
-  if(Topic == Maze && Method == "STATUS" && State == "solved") // Waiting for maze to be solved to start  
+  if(Topic == Maze && Method == "STATUS" && State == "solved" && sta == "inactive") // Waiting for maze to be solved to start  
   { 
-    sta = "active";    
+          Mazesolved = true;
+          sta = "active";
+          text = "active";
+          f_sta = false;
   }
 
-  if(Topic == Simon && Method == "TRIGGER" && State == "on" && Data == "start") // Operator instruction → SIMON FORCE ACTIVE
+ /*if(Topic == Simon && Method == "STATUS" && State == "active" && f_sta == false) // Operator instruction → SIMON FORCE ACTIVE
   { 
-    sta = "active";
-  }
+          f_sta = true;
+          text = "forced active";
 
-  if(Topic == Simon && Method == "TRIGGER" && State == "on" && Data == "brb") // Operator instruction → BRB FORCE INACTIVE
+  }*/
+
+  if(Topic == BRB && Method == "STATUS" && State == "active") // Operator instruction → BRB FORCE INACTIVE
   { 
+    brb_sta = "active";
     puzzle_correct();
   }
 
-  if(Topic == Simon && Method == "TRIGGER" && State == "off" && Data == "end") // Operator instruction → SIMON FORCE INACTIVE
+  if(Topic == Simon && Method == "STATUS" && State == "inactive") // Operator instruction → SIMON FORCE INACTIVE
   { 
     sta = "inactive";
+    f_sta = false;
+    text = "inactive";
   }
   
 }
