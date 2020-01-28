@@ -103,27 +103,28 @@ void Callback(char* topic, byte* payload, unsigned int length)
   String State = doc["state"];
   String Data = doc["data"]; 
   String Topic = topic;
+
   
   if(Topic == Maze && Method == "STATUS" && State == "solved") // Waiting for maze to be solved to start  
   { 
-    mazesolved = true;    
+    sta = "active";    
   }
-  
-    if(Topic == Simon && Method == "TRIGGER" && State == "inactive") // Operator instruction → SIMON FORCE INACTIVE
+
+  if(Topic == Simon && Method == "TRIGGER" && State == "on" && Data == "start") // Operator instruction → SIMON FORCE ACTIVE
   { 
-    mazesolved = false;
+    sta = "active";
   }
-  
-    if(Topic == Simon && Method == "TRIGGER" && State == "active")  // Operator instruction → SIMON FORCE ACTIVE
-  {  
-    mazesolved = true;
-    loop();
-  }
-  
-    if(Topic == Simon && Method == "TRIGGER" && State == "solved")  // Operator instruction → SIMON FORCE SOLVED
+
+  if(Topic == Simon && Method == "TRIGGER" && State == "on" && Data == "brb") // Operator instruction → BRB FORCE INACTIVE
   { 
     puzzle_correct();
-  }    
+  }
+
+  if(Topic == Simon && Method == "TRIGGER" && State == "off" && Data == "end") // Operator instruction → SIMON FORCE INACTIVE
+  { 
+    sta = "inactive";
+  }
+  
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------

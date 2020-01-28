@@ -29,6 +29,7 @@
 
 //-----------------------------------------------------------------------------------------------------------------//  
 */
+
 #include <WiFi.h>
 #include <WiFiUdp.h>
 #include <ArduinoJson.h>
@@ -53,21 +54,21 @@ int show[]={13,12,2,27,26}; // Initial led wave to draw user attention (also use
 int input[]={18,19,21,22,23}; // Used in setup() to define input pins
 
 // Sequences      G:13 / W:12 / Y:2   / B:27  / R:26
-int simon[7][5]={{27,2,2,13,13},   // B, Y, Y, G, G
-                 {12,26,13,2,12},  // W, R, G, Y, W
-                 {13,26,27,12,12}, // G, R, B, W, W
-                 {27,2,26,13,13},  // B, Y, R, G, G
-                 {12,27,2,2,27},  // W, B, Y, Y, B
-                 {12,2,27,12,13},  // W, Y, B, W, G
+int simon[7][5]={{27,2,2,13,13},    // B, Y, Y, G, G
+                 {12,26,13,2,12},   // W, R, G, Y, W
+                 {13,26,27,12,12},  // G, R, B, W, W
+                 {27,2,26,13,13},   // B, Y, R, G, G
+                 {12,27,2,2,27},    // W, B, Y, Y, B
+                 {12,2,27,12,13},   // W, Y, B, W, G
                  {27,13,2,2,26}};   // B, G, Y, Y, R
 
 // Solutions    G:18 / W:19 / Y:21  / B:22  / R:23
-int sol[7][5]={{18,23,23,21,21},   // G, R, R, Y, Y 
-               {19,23,18,21,19},   // W, R, G, Y, W
-               {23,23,18,19,19},   // R, R, G, W, W
-               {18,18,23,21,18},   // G, G, R, Y, G 
-               {22,21,19,22,21},   // B, Y, W, B, Y
-               {19,21,22,19,23},   // W, Y, B, W, R
+int sol[7][5]={{18,23,23,21,21},    // G, R, R, Y, Y 
+               {19,23,18,21,19},    // W, R, G, Y, W
+               {23,23,18,19,19},    // R, R, G, W, W
+               {18,18,23,21,18},    // G, G, R, Y, G 
+               {22,21,19,22,21},    // B, Y, W, B, Y
+               {19,21,22,19,23},    // W, Y, B, W, R
                {18,21,23,23,21}};   // G, Y, R, R, Y
 
 
@@ -86,10 +87,9 @@ int channel1 = 1;
 const int buzz = 4;
 
 unsigned long previousMillis = 0;
-int tggl = 0;
-bool inactive_flag = true;
 
 
+// --------------------------------- SETUP ---------------------------------
 void setup() 
 {
   
@@ -147,9 +147,11 @@ void setup()
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
-  
+
 }
 
+
+// --------------------------------- Wifi Setup ---------------------------------
 void Wifi_Task( void * parameter )
 {
  WiFi.mode(WIFI_STA);
@@ -166,18 +168,18 @@ void Wifi_Task( void * parameter )
   }
  for(;;)
   {
-  if (WiFi.waitForConnectResult() != WL_CONNECTED) 
-  {
-    Serial.println("Connection Failed! Rebooting...");
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+    if (WiFi.waitForConnectResult() != WL_CONNECTED) 
+    {
+      Serial.println("Connection Failed! Rebooting...");
+      WiFi.mode(WIFI_STA);
+      WiFi.begin(ssid, password);
+    }
+    delay(5000);
   }
-  delay(5000);
-  }
-
-  
 }
 
+
+// --------------------------------- OTA Setup ---------------------------------
 void OTA_Task( void * parameter )
 {
   ArduinoOTA.setHostname("Simon");
@@ -211,20 +213,21 @@ void OTA_Task( void * parameter )
   ArduinoOTA.begin();
 
    for(;;)
- {
-  ArduinoOTA.handle();
-  delay(200);
- }
+   {
+    ArduinoOTA.handle();
+    delay(200);
+   }
 }
 
+
+// --------------------------------- Reconnect and Publish ---------------------------------
 void Reconnect_Task( void * parameter )
 {
   delay(5000);
   for(;;)
   {
-  Reconnect(); 
-  //Publish("8/puzzle/simon", "STATUS", sta, "");
-  delay(300);
+    Reconnect(); 
+    delay(300);
   }
 }
 
@@ -233,73 +236,45 @@ void Publish_Task( void * parameter )
   delay(5000);
   for(;;)
   {   
-  Publish("8/puzzle/simon", "STATUS", sta, "");
-  delay(500);
+    Publish("8/puzzle/simon", "STATUS", sta, text);
+    delay(1000);
   }
 }
 
 
-
+// --------------------------------- LOOP ---------------------------------
 void loop() 
-{ /*
-   if (WiFi.status() != WL_CONNECTED) {
-      wifi();
-  }
-  //ArduinoOTA.handle();
-  Reconnect(); 
-
- /* if (inactive_flag)
- {
-  Publish("8/puzzle/simon", "STATUS", "inactive", "");
-  inactive_flag=false;
- }
-
-  // tggl debe ser kostya outcome (pub/sub)
-  
-  /*while(tggl==0) //input[]={18,19,21,22,23}
+{ 
+  if (sta = "active")
   {
-    //Serial.println("while loop");
-    if (digitalRead(18) == LOW){
-      break;}
-    if (digitalRead(19) == LOW){
-      break;}
-    if (digitalRead(21) == LOW){
-      break;}
-    if (digitalRead(22) == LOW){
-      break;}
-    if (digitalRead(23) == LOW){
-      break;}
-  
-  }
- */
-  if (mazesolved==true)
-  {
-  sta = "active";
- // Publish("8/puzzle/simon", "STATUS", "active", "");
-  
-  code = choosecode();
-  //code = 0;
-  Serial.print("Simon didn't say puzzle nº ");
-  Serial.println(code);
-  error = 0;
-  preamble(); 
+        
+    code = choosecode();
+    //code = 0;
+    Serial.print("Simon didn't say puzzle nº ");
+    Serial.println(code);
+    error = 0;
+    preamble(); 
                
-  while(error < 3)
-  {
-    sequence_show(error); // Here is where simon[][] is showed to the user.
-    Serial.print("User input: ");
-    sequence_read(); // Here is where input_sequence[] is compared with sol[][]
-    Serial.println(" ");
-  }
+    while(error < 3)
+    {
+      sequence_show(error);         // Here is where simon[][] is showed to the user.
+      Serial.print("User input: ");
+      sequence_read();              // Here is where input_sequence[] is compared with sol[][]
+      Serial.println(" ");
+    }
   }
 } // end of loop()
 
+
+// --------------------------------- Choose random input ---------------------------------
 int choosecode()
 {
     randnum = random(0,6); 
     return randnum;
 } // end of choosecode()
 
+
+// --------------------------------- Preamble Sequence ---------------------------------
 void preamble() 
 {
   Serial.println("Showing preamble");
@@ -323,8 +298,11 @@ void preamble()
   delay(1500);
 } // end of preamble()
 
+
+// --------------------------------- Read Sequence ---------------------------------
 void sequence_read()
 {
+  text = "wait for input";
   int flag = 0; // This is the state toggle. Analize inputs, when detected flag == 1. 
               // The logic is while inputs are correct, while function remains. if the whole sequence is correct (correctly compared), for function ends and final sequence -puzzle_correct()- starts 
 
@@ -333,98 +311,104 @@ void sequence_read()
     flag = 0;
     while(flag == 0)
     {
-      if (digitalRead(18) == LOW) 
-      {
-        Serial.print("18 ");
-        digitalWrite(13, HIGH); // When the button is pressed, the led turns on... because why not
-        input_sequence[i] = 18;
-        flag = 1; // exit while
-        delay(200);
-        if (input_sequence[i] != sol[code][i]) //input comparisson with solution
+        if (digitalRead(18) == LOW) 
         {
-          digitalWrite(13, LOW);
-          w_input();
-          return;
+            Serial.print("18 ");
+            digitalWrite(13, HIGH); // When the button is pressed, the led turns on... because why not
+            input_sequence[i] = 18;
+            flag = 1; // exit while
+            delay(200);
+            
+            if (input_sequence[i] != sol[code][i]) //input comparisson with solution
+            {
+              digitalWrite(13, LOW);
+              w_input();
+              return;
+            }
+            
+            c_input();
+            digitalWrite(13, LOW);
         }
-        c_input();
-        digitalWrite(13, LOW);
-      }
-
-      if (digitalRead(19) == LOW)
-      {
-        Serial.print("19 ");
-        digitalWrite(12, HIGH);
-        input_sequence[i] = 19;
-        flag = 1;
-        delay(200);
-        if (input_sequence[i] != sol[code][i])
+  
+        if (digitalRead(19) == LOW)
         {
-          digitalWrite(12, LOW);
-          w_input();
-          return;
+            Serial.print("19 ");
+            digitalWrite(12, HIGH);
+            input_sequence[i] = 19;
+            flag = 1;
+            delay(200);
+            if (input_sequence[i] != sol[code][i])
+            {
+              digitalWrite(12, LOW);
+              w_input();
+              return;
+            }
+            c_input();
+            digitalWrite(12, LOW);
         }
-        c_input();
-        digitalWrite(12, LOW);
-      }
-
-      if (digitalRead(21) == LOW)
-      {
-        Serial.print("21 ");
-        digitalWrite(2, HIGH);
-        input_sequence[i] = 21;
-        flag = 1;
-        delay(200);
-        if (input_sequence[i] != sol[code][i])
+  
+        if (digitalRead(21) == LOW)
         {
-          digitalWrite(2, LOW);
-          w_input();
-          return;
+            Serial.print("21 ");
+            digitalWrite(2, HIGH);
+            input_sequence[i] = 21;
+            flag = 1;
+            delay(200);
+            if (input_sequence[i] != sol[code][i])
+            {
+              digitalWrite(2, LOW);
+              w_input();
+              return;
+            }
+            c_input();
+            digitalWrite(2, LOW);
         }
-        c_input();
-        digitalWrite(2, LOW);
-      }
-
-      if (digitalRead(22) == LOW)
-      {
-        Serial.print("22 ");
-        digitalWrite(27, HIGH);
-        input_sequence[i] = 22;
-        flag = 1;
-        delay(200);
-        if (input_sequence[i] != sol[code][i])
+  
+        if (digitalRead(22) == LOW)
         {
-        digitalWrite(27, LOW);
-        w_input();
-        return;
-      }
-        c_input();
-        digitalWrite(27, LOW);
-      }
-
-      if (digitalRead(23) == LOW)
-      {
-        Serial.print("23 ");
-        digitalWrite(26, HIGH);
-        input_sequence[i] = 23;
-        flag = 1;
-        delay(200);
-        if (input_sequence[i] != sol[code][i])
-        {
-          digitalWrite(26, LOW);
-          w_input();
-          return;
+            Serial.print("22 ");
+            digitalWrite(27, HIGH);
+            input_sequence[i] = 22;
+            flag = 1;
+            delay(200);
+            if (input_sequence[i] != sol[code][i])
+            {
+            digitalWrite(27, LOW);
+            w_input();
+            return;
+            }
+            c_input();
+            digitalWrite(27, LOW);
         }
-        c_input();
-        digitalWrite(26, LOW);
-      }
+  
+        if (digitalRead(23) == LOW)
+        {
+            Serial.print("23 ");
+            digitalWrite(26, HIGH);
+            input_sequence[i] = 23;
+            flag = 1;
+            delay(200);
+            if (input_sequence[i] != sol[code][i])
+            {
+              digitalWrite(26, LOW);
+              w_input();
+              return;
+            }
+            c_input();
+            digitalWrite(26, LOW);
+        }
     } 
   }
-  puzzle_correct(); // This is the puzzle ending sequence. 
+  
+  text = "puzzle correct";
+  puzzle_correct();     // This is the puzzle ending sequence. 
 } // end of sequence_read()
 
+
+// --------------------------------- Show Sequence ---------------------------------
 void sequence_show(int x)
 {
-  Publish("8/puzzle/simon", "STATUS", "active", "Showing pattern");
+  text = "showing pattern";
   Serial.print("Sequence: ");
   for (int s = 0; s < pinCount; s++) 
     {
@@ -443,11 +427,13 @@ void sequence_show(int x)
     Serial.println(" ");
 } // end of sequence_show()
 
+
+// --------------------------------- Wrong input ---------------------------------
 void w_input()
 {
   Serial.println(" ");
   Serial.println("Input error, puzzle incorrect");
-  Publish("8/puzzle/simon", "STATUS", "active", "Wrong button");
+  text = "wrong button";
   error++;
   
   
@@ -457,9 +443,10 @@ void w_input()
      delay(500);
      ledcWriteTone(channel1, 0);
      delay(2000);
-      
 }
 
+
+// --------------------------------- BRB ---------------------------------
 void puzzle_correct()
 {
   Serial.println(" ");
@@ -496,8 +483,11 @@ void puzzle_correct()
   //error=4; // This is for testing purposes (continuity). gives a new maze.  
 } // end of puzzle_correct()
 
+
+// --------------------------------- Correct input ---------------------------------
 void c_input()
 {
+     text = "correct button";
      ledcWriteTone(channel1, 600);
      delay(200);
      ledcWriteTone(channel1, 1000);
