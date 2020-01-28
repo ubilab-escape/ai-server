@@ -90,7 +90,7 @@ unsigned long previousMillis = 0;
 
 // Light control
 String red = "255,0,0";
-String dimmed = "255,255,255";
+String dimmed = "100,0,0";
 String off = "0,0,0";
 
 
@@ -277,14 +277,14 @@ void loop()
 { 
   if (sta == "active")
   {
-    light_option = dimmed; 
-    Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // dimmed the room lights
     code = choosecode();
     //code = 0;
     Serial.print("Simon didn't say puzzle nº ");
     Serial.println(code);
     error = 0;
     preamble(); 
+    light_option = dimmed; 
+    Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // dimmed the room lights
                
     while(error < 3)
     {
@@ -515,7 +515,7 @@ void puzzle_correct()
   }
     sta = "solved";
     text = "BRB pressed";
-    //Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", light_option);   // turn on the safe lights
+    Publish("5/safe/control", "TRIGGER", "on", "3:0");   // turn on the safe lights
 } // end of puzzle_correct()
 
 
