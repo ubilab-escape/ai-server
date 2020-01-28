@@ -2,7 +2,7 @@
 
 #### In a nutshell
 
-The main plan is to design a code in such a way that a sequence of five colors is shown in a random way, this sequence that given a series of conditions will have to be modified by the players, which will then have to be entered by pressing colored buttons.
+The main plan is to design a code in such a way that a sequence of five colors is shown in a random way, this sequence that given a series of conditions (check Instructions_Simon.pdf) will have to be modified by the players, which will then have to be entered by pressing colored buttons.
 
 The players have three chances, in case they fail -bad color modification- the color sequence changes. 
 
