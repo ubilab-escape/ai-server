@@ -1,14 +1,14 @@
 /*
 //----------------------------------------------------------------------------------------------------------------//                            
                                         Group 8                               
-                  _____ _                          _____                 
-                 / ____(_)                        / ____|                
-                | (___  _ _ __ ___   ___  _ __   | (___   __ _ _   _ ___ 
-                 \___ \| | '_ ` _ \ / _ \| '_ \   \___ \ / _` | | | / __|
-                 ____) | | | | | | | (_) | | | |  ____) | (_| | |_| \__ \
-                |_____/|_|_| |_| |_|\___/|_| |_| |_____/ \__,_|\__, |___/
-                                                                __/ |    
-                                                               |___/     
+                    _____ _                          _____                 
+                   / ____(_)                        / ____|                
+                  | (___  _ _ __ ___   ___  _ __   | (___   __ _ _   _ ___ 
+                   \___ \| | '_ ` _ \ / _ \| '_ \   \___ \ / _` | | | / __|
+                   ____) | | | | | | | (_) | | | |  ____) | (_| | |_| \__ \
+                  |_____/|_|_| |_| |_|\___/|_| |_| |_____/ \__,_|\__, |___/
+                                                                  __/ |    
+                                                                 |___/     
 
 //----------------------------------------------------------------------------------------------------------------//   
     Code based on Group 4 "Wifi_MQTT_Json_Motor.ino"   
@@ -192,19 +192,16 @@ void Publish(char* Topic, String Method, String State, String Data) // this void
   Serial.print("JSON message created for publishing: ");
   Serial.println(message);  
   #endif
-  
-  // Generate the minified JSON and save it in the message buffer
-  //serializeJson(doc, message);
 
   //send the JSON message to the specified topic
-  if (client.publish(Topic, message) == false) 
-  {
-    Serial.println("Error sending message");
-  }
 
     if (client.publish(Topic, message) == true) 
   {
     Serial.println("Message sent");
+  }
+   else 
+  {
+    Serial.println("Error sending message");
   }
 }
 

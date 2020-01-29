@@ -242,13 +242,13 @@ void Publish_Task( void * parameter )
   for(;;)
   {   
     if(sta == "inactive" || sta == "solved"){
-      Publish("8/puzzle/simon", "STATUS", sta, text);
-      Publish("8/puzzle/kill-button", "STATUS", brb_sta, brb_text);
+      Publish("8/puzzle/simon", "status", sta, text);
+      Publish("8/puzzle/kill-button", "status", brb_sta, brb_text);
       delay(5000);
     }
     if(sta == "active"){
-      Publish("8/puzzle/simon", "STATUS", sta, text);
-      Publish("8/puzzle/kill-button", "STATUS", brb_sta, brb_text);
+      Publish("8/puzzle/simon", "status", sta, text);
+      Publish("8/puzzle/kill-button", "status", brb_sta, brb_text);
       delay(800);
     }
     
@@ -262,7 +262,7 @@ void loop()
 { 
   if (Mazesolved == true && Simonsolved == false)
   {
-    Publish("8/puzzle/simon", "STATUS", sta, text);
+    Publish("8/puzzle/simon", "status", sta, text);
     puzzle_simon();
   }
  /* 
@@ -274,8 +274,6 @@ void loop()
  }*/
   
 } // end of loop()
-
-
 
 
 // --------------------------------- SIMON ---------------------------------
@@ -338,7 +336,7 @@ void preamble()
 void sequence_read()
 {
   text = "Waititng input..";
-  Publish("8/puzzle/simon", "STATUS", sta, text);
+  Publish("8/puzzle/simon", "status", sta, text);
   int flag = 0; // This is the state toggle. Analize inputs, when detected flag == 1. 
               // The logic is while inputs are correct, while function remains. if the whole sequence is correct (correctly compared), for function ends and final sequence -puzzle_correct()- starts 
 
@@ -439,10 +437,10 @@ void sequence_read()
   Simonsolved = true;
   sta = "solved";
   text = "puzzle solved";
-  Publish("8/puzzle/simon", "STATUS", sta, text);
+  Publish("8/puzzle/simon", "status", sta, text);
   
   brb_sta = "active";
-  Publish("8/puzzle/kill-button", "STATUS", brb_sta, brb_text);
+  Publish("8/puzzle/kill-button", "status", brb_sta, brb_text);
   puzzle_correct();     // This is the puzzle ending sequence. 
   
 } // end of sequence_read()
@@ -452,7 +450,7 @@ void sequence_read()
 void sequence_show(int x)
 {
   text = "showing pattern";
-  Publish("8/puzzle/simon", "STATUS", sta, text);
+  Publish("8/puzzle/simon", "status", sta, text);
   Serial.print("Sequence: ");
   for (int s = 0; s < pinCount; s++) 
     {
@@ -478,7 +476,7 @@ void w_input()
   Serial.println(" ");
   Serial.println("Input error, puzzle incorrect");
   text = "wrong button";
-  Publish("8/puzzle/simon", "STATUS", sta, text);
+  Publish("8/puzzle/simon", "status", sta, text);
   
   error++;
      Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", red);   // turn red the room lights
@@ -528,7 +526,7 @@ void puzzle_correct()
   }
     brb_sta = "solved";
     brb_text = "BRB pressed";
-    Publish("8/puzzle/kill-button", "STATUS", brb_sta, brb_text);
+    Publish("8/puzzle/kill-button", "status", brb_sta, brb_text);
     Publish("5/safe/control", "TRIGGER", "on", "0:0");   // turn on the safe lights
 
     delay(2000);
@@ -540,7 +538,7 @@ void puzzle_correct()
 void c_input()
 {
      text = "correct button";
-     Publish("8/puzzle/simon", "STATUS", sta, text);
+     Publish("8/puzzle/simon", "status", sta, text);
      ledcWriteTone(channel1, 600);
      delay(200);
      ledcWriteTone(channel1, 1000);
