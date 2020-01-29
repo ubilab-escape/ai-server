@@ -32,7 +32,7 @@ String brb_sta = "inactive";
 String brb_text = "";
 // Light Publish-variables
 String light_option = "";
-bool Mazesolved = false;
+bool Mazesolved = true;
 bool Simonsolved = false;
 bool f_sta = false;
 

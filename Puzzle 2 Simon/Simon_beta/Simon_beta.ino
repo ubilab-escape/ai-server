@@ -493,10 +493,11 @@ void w_input()
 // --------------------------------- BRB ---------------------------------
 void puzzle_correct()
 {
-
+  
   Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
+  Publish("2/textToSpeech", "message", "", "Do not dare, to press the big red button");   // turn off the room lights
   while(digitalRead(14) != LOW)
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
