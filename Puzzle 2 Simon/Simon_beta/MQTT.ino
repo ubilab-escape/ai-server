@@ -205,6 +205,45 @@ void Publish(char* Topic, String Method, String State, String Data) // this void
   }
 }
 
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+void Publish_Light(char* Topic, String Method, String State, String Data) // this void is used to send messages in topic
+{   
+  StaticJsonDocument<300> doc;
+  Serial.print("Message to: ");
+  Serial.println(Topic);
+  Serial.print("Message: ");
+  doc["METHOD"] = Method;
+  doc["STATE"] =  State;
+  if(Data != "")//in case a data (integer value) was handed as parameter
+  {
+    doc["DATA"] = Data;
+  }
+
+  //create a buffer that holds the serialized JSON message
+  //int msg_length = measureJson(doc) + 1;                    //measureJson return value doesn't count the null-terminator
+  char message[128]; 
+  serializeJson(doc, message); // Generate the minified JSON                        
+  
+ 
+  #ifdef DEBUG
+  Serial.print("JSON message created for publishing: ");
+  Serial.println(message);  
+  #endif
+
+  //send the JSON message to the specified topic
+
+    if (client.publish(Topic, message) == true) 
+  {
+    Serial.println("Message sent");
+  }
+   else 
+  {
+    Serial.println("Error sending message");
+  }
+}
 /*
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------

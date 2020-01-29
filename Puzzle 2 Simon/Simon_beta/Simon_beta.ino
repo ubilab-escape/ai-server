@@ -90,7 +90,7 @@ unsigned long previousMillis = 0;
 
 // Light control
 String red = "255,0,0";
-String dimmed = "100,0,0";
+String dimmed = "100,100,100";
 String off = "0,0,0";
 
 
@@ -280,13 +280,13 @@ void loop()
 void puzzle_simon() 
 { 
     //code = choosecode();
-    Publish("5/safe/control", "TRIGGER", "on", "3:0"); 
+    // Publish("5/safe/control", "TRIGGER", "on", "3:0"); 
     code = 0;
     Serial.print("Simon didn't say puzzle nº ");
     Serial.println(code);
     error = 0;
     preamble();  
-    Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
+    Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
                
     while(error < 3 && Simonsolved == false)
     {
@@ -479,14 +479,14 @@ void w_input()
   Publish("8/puzzle/simon", "status", sta, text);
   
   error++;
-     Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", red);   // turn red the room lights
+     Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", red);   // turn red the room lights
      ledcWriteTone(channel1, 200);
      delay(200);
      ledcWriteTone(channel1, 100);
      delay(500);
      ledcWriteTone(channel1, 0);
      delay(2000);
-     Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
+     Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
 }
 
 
@@ -494,7 +494,7 @@ void w_input()
 void puzzle_correct()
 {
   
-  Publish("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
+  Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
   Publish("2/textToSpeech", "message", "", "Do not dare, to press the big red button");   // turn off the room lights
