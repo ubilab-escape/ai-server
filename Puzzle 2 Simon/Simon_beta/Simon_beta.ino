@@ -244,15 +244,15 @@ void Publish_Task( void * parameter )
     if(sta == "inactive" || sta == "solved"){
       Publish("8/puzzle/simon", "status", sta, text);
       Publish("8/puzzle/kill-button", "status", brb_sta, brb_text);
-      delay(5000);
+      //delay(5000);
     }
     if(sta == "active"){
       Publish("8/puzzle/simon", "status", sta, text);
       Publish("8/puzzle/kill-button", "status", brb_sta, brb_text);
-      delay(800);
+      //delay(800);
     }
     
-   // delay(10000);
+    delay(5000);
   }
 }
 
