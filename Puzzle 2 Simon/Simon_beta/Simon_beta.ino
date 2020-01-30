@@ -119,7 +119,7 @@ void setup()
   xTaskCreate(
                     Wifi_Task,          /* Task function. */
                     "Wifi_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     3,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -129,7 +129,7 @@ void setup()
   xTaskCreate(
                     OTA_Task,          /* Task function. */
                     "OTA_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -139,7 +139,7 @@ void setup()
   xTaskCreate(
                     Reconnect_Task,          /* Task function. */
                     "Reconnect_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -148,7 +148,7 @@ void setup()
   xTaskCreate(
                     Publish_Task,          /* Task function. */
                     "Publish_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -279,9 +279,9 @@ void loop()
 // --------------------------------- SIMON ---------------------------------
 void puzzle_simon() 
 { 
-    //code = choosecode();
+    code = choosecode();
     // Publish("5/safe/control", "TRIGGER", "on", "3:0"); 
-    code = 0;
+    //code = 0;
     Serial.print("Simon didn't say puzzle nº ");
     Serial.println(code);
     error = 0;
@@ -501,7 +501,7 @@ void puzzle_correct()
   Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
-  Publish("2/textToSpeech", "message", "", "Do not dare to press the big red button");   // turn off the room lights
+  Publish("2/textToSpeech", "message", "", "Do not press the big red button");   // turn off the room lights
   while(digitalRead(14) != LOW)
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
@@ -532,7 +532,7 @@ void puzzle_correct()
     brb_sta = "solved";
     brb_text = "BRB pressed";
     Publish("8/puzzle/kill-button", "status", brb_sta, brb_text);
-    Publish("5/safe/control", "TRIGGER", "on", "0:0");   // turn on the safe lights
+    Publish("5/safe/control", "trigger", "on", "0:0");   // turn on the safe lights
 
     delay(2000);
     
