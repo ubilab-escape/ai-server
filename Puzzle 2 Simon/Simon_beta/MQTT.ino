@@ -106,12 +106,12 @@ void Callback(char* topic, byte* payload, unsigned int length)
   String Topic = topic;
 
   
-  if(Topic == Maze && Method == "STATUS" && State == "solved" && sta == "inactive") // Waiting for maze to be solved to start  
+  if(Topic == Maze && Method == "STATUS" && State == "solved") // Waiting for maze to be solved to start  
   { 
           Mazesolved = true;
           sta = "active";
           text = "active";
-          f_sta = false;
+          //f_sta = false;
   }
 
  /*if(Topic == Simon && Method == "STATUS" && State == "active" && f_sta == false) // Operator instruction → SIMON FORCE ACTIVE
@@ -119,21 +119,21 @@ void Callback(char* topic, byte* payload, unsigned int length)
           f_sta = true;
           text = "forced active";
 
-  }*/
+  }
 
-  if(Topic == BRB && Method == "STATUS" && State == "active") // Operator instruction → BRB FORCE INACTIVE
+  if(Topic == BRB && Method == "status" && State == "active") // Operator instruction → BRB FORCE INACTIVE
   { 
     brb_sta = "active";
     puzzle_correct();
   }
 
-  if(Topic == Simon && Method == "STATUS" && State == "inactive") // Operator instruction → SIMON FORCE INACTIVE
+  if(Topic == Simon && Method == "status" && State == "inactive") // Operator instruction → SIMON FORCE INACTIVE
   { 
     sta = "inactive";
     f_sta = false;
     text = "inactive";
   }
-  
+  */
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -252,7 +252,7 @@ void Publish_Task( void * parameter )
       delay(800);
     }
     
-    delay(10000);
+   // delay(10000);
   }
 }
 
@@ -480,6 +480,8 @@ void w_input()
   
   error++;
      Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", red);   // turn red the room lights
+     Publish("8/puzzle/maze", "TRIGGER", "rgb", red);   // turn red the room lights
+     Publish("8/rack", "TRIGGER", "rgb", red);   // turn red the room lights
      ledcWriteTone(channel1, 200);
      delay(200);
      ledcWriteTone(channel1, 100);
@@ -487,6 +489,8 @@ void w_input()
      ledcWriteTone(channel1, 0);
      delay(2000);
      Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
+     Publish("8/rack", "TRIGGER", "rgb", off);   // turn red the room lights
+     Publish("8/puzzle/maze", "TRIGGER", "rgb", off);   // turn red the room lights
 }
 
 
@@ -497,7 +501,7 @@ void puzzle_correct()
   Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
-  Publish("2/textToSpeech", "message", "", "Do not dare, to press the big red button");   // turn off the room lights
+  Publish("2/textToSpeech", "message", "", "Do not dare to press the big red button");   // turn off the room lights
   while(digitalRead(14) != LOW)
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
