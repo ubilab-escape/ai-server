@@ -14,6 +14,7 @@
 #define RAINBOW_FLOW 2
 #define PULSE 3
 #define RANDOM_BLINKING 4
+#define EYE_D 5
 
 #define RED   0xFF0000
 #define GREEN 0x00FF00
@@ -48,6 +49,8 @@
   static void SetColour(int r, int g, int b);
   static byte animationType;
    static void setBriteness(int br);
+
+   
   private:
   static uint32_t i,j;
   static void IRAM_ATTR animationHandler();

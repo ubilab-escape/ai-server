@@ -14,6 +14,7 @@
 #define RAINBOW_FLOW 2
 #define PULSE 3
 #define RANDOM_BLINKING 4
+#define EYE_D 5
 
 #define RED   0xFF0000
 #define GREEN 0x00FF00

@@ -33,7 +33,7 @@ const byte cols = 4; //three columns
   {'#','0','*', 'D'}
 };
  byte colPins[cols] = {12, 14, 27, 26}; //connect to the row pinouts of the keypad
- byte rowPins[rows] = {5, 18, 19, 21}; //connect to the column pinouts of the keypad
+ byte rowPins[rows] = {0, 33, 32, 13}; //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
 
@@ -94,6 +94,7 @@ xTaskCreate(
                     NULL);            /* Task handle. */                                                      
 vTaskSuspend(MQTTcon_Task_handle);
 vTaskSuspend(MQTT_Task_handle);
+Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
 }
 
 void loop() {
@@ -105,23 +106,22 @@ if (workmode == 1)
       Serial.println("S3");
       workmode =0;
       ip.clearIP();
+      MQTT().msg ="IP solved";
       Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
       MQTT().MQTTLightControlRack("0,120,0");
       delay(5000);
-      Display().startAnimation(RANDOM_BLINKING, 0, 0, 0);
-      MQTT().MQTTLightControlRack("0,0,0");
-      MQTT().MQTTLightControl("rgb","0,0,0");
-      MQTT().MQTTPublish("solved");
+      MQTT().MQTTPublishIP("solved");
       }
 }
 if (workmode == 2)
 {
   if (maze.isCompleted)
   {
-     workmode =1;
-     Serial.println("S1");
-     Display().startAnimation(RANDOM_BLINKING, 120, 120, 0);
-     MQTT().MQTTLightControlRack("120,120,0");
+     workmode = 0;
+     MQTT().MQTTPublishMAZE("solved");
+     Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
+     MQTT().MQTTLightControlRack("0,120,0");
+    // MQTT().MQTTLightControl("rgb","30,30,30");
   }
 }
 
@@ -160,15 +160,17 @@ MQTT().Setup() ;
 MQTT().Reconnect();
 vTaskResume(MQTT_Task_handle);
 MQTT().MQTTLightControlRack("0,0,120");
-MQTT().MQTTPublish("inactive");
+MQTT().MQTTPublishMAZE("inactive");
+MQTT().MQTTPublishIP("inactive");
  for(;;)
   {
-    delay(3000);
+    delay(10000);
     MQTT().Reconnect();
-    MQTT().MQTTPublish(MQTT().state);
-    if (MQTT().state == "inactive")
+    MQTT().MQTTPublishMAZE(MQTT().MAZEstate);
+    MQTT().MQTTPublishIP(MQTT().IPstate);
+    if (MQTT().MAZEstate == "inactive")
       {
-        MQTT().MQTTLightControlRack("0,0,120");
+        
       }
       
   }
@@ -180,28 +182,66 @@ delay(10000);
   {
     delay(500);
     MQTT().clientloop();
-    if (MQTT().statechanged)
+    if (MQTT().MAZEstatechanged)
     {
-      if (MQTT().newstate == "active")
+      if (MQTT().MAZEnewstate == "active")
       {
+        MQTT().msg ="Forced activation";
         maze.startGame(MODE_NORMAL_TEAMPLAY, 1);
+        MQTT().MQTTLightControlRack("0,0,120");
         workmode = 2;
       }
-      if (MQTT().newstate == "inactive")
+      if (MQTT().MAZEnewstate == "inactive")
       {
+        MQTT().msg ="Waiting...";
         Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
         MQTT().MQTTLightControlRack("0,0,120");
         workmode = 0;
       }
-      if (MQTT().newstate == "solved")
+      if (MQTT().MAZEnewstate == "solved")
       {
+        MQTT().msg ="Forced solution";
         Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
         MQTT().MQTTLightControlRack("0,120,0");
         workmode = 0;
-        MQTT().MQTTPublish("solved");
+        MQTT().MQTTPublishMAZE("solved");
       }
-      MQTT().state ==  MQTT().newstate;
-      MQTT().statechanged = false;
+      MQTT().MQTTPublishMAZE(MQTT().MAZEnewstate);
+      //MQTT().state ==  MQTT().newstate;
+      MQTT().MAZEstatechanged = false;
+    }
+    if (MQTT().IPstatechanged)
+    {
+      if (MQTT().IPnewstate == "active")
+      {
+        MQTT().msg ="Forced activation";
+        Serial.println("S1");
+        workmode = 1;
+        Display().startAnimation(EYE_D, 0, 0, 120);
+        MQTT().MQTTLightControlRackEye("0,0,120");
+        
+      }
+      if (MQTT().IPnewstate == "inactive")
+      {
+        Serial.println("S4");
+        MQTT().msg ="Waiting...";
+        Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
+        MQTT().MQTTLightControlRack("0,0,120");
+        workmode = 0;
+      }
+      if (MQTT().IPnewstate == "solved")
+      {
+        Serial.println("S3");
+        MQTT().msg ="Forced solution";
+        Display().startAnimation(RANDOM_BLINKING, 0, 120, 0);
+        MQTT().MQTTLightControlRack("0,120,0");
+        workmode = 0;
+        MQTT().MQTTPublishIP("solved");
+      }
+      MQTT().MQTTPublishIP(MQTT().IPnewstate);
+      //MQTT().state ==  MQTT().newstate;
+      MQTT().IPstatechanged = false;
+     
     }
   }
 }
@@ -255,7 +295,7 @@ void LED_Task( void * parameter )
  }
  void Keyboard_Task( void * parameter )
 {
-  
+  keypad.setDebounceTime(50);
   for(;;)
   {
   delay(100);

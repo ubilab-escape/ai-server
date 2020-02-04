@@ -12,6 +12,18 @@ uint32_t Display::j = 0;
 byte Display::animationType = RANDOM_BLINKING;
 volatile SemaphoreHandle_t timerSemaphore = NULL;
 
+byte EYE[LED_COUNT]
+{
+0,0,1,1,1,1,0,0,
+0,1,0,1,1,0,1,0,
+1,0,1,0,0,1,0,1,
+0,1,0,1,1,0,1,0,
+0,0,1,1,1,1,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,
+};
+
 Colour Display::animCol=Colour(0,0,120);
 
 CRGBArray<LED_COUNT> leds;
@@ -53,6 +65,46 @@ void Display::calculateAndShowAnimation()
           else
           leds[i]=CRGB( 0,0,0);
         }
+      }
+      break;
+      case EYE_D:
+      {
+        bool dir = false;
+        for (int y = 0; y <MAZE_Y;y++)
+        {
+   if (dir)
+    {
+      for (int x = 0; x <MAZE_X;x++)
+      {
+       if( EYE[x+y*MAZE_Y] == 1) 
+       {
+        int r = random(100);
+          if (r>40)
+          leds[x+y*MAZE_Y]=CRGB( animCol.r,animCol.g,animCol.b);
+          else
+          leds[x+y*MAZE_Y]=CRGB( 0,0,0);
+       }
+       else
+       leds[x+y*MAZE_Y]=CRGB( 0,0,0);
+        }
+    }
+    else
+    {
+      for (int x = MAZE_X-1; x >-1;x--)
+      {
+        if( EYE[x+y*MAZE_Y] == 1) 
+       
+{int r = random(100);
+          if (r>40)
+          leds[x+y*MAZE_Y]=CRGB( animCol.r,animCol.g,animCol.b);
+          else
+          leds[x+y*MAZE_Y]=CRGB( 0,0,0);}
+       else
+       leds[x+y*MAZE_Y]=CRGB( 0,0,0);
+      }
+    }
+    dir = !dir;
+  }
       }
       break;
     }

@@ -6,6 +6,7 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include "Arduino.h"
+#include "CaseComparator.h"
 
 
 
@@ -18,13 +19,20 @@
   static void Callback(char* topic, byte* message, unsigned int length);
   static void Reconnect();
   static String split (String s, char parser, int index);
-  static void MQTTPublish(String st);
+  static void MQTTPublishMAZE(String st);
+  static void MQTTPublishIP(String st);
   static void MQTTLightControl(String st, String dat);
+  static void MQTTLightEverywhere(String st, String dat);
   static void MQTTLightControlRack( String dat);
+  static void MQTTLightControlRackEye( String dat);
   static void clientloop();
-   static String state;
-   static String newstate;
-    static bool statechanged;
+   static String IPstate;
+   static String IPnewstate;
+   static String MAZEstate;
+   static String MAZEnewstate;
+    static bool MAZEstatechanged;
+    static bool IPstatechanged;
+    static String msg;
   private:
  
   

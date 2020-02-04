@@ -57,6 +57,18 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
       Display().startAnimation(RANDOM_BLINKING, split(da,',',0).toInt(), split(da,',',1).toInt(), split(da,',',2).toInt());
    
     }
+    if (t == MQTTtopic&&me== "TRIGGER" && st== "rgb"&&da=="0,0,120") // this should be changed to required topic name
+    {
+     //here you can process incoming messages on specific topic     
+      Display().startAnimation(RANDOM_BLINKING, 0,0,120);
+   
+    }
+    if (t == MQTTtopic&&me== "TRIGGER" && st== "eye"&&da=="0,0,120") // this should be changed to required topic name
+    {
+     //here you can process incoming messages on specific topic     
+      Display().startAnimation(EYE_D, 0,0,120);
+   
+    }
     if (t == MQTTtopic&&me== "TRIGGER" && st== "power") // this should be changed to required topic name
     {
      //here you can process incoming messages on specific topic     

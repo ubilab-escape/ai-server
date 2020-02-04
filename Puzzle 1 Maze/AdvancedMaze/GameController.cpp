@@ -4,7 +4,7 @@
 
 void GameController::startGame(byte mod, byte lifes)
 {
-  MQTT().MQTTPublish("active");
+  MQTT().MQTTPublishMAZE("active");
   //Display(); // initialization of the display class
   Display().startAnimation(GAME, 0, 0, 0); // Start animation with selected type
   Display().maze.InitMaze(mod, lifes);
@@ -16,13 +16,15 @@ void GameController::checkState()
   
   if (Display().maze.failFlag && !Display().maze.deathFlag)
   {
-    Display().startAnimation(RANDOM_BLINKING, 120, 120, 0);
-    MQTT().MQTTPublish("failed");
+    Display().startAnimation(RANDOM_BLINKING, 120, 120, 0); 
+    MQTT().msg ="Fail: "+String(Display().maze.lifes)+" left";
+    MQTT().MQTTPublishMAZE("failed");
     MQTT().MQTTLightControl("power","on");
     MQTT().MQTTLightControl("rgb", "255,250,0");
     MQTT().MQTTLightControlRack("120,120,0");
     delay(1000);
-    MQTT().MQTTPublish("active");
+    MQTT().msg ="Maze: "+ String(Display().maze.lifes)+" left";
+    MQTT().MQTTPublishMAZE("active");
     //MQTT().MQTTLightControl("power", "on");
     MQTT().MQTTLightControl("rgb", "0,0,0");
     MQTT().MQTTLightControlRack("0,0,120");
@@ -33,12 +35,14 @@ void GameController::checkState()
   if (Display().maze.deathFlag)
   {
    Display().startAnimation(RANDOM_BLINKING, 120, 0, 0);
-   MQTT().MQTTPublish("failed");
+   MQTT().msg ="Death: restarting";
+   MQTT().MQTTPublishMAZE("failed");
    MQTT().MQTTLightControl("power","on");
    MQTT().MQTTLightControl("rgb", "255,0,0");
    MQTT().MQTTLightControlRack("255,0,0");
     delay(3000);
-   MQTT().MQTTPublish("active");
+   MQTT().msg ="Maze: "+ String(Display().maze.lifes)+" left";
+   MQTT().MQTTPublishMAZE("active");
    
     MQTT().MQTTLightControl("rgb","0,0,0");
     MQTT().MQTTLightControlRack("0,0,120");
@@ -48,7 +52,8 @@ void GameController::checkState()
   
   if (Display().maze.completedFlag)
   {
-    //MQTT().MQTTPublish("solved");
+    MQTT().msg ="Maze solved";
+    MQTT().MQTTPublishMAZE("active");
      MQTT().MQTTLightControl("rgb", "255,0,0");
      MQTT().MQTTLightControlRack("255,0,0");
     Display().startAnimation(RANDOM_BLINKING, 120,0 , 0);

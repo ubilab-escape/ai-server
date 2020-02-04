@@ -1,5 +1,6 @@
 #include <ArduinoJson.h>
 
+
 #include "Arduino.h"
 #include "MQTT.h"
 #include "Display.h"
@@ -18,13 +19,18 @@ const char*  mqtt_server =  "10.0.0.2";
 
 const char* MQTTclientName =  "8_maze";
 
-
-String  MQTT::newstate = "inactive";
-bool MQTT::statechanged = false;
-String  MQTT::state = "inactive";
-const char* MQTTtopic =  "8/puzzle/maze";
+String MQTT::msg = "waiting";
+String  MQTT::MAZEnewstate = "inactive";
+bool MQTT::MAZEstatechanged = false;
+String  MQTT::MAZEstate = "inactive";
+String  MQTT::IPnewstate = "inactive";
+bool MQTT::IPstatechanged = false;
+String  MQTT::IPstate = "inactive";
+const char* MQTTtopicMAZE =  "8/puzzle/maze";
+const char* MQTTtopicIP =  "8/puzzle/IP";
 const char* LightControllerTopic =  "2/ledstrip/serverroom";
 const char* RackLightControllerTopic =  "8/rack";
+const char* TerminalTopic =  "6/puzzle/terminal";
 
 
 void MQTT::Setup() 
@@ -44,6 +50,7 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
   Serial.print(". Message: ");
   Serial.println((char *) message);
   Serial.println();*/
+  //ConvertToLowerCase(String((char*)&message)).getBytes(message, length);
   DeserializationError error = deserializeJson(doc, message);
   // Test if parsing succeeds.
   if (error) {
@@ -51,32 +58,21 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
   //  Serial.println(error.c_str());
     return;
   }
-    String da = doc["data"];
-    String me = doc["method"];
-    String st = doc["state"];
+    String da = (doc["data"]);
+    String me = (doc["method"]);
+    String st = (doc["state"]);
     String t = topic;
-    if (t == MQTTtopic&&me== "TRIGGER" && st== "rgb") // this should be changed to required topic name
+    if (t == MQTTtopicMAZE&&me== "trigger" && st== "rgb") // this should be changed to required topic name
     {
      //here you can process incoming messages on specific topic 
      if (Display().animationType != GAME)    
       Display().startAnimation(RANDOM_BLINKING, split(da,',',0).toInt(), split(da,',',1).toInt(), split(da,',',2).toInt());
    
     }
-    if (t == MQTTtopic&&me== "TRIGGER" && st== "power") // this should be changed to required topic name
-    {
-     //here you can process incoming messages on specific topic 
-     if (Display().animationType != GAME)      
-      if (da == "on")
-      {
-        Display().setBriteness(LED_BRITENESS);
-      }
-      if (da == "off")
-      {
-        Display().setBriteness(0);
-      }
+    
    
-    }
-    if (t == MQTTtopic&&me== "TRIGGER" && st== "brightness") // this should be changed to required topic name
+    
+    if (t == MQTTtopicMAZE&&me== "trigger" && st== "brightness") // this should be changed to required topic name
     {
      //here you can process incoming messages on specific topic
      if (Display().animationType != GAME)  
@@ -84,14 +80,55 @@ void MQTT::Callback(char* topic, byte* message, unsigned int length)
      
    
     }
-    if (t == MQTTtopic&&me== "trigger"&&st=="on") // this should be changed to required topic name
+    if (t == MQTTtopicMAZE&&me== "trigger"&&st=="on") // this should be changed to required topic name
     {
     // Serial.print("State changed to ");
     // Serial.println(da);
      //here you can process incoming messages on specific topic
-     MQTT().statechanged = true;
-     MQTT().newstate = da;
+     MQTT().MAZEstatechanged = true;
+     MQTT().MAZEnewstate = "active";
     }
+    if (t == MQTTtopicMAZE&&me== "trigger"&&st=="off") // this should be changed to required topic name
+    {
+    // Serial.print("State changed to ");
+    // Serial.println(da);
+     //here you can process incoming messages on specific topic
+     MQTT().MAZEstatechanged = true;
+     MQTT().MAZEnewstate = "inactive";
+    }
+    if (t == MQTTtopicMAZE&&me== "trigger"&&st=="off"&&da=="skip") // this should be changed to required topic name
+    {
+    // Serial.print("State changed to ");
+    // Serial.println(da);
+     //here you can process incoming messages on specific topic
+     MQTT().MAZEstatechanged = true;
+     MQTT().MAZEnewstate = "solved";
+    }
+    if (t == MQTTtopicIP&&me== "trigger"&&st=="on") // this should be changed to required topic name
+    {
+    // Serial.print("State changed to ");
+    // Serial.println(da);
+     //here you can process incoming messages on specific topic
+     MQTT().IPstatechanged = true;
+     MQTT().IPnewstate = "active";
+    }
+    if (t == MQTTtopicIP&&me== "trigger"&&st=="off") // this should be changed to required topic name
+    {
+    // Serial.print("State changed to ");
+    // Serial.println(da);
+     //here you can process incoming messages on specific topic
+     MQTT().IPstatechanged = true;
+     MQTT().IPnewstate = "inactive";
+    }
+    if (t == MQTTtopicIP&&me== "trigger"&&st=="off"&&da=="skip") // this should be changed to required topic name
+    {
+    // Serial.print("State changed to ");
+    // Serial.println(da);
+     //here you can process incoming messages on specific topic
+     MQTT().IPstatechanged = true;
+     MQTT().IPnewstate = "solved";
+    }
+    
       
       
     // add as much cases as you have a subscriptions
@@ -112,8 +149,8 @@ void MQTT::Reconnect() // this void resubscribes to topics on start or in case o
     //  Serial.println("connected");
       // Subscribe to all Topicks you need here
      
-      client.subscribe(MQTTtopic);
-      
+      client.subscribe(MQTTtopicMAZE);
+       client.subscribe(MQTTtopicIP);
       
     } 
     else {
@@ -130,7 +167,7 @@ void MQTT::Reconnect() // this void resubscribes to topics on start or in case o
         
     }
 }
-void MQTT::MQTTPublish( String st) // this void is used to send messages in topic
+void MQTT::MQTTPublishMAZE( String st) // this void is used to send messages in topic
 {
   //doc.clear();
   //Serial.print("Message sent on topic: ");
@@ -138,13 +175,32 @@ void MQTT::MQTTPublish( String st) // this void is used to send messages in topi
   //Serial.print(". Message: ");
   doc["method"] = "STATUS";
   doc["state"] =  st;
-  doc["data"] = "";
-  MQTT::state  = st;
+  doc["data"] = MQTT().msg;
+  MQTT::MAZEstate  = st;
+  
   char output[128];
   serializeJson(doc, output);
   //Serial.println(output);
   doc.clear();
-  client.publish(MQTTtopic, output);
+  client.publish(MQTTtopicMAZE, output);
+  //doc.clear();
+}
+void MQTT::MQTTPublishIP( String st) // this void is used to send messages in topic
+{
+  //doc.clear();
+  //Serial.print("Message sent on topic: ");
+  //Serial.println(MQTTtopic);
+  //Serial.print(". Message: ");
+  doc["method"] = "STATUS";
+  doc["state"] =  st;
+  doc["data"] = MQTT().msg;
+  MQTT::IPstate  = st;
+  
+  char output[128];
+  serializeJson(doc, output);
+  //Serial.println(output);
+  doc.clear();
+  client.publish(MQTTtopicIP, output);
   //doc.clear();
 }
 void MQTT::MQTTLightControl(String st, String dat) // this void is used to send messages in topic
@@ -163,6 +219,26 @@ void MQTT::MQTTLightControl(String st, String dat) // this void is used to send 
   client.publish(LightControllerTopic, output);
   //doc.clear();
 }
+void MQTT::MQTTLightEverywhere(String st, String dat) // this void is used to send messages in topic
+{
+  //doc.clear();
+  //Serial.print("Message sent on topic: ");
+ // Serial.println(LightControllerTopic);
+  //Serial.print(". Message: ");
+  doc["METHOD"] = "TRIGGER";
+  doc["STATE"] = st;
+  doc["DATA"] = dat;
+  char output[128];
+  serializeJson(doc, output);
+  doc.clear();
+  //Serial.println(output);
+  
+  client.publish("2/ledstrip/serverroom", output);
+  client.publish("2/ledstrip/labroom/north", output);
+  client.publish("2/ledstrip/labroom/south", output);
+  client.publish("2/ledstrip/labroom/middle", output);
+  //doc.clear();
+}
 void MQTT::MQTTLightControlRack(String dat) // this void is used to send messages in topic
 {
   //doc.clear();
@@ -171,6 +247,22 @@ void MQTT::MQTTLightControlRack(String dat) // this void is used to send message
   //Serial.print(". Message: ");
   doc["method"] = "TRIGGER";
   doc["state"] = "rgb";
+  doc["data"] = dat;
+  char output[128];
+  serializeJson(doc, output);
+  //Serial.println(output);
+  doc.clear();
+  client.publish(RackLightControllerTopic, output);
+  //doc.clear();
+}
+void MQTT::MQTTLightControlRackEye(String dat) // this void is used to send messages in topic
+{
+  //doc.clear();
+  //Serial.print("Message sent on topic: ");
+  //Serial.println(RackLightControllerTopic);
+  //Serial.print(". Message: ");
+  doc["method"] = "TRIGGER";
+  doc["state"] = "eye";
   doc["data"] = dat;
   char output[128];
   serializeJson(doc, output);
