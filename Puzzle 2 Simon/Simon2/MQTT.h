@@ -23,13 +23,14 @@
 //variables
 long mdnsUpdate = millis();
 
-
 // Simon puzzle Publish-variables
-String sta = "inactive";
-String text = "Waiting...";
+String sta = "inactive";          // Simon status
+bool sta_change = false;
+String text = "waiting...";
 // Light Publish-variables
 String light_option = "";
-bool statechanged;
+bool Simon_active = false;
+bool Simon_solved = false;
 
   void wifi();
   void Setup();

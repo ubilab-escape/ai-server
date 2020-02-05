@@ -31,7 +31,6 @@ const IPAddress mqttServerIP(10,0,0,2); //Main server Ip
 const String clientId = "Group8_puzzle_simon";
 const char* Maze = "8/puzzle/maze";
 const char* Simon = "8/puzzle/simon";
-const char* BRB = "8/puzzle/kill-button";
 
 
 WiFiClient wifiClient;
@@ -76,9 +75,9 @@ void Setup()
 void Callback(char* topic, byte* payload, unsigned int length) 
 {
   #ifdef DEBUG
-  Serial.print("message arrived on topic: ");
+  Serial.print("Message arrived on topic: ");
   Serial.println(topic);
-  Serial.print("message: ");
+  Serial.print("Message: ");
   for (int i = 0; i < length; i++) 
   {
     Serial.print((char)payload[i]);
@@ -105,13 +104,31 @@ void Callback(char* topic, byte* payload, unsigned int length)
   String Data = doc["data"]; 
   String Topic = topic;
 
-  
-  if(Topic == Simon && Method == "trigger" && State == "on")    // State change  
+  if(Topic == Simon && Method == "trigger" && State == "off")                        // Reset puzzle  
   { 
-          statechanged = true;
-          sta = Data;
+          Simon_active = false;
+          Simon_solved = false;
+          sta = "inactive";
+          text = "waiting...";
+          sta_change = true;
   }
-  
+  if(Topic == Simon && Method == "trigger" && State == "off" && Data == "skipped")   // Puzzle solved + reset  
+  { 
+          Simon_active = false;
+          Simon_solved = true;
+          sta = "solved";
+          text = "skipped";
+          sta_change = true;
+  }
+  if(Topic == Simon && Method == "trigger" && State == "on")                        // Puzzle active 
+  { 
+          Simon_active = true;
+          Simon_solved = false;
+          sta = "active";
+          text = "";
+          
+  }
+
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -150,55 +167,14 @@ void Reconnect() // this void resubscribes to topics on start or in case of disc
 void Publish(char* Topic, String Method, String State, String Data) // this void is used to send messages in topic
 {   
   StaticJsonDocument<300> doc;
-  Serial.print("message to: ");
+  Serial.print("Message to: ");
   Serial.println(Topic);
-  Serial.print("message: ");
+  Serial.print("Message: ");
   doc["method"] = Method;
   doc["state"] =  State;
   if(Data != "")//in case a data (integer value) was handed as parameter
   {
     doc["data"] = Data;
-  }
-
-  //create a buffer that holds the serialized JSON message
-  //int msg_length = measureJson(doc) + 1;                    //measureJson return value doesn't count the null-terminator
-  char message[128]; 
-  serializeJson(doc, message); // Generate the minified JSON                        
-  
- 
-  #ifdef DEBUG
-  Serial.print("JSON message created for publishing: ");
-  Serial.println(message);  
-  #endif
-
-  //send the JSON message to the specified topic
-
-    if (client.publish(Topic, message) == true) 
-  {
-    Serial.println("Message sent");
-  }
-   else 
-  {
-    Serial.println("Error sending message");
-  }
-}
-
-
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
-
-void Publish_Light(char* Topic, String Method, String State, String Data) // this void is used to send messages in topic
-{   
-  StaticJsonDocument<300> doc;
-  Serial.print("message to: ");
-  Serial.println(Topic);
-  Serial.print("message: ");
-  doc["METHOD"] = Method;
-  doc["STATE"] =  State;
-  if(Data != "")//in case a data (integer value) was handed as parameter
-  {
-    doc["DATA"] = Data;
   }
 
   //create a buffer that holds the serialized JSON message

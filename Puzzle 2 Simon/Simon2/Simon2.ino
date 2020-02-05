@@ -94,6 +94,7 @@ String dimmed = "100,100,100";
 String off = "0,0,0";
 
 
+
 // --------------------------------- SETUP ---------------------------------
 void setup() 
 {
@@ -119,7 +120,7 @@ void setup()
   xTaskCreate(
                     Wifi_Task,          /* Task function. */
                     "Wifi_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     3,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -129,7 +130,7 @@ void setup()
   xTaskCreate(
                     OTA_Task,          /* Task function. */
                     "OTA_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -139,7 +140,7 @@ void setup()
   xTaskCreate(
                     Reconnect_Task,          /* Task function. */
                     "Reconnect_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -148,7 +149,7 @@ void setup()
   xTaskCreate(
                     Publish_Task,          /* Task function. */
                     "Publish_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -241,16 +242,9 @@ void Publish_Task( void * parameter )
   delay(5000);
   for(;;)
   {   
-    if(sta == "inactive" || sta == "solved"){
-      Publish("8/puzzle/simon", "status", sta, text);
-      delay(5000);
-    }
-    if(sta == "active"){
-      Publish("8/puzzle/simon", "status", sta, text);
-      delay(800);
-    }
+    Publish("8/puzzle/simon", "status", sta, text);
     
-    //delay(10000);
+    delay(2000);
   }
 }
 
@@ -258,41 +252,34 @@ void Publish_Task( void * parameter )
 // --------------------------------- LOOP ---------------------------------
 void loop() 
 { 
-  if (statechanged == true) {
-
-       text = sta;
-       Publish("8/puzzle/simon", "status", sta, text);
-       if (sta == "active")
-      {
-        puzzle_simon();
-      }
-      if (sta == "inactive")
-      {
-        
-      }
-      if (sta == "solved")
-      {
-
-      }
-      statechanged = false;
+  if (Simon_active == true && Simon_solved == false)  // Active game
+  {
+    Publish("8/puzzle/simon", "status", sta, text);
+    puzzle_simon();
+    Simon_active = false;
   }
-
+  
+  if (sta_change == true) // Publish state when game is set off or skipped
+  {
+    Publish("8/puzzle/simon", "status", sta, text);
+    sta_change = false;
+  }
+  
 } // end of loop()
 
 
 // --------------------------------- SIMON ---------------------------------
 void puzzle_simon() 
 { 
-    //code = choosecode();
-    //Publish("5/safe/control", "TRIGGER", "on", "3:0"); 
-    code = 0;
+    code = choosecode();
+    
     Serial.print("Simon didn't say puzzle nº ");
     Serial.println(code);
+    
     error = 0;
     preamble();  
-    Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
-               
-    while(error < 3 && sta == "active")
+                     
+    while(error < 3 && Simon_solved == false)
     {
       sequence_show(error);         // Here is where simon[][] is showed to the user.
       Serial.print("User input: ");
@@ -300,7 +287,7 @@ void puzzle_simon()
       Serial.println(" ");
     }
 
-} // end of loop()
+} // end of puzzle_simon() 
 
 
 // --------------------------------- Choose random input ---------------------------------
@@ -339,8 +326,9 @@ void preamble()
 // --------------------------------- Read Sequence ---------------------------------
 void sequence_read()
 {
-  text = "Waititng input..";
+  text = "waititng input..";
   Publish("8/puzzle/simon", "status", sta, text);
+  
   int flag = 0; // This is the state toggle. Analize inputs, when detected flag == 1. 
               // The logic is while inputs are correct, while function remains. if the whole sequence is correct (correctly compared), for function ends and final sequence -puzzle_correct()- starts 
 
@@ -438,9 +426,10 @@ void sequence_read()
     } 
   }
 
-  text = "kill-button active";
+  text = "puzzle decoded";
   Publish("8/puzzle/simon", "status", sta, text);
-
+  Simon_solved = true;
+  
   puzzle_correct();     // This is the puzzle ending sequence. 
   
 } // end of sequence_read()
@@ -451,6 +440,7 @@ void sequence_show(int x)
 {
   text = "showing pattern";
   Publish("8/puzzle/simon", "status", sta, text);
+  
   Serial.print("Sequence: ");
   for (int s = 0; s < pinCount; s++) 
     {
@@ -475,18 +465,26 @@ void w_input()
 {
   Serial.println(" ");
   Serial.println("Input error, puzzle incorrect");
+  
   text = "wrong button";
   Publish("8/puzzle/simon", "status", sta, text);
   
   error++;
-     Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", red);   // turn red the room lights
+     //Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", red);   // turn red the room lights
+     Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
+     Publish("8/rack", "trigger", "rgb", red);   
+     
      ledcWriteTone(channel1, 200);
      delay(200);
      ledcWriteTone(channel1, 100);
      delay(500);
      ledcWriteTone(channel1, 0);
+     
      delay(2000);
-     Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
+     
+     //Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
+     Publish("8/puzzle/maze", "trigger", "rgb", off);   // turn off the server lights
+     Publish("8/rack", "trigger", "rgb", off);   
 }
 
 
@@ -494,10 +492,12 @@ void w_input()
 void puzzle_correct()
 {
   
-  Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
+  //Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
-  Publish("2/textToSpeech", "message", "", "Do not dare, to press the big red button");   // turn off the room lights
+  
+  Publish("2/textToSpeech", "message", "", "Do not press the big red button");   // Scary message from Stasis
+  
   while(digitalRead(14) != LOW)
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
@@ -525,12 +525,10 @@ void puzzle_correct()
       }
     }
   }
-    text = "kill-button pressed";
-    sta = "solved";
-    Publish("8/puzzle/simon", "status", sta, text);
-    Publish("5/safe/control", "trigger", "on", "0:0");   // turn on the safe lights
-
-    //delay(2000);
+    
+  text = "big-red-button pressed";
+  sta = "solved";
+  Publish("8/puzzle/simon", "status", sta, text);
     
 } // end of puzzle_correct()
 
@@ -540,6 +538,7 @@ void c_input()
 {
      text = "correct button";
      Publish("8/puzzle/simon", "status", sta, text);
+     
      ledcWriteTone(channel1, 600);
      delay(200);
      ledcWriteTone(channel1, 1000);
