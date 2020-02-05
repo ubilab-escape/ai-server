@@ -92,6 +92,7 @@ unsigned long previousMillis = 0;
 String red = "255,0,0";
 String dimmed = "100,100,100";
 String off = "0,0,0";
+String blue = "0,0,120";
 
 
 
@@ -244,7 +245,7 @@ void Publish_Task( void * parameter )
   {   
     Publish("8/puzzle/simon", "status", sta, text);
     
-    delay(2000);
+    delay(3000);
   }
 }
 
@@ -254,6 +255,7 @@ void loop()
 { 
   if (Simon_active == true && Simon_solved == false)  // Active game
   {
+    Publish("8/rack", "TRIGGER", "rgb", off); 
     Publish("8/puzzle/simon", "status", sta, text);
     puzzle_simon();
     Simon_active = false;
@@ -263,6 +265,7 @@ void loop()
   {
     Publish("8/puzzle/simon", "status", sta, text);
     sta_change = false;
+    Publish("8/rack", "TRIGGER", "rgb", blue); 
   }
   
 } // end of loop()
@@ -271,20 +274,23 @@ void loop()
 // --------------------------------- SIMON ---------------------------------
 void puzzle_simon() 
 { 
-    code = choosecode();
-    
-    Serial.print("Simon didn't say puzzle nº ");
-    Serial.println(code);
-    
-    error = 0;
-    preamble();  
-                     
-    while(error < 3 && Simon_solved == false)
-    {
-      sequence_show(error);         // Here is where simon[][] is showed to the user.
-      Serial.print("User input: ");
-      sequence_read();              // Here is where input_sequence[] is compared with sol[][]
-      Serial.println(" ");
+    while(Simon_solved == false && sta == "active"){
+      code = choosecode();
+      
+      Serial.print("Simon didn't say puzzle nº ");
+      Serial.println(code);
+      
+      error = 0;
+      preamble();  
+                       
+      while(error < 3 && Simon_solved == false && sta == "active")
+      {
+        sequence_show(error);         // Here is where simon[][] is showed to the user.
+        Serial.print("User input: ");
+        sequence_read();              // Here is where input_sequence[] is compared with sol[][]
+        Serial.println(" ");
+        Serial.println(Simon_solved);
+    }
     }
 
 } // end of puzzle_simon() 
@@ -326,6 +332,7 @@ void preamble()
 // --------------------------------- Read Sequence ---------------------------------
 void sequence_read()
 {
+  
   text = "waititng input..";
   Publish("8/puzzle/simon", "status", sta, text);
   
@@ -335,7 +342,7 @@ void sequence_read()
   for (int i = 0; i < pinCount; i++)
   {
     flag = 0;
-    while(flag == 0)
+    while(flag == 0 && sta == "active")
     {
         if (digitalRead(18) == LOW) 
         {
@@ -426,37 +433,40 @@ void sequence_read()
     } 
   }
 
-  text = "puzzle decoded";
-  Publish("8/puzzle/simon", "status", sta, text);
-  Simon_solved = true;
-  
-  puzzle_correct();     // This is the puzzle ending sequence. 
-  
+  if (sta == "active"){
+    text = "puzzle decoded";
+    Publish("8/puzzle/simon", "status", sta, text);
+    Simon_solved = true;
+    
+    puzzle_correct();     // This is the puzzle ending sequence. 
+  }
 } // end of sequence_read()
 
 
 // --------------------------------- Show Sequence ---------------------------------
 void sequence_show(int x)
 {
-  text = "showing pattern";
-  Publish("8/puzzle/simon", "status", sta, text);
-  
-  Serial.print("Sequence: ");
-  for (int s = 0; s < pinCount; s++) 
-    {
-      Serial.print(simon[code][s]);
-      Serial.print(" ");
-      digitalWrite(simon[code][s], HIGH);
-      ledcWriteTone(channel1, 600);
-      delay(400);
-      ledcWriteTone(channel1, 0);
-      delay(600-x*10);
-      ledcWriteTone(channel1, 0);
-      digitalWrite(simon[code][s], LOW);
-      delay(300);
-      //tone(buzz,800,10); //Commented bcz is super annoying
-    }
-    Serial.println(" ");
+  if(sta == "active"){
+      text = "showing pattern";
+      Publish("8/puzzle/simon", "status", sta, text);
+      
+      Serial.print("Sequence: ");
+      for (int s = 0; s < pinCount; s++) 
+        {
+          Serial.print(simon[code][s]);
+          Serial.print(" ");
+          digitalWrite(simon[code][s], HIGH);
+          ledcWriteTone(channel1, 600);
+          delay(400);
+          ledcWriteTone(channel1, 0);
+          delay(600-x*10);
+          ledcWriteTone(channel1, 0);
+          digitalWrite(simon[code][s], LOW);
+          delay(300);
+          //tone(buzz,800,10); //Commented bcz is super annoying
+        }
+        Serial.println(" ");
+  }
 } // end of sequence_show()
 
 
@@ -470,9 +480,9 @@ void w_input()
   Publish("8/puzzle/simon", "status", sta, text);
   
   error++;
-     //Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", red);   // turn red the room lights
+     //Publish("2/ledstrip/serverroom", "trigger", "rgb", red);   // turn red the room lights
      Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
-     Publish("8/rack", "trigger", "rgb", red);   
+     Publish("8/rack", "TRIGGER", "rgb", red);   
      
      ledcWriteTone(channel1, 200);
      delay(200);
@@ -482,9 +492,9 @@ void w_input()
      
      delay(2000);
      
-     //Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", dimmed);   // dimmed the room lights
+     //Publish("2/ledstrip/serverroom", "trigger", "rgb", dimmed);   // dimmed the room lights
      Publish("8/puzzle/maze", "trigger", "rgb", off);   // turn off the server lights
-     Publish("8/rack", "trigger", "rgb", off);   
+     Publish("8/rack", "TRIGGER", "rgb", off);   
 }
 
 
@@ -496,9 +506,9 @@ void puzzle_correct()
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
   
-  Publish("2/textToSpeech", "message", "", "Do not press the big red button");   // Scary message from Stasis
+  //Publish("2/textToSpeech", "message", "", "Do not press the big red button");   // Scary message from Stasis
   
-  while(digitalRead(14) != LOW)
+  while(digitalRead(14) != LOW && sta == "active")
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
     {     
@@ -529,7 +539,7 @@ void puzzle_correct()
   text = "big-red-button pressed";
   sta = "solved";
   Publish("8/puzzle/simon", "status", sta, text);
-    
+      
 } // end of puzzle_correct()
 
 
