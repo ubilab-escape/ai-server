@@ -121,7 +121,7 @@ void setup()
   xTaskCreate(
                     Wifi_Task,          /* Task function. */
                     "Wifi_Task",        /* String with name of task. */
-                    30000,            /* Stack size in bytes. */
+                    10000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     3,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -131,7 +131,7 @@ void setup()
   xTaskCreate(
                     OTA_Task,          /* Task function. */
                     "OTA_Task",        /* String with name of task. */
-                    30000,            /* Stack size in bytes. */
+                    10000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -258,6 +258,7 @@ void loop()
     Publish("8/rack", "TRIGGER", "rgb", off); 
     Publish("8/puzzle/simon", "status", sta, text);
     puzzle_simon();
+    Publish("8/rack", "TRIGGER", "rgb", blue);
     Simon_active = false;
   }
   
@@ -480,6 +481,11 @@ void w_input()
   Publish("8/puzzle/simon", "status", sta, text);
   
   error++;
+  
+  if (error ==  1) Publish("2/textToSpeech", "message", "", "come on, It is not that difficult");
+  if (error ==  2) Publish("2/textToSpeech", "message", "", "no no no, that one is not");
+  if (error ==  3) Publish("2/textToSpeech", "message", "", "Let me change the sequence, maybe it is too easy");
+  
      Publish("2/ledstrip/serverroom", "trigger", "rgb", red);   // turn red the room lights
      Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
      Publish("8/rack", "TRIGGER", "rgb", red);   
@@ -508,8 +514,8 @@ void puzzle_correct()
   
   
   
-  Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3");
-  //Publish("2/textToSpeech", "message", "", "Do not press the big red button");
+  //Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3");
+  Publish("2/textToSpeech", "message", "", "Do not press the big red button");
   while(digitalRead(14) != LOW && sta == "active")
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
