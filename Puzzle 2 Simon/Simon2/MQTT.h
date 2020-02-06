@@ -37,6 +37,7 @@ bool Simon_solved = false;
   void Callback(char* topic, byte* payload, unsigned int length);
   void Reconnect();
   void Publish(char* Topic, String Method, String State, String Data);
+  void Publish_t2s(char* Topic, String Method, String State, String Data);
 
 
 

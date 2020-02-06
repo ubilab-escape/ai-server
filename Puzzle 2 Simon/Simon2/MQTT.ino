@@ -31,7 +31,7 @@ const IPAddress mqttServerIP(10,0,0,2); //Main server Ip
 const String clientId = "Group8_puzzle_simon";
 const char* Maze = "8/puzzle/maze";
 const char* Simon = "8/puzzle/simon";
-
+//const String Kwargs = "{'TextType': 'ssml', VoiceId='Brian', LanguageCode='en-GB'}";
 
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
@@ -177,9 +177,50 @@ void Publish(char* Topic, String Method, String State, String Data) // this void
     doc["data"] = Data;
   }
 
+
   //create a buffer that holds the serialized JSON message
   //int msg_length = measureJson(doc) + 1;                    //measureJson return value doesn't count the null-terminator
   char message[128]; 
+  serializeJson(doc, message); // Generate the minified JSON                        
+  
+ 
+  #ifdef DEBUG
+  Serial.print("JSON message created for publishing: ");
+  Serial.println(message);  
+  #endif
+
+  //send the JSON message to the specified topic
+
+    if (client.publish(Topic, message) == true) 
+  {
+    Serial.println("Message sent");
+  }
+   else 
+  {
+    Serial.println("Error sending message");
+  }
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+void Publish_t2s(char* Topic, String Method, String State, String Data) // this void is used to send messages in topic
+{   
+  StaticJsonDocument<1024> doc;
+  Serial.print("Message to: ");
+  Serial.println(Topic);
+  Serial.print("Message: ");
+  doc["method"] = Method;
+  doc["state"] =  State;
+  if(Data != "")//in case a data (integer value) was handed as parameter
+  {
+    doc["file_location"] = Data;
+  }
+  doc["play_from_file"] = true;
+  
+  //create a buffer that holds the serialized JSON message
+  //int msg_length = measureJson(doc) + 1;                    //measureJson return value doesn't count the null-terminator
+  char message[1024]; 
   serializeJson(doc, message); // Generate the minified JSON                        
   
  

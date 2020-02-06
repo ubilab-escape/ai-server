@@ -480,7 +480,7 @@ void w_input()
   Publish("8/puzzle/simon", "status", sta, text);
   
   error++;
-     //Publish("2/ledstrip/serverroom", "trigger", "rgb", red);   // turn red the room lights
+     Publish("2/ledstrip/serverroom", "trigger", "rgb", red);   // turn red the room lights
      Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
      Publish("8/rack", "TRIGGER", "rgb", red);   
      
@@ -492,7 +492,7 @@ void w_input()
      
      delay(2000);
      
-     //Publish("2/ledstrip/serverroom", "trigger", "rgb", dimmed);   // dimmed the room lights
+     Publish("2/ledstrip/serverroom", "trigger", "rgb", dimmed);   // dimmed the room lights
      Publish("8/puzzle/maze", "trigger", "rgb", off);   // turn off the server lights
      Publish("8/rack", "TRIGGER", "rgb", off);   
 }
@@ -506,8 +506,10 @@ void puzzle_correct()
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
   
-  //Publish("2/textToSpeech", "message", "", "Do not press the big red button");   // Scary message from Stasis
   
+  
+  Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3");
+  //Publish("2/textToSpeech", "message", "", "Do not press the big red button");
   while(digitalRead(14) != LOW && sta == "active")
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
