@@ -21,8 +21,6 @@
   static String split (String s, char parser, int index);
   static void MQTTPublishMAZE(String st);
   static void MQTTPublishIP(String st);
-  static void MQTTLightControl(String st, String dat);
-  static void MQTTLightEverywhere(String st, String dat);
   static void MQTTLightControlRack( String dat);
   static void MQTTLightControlRackEye( String dat);
   static void MQTTSpeech(String dat);

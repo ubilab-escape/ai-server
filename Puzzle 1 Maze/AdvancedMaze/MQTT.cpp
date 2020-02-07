@@ -204,42 +204,6 @@ void MQTT::MQTTPublishIP( String st) // this void is used to send messages in to
   client.publish(MQTTtopicIP, output);
   //doc.clear();
 }
-void MQTT::MQTTLightControl(String st, String dat) // this void is used to send messages in topic
-{
-  //doc.clear();
-  //Serial.print("Message sent on topic: ");
- // Serial.println(LightControllerTopic);
-  //Serial.print(". Message: ");
-  doc["METHOD"] = "TRIGGER";
-  doc["STATE"] = st;
-  doc["DATA"] = dat;
-  char output[128];
-  serializeJson(doc, output);
-  doc.clear();
-  //Serial.println(output);
-  client.publish(LightControllerTopic, output);
-  //doc.clear();
-}
-void MQTT::MQTTLightEverywhere(String st, String dat) // this void is used to send messages in topic
-{
-  //doc.clear();
-  //Serial.print("Message sent on topic: ");
- // Serial.println(LightControllerTopic);
-  //Serial.print(". Message: ");
-  doc["METHOD"] = "TRIGGER";
-  doc["STATE"] = st;
-  doc["DATA"] = dat;
-  char output[128];
-  serializeJson(doc, output);
-  doc.clear();
-  //Serial.println(output);
-  
-  client.publish("2/ledstrip/serverroom", output);
-  client.publish("2/ledstrip/labroom/north", output);
-  client.publish("2/ledstrip/labroom/south", output);
-  client.publish("2/ledstrip/labroom/middle", output);
-  //doc.clear();
-}
 void MQTT::MQTTLightControlRack(String dat) // this void is used to send messages in topic
 {
   //doc.clear();
@@ -303,5 +267,5 @@ String MQTT::split(String s, char parser, int index) {
       return s.substring(rFromIndex,rToIndex);
     } else parserCnt++;
   }
-  return s.substring(rFromIndex,s.length());;
+  return s.substring(rToIndex,s.length());;
 }

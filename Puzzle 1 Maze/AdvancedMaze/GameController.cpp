@@ -16,21 +16,16 @@ void GameController::checkState()
   
   if (Display().maze.failFlag && !Display().maze.deathFlag)
   {
-    MQTT().MQTTSpeech(FailPhrase[random(10)]);
-    MQTT().MQTTSpeech(RestartPhrase);
+    MQTT().MQTTSpeech(FailPhrase[random(PhrasesCount)]);
     Display().startAnimation(RANDOM_BLINKING, 120, 120, 0); 
     MQTT().msg ="Fail: "+String(Display().maze.lifes)+" left";
     MQTT().MQTTPublishMAZE("failed");
-    //MQTT().MQTTLightControl("power","on");
-    //MQTT().MQTTLightControl("rgb", "255,250,0");
     MQTT().MQTTLightControlRack("120,120,0");
     
     delay(3000);
     MQTT().MQTTSpeech(RestartedPhrase);
     MQTT().msg ="Maze: "+ String(Display().maze.lifes)+" left";
     MQTT().MQTTPublishMAZE("active");
-    //MQTT().MQTTLightControl("power", "on");
-    //MQTT().MQTTLightControl("rgb", "0,0,0");
     MQTT().MQTTLightControlRack("0,0,120");
     Display().startAnimation(GAME, 0, 0, 0);
     Display().maze.resurect();
@@ -38,15 +33,12 @@ void GameController::checkState()
   }
   if (Display().maze.deathFlag)
   {
-    MQTT().MQTTSpeech(FailPhrase[random(10)]);
-    MQTT().MQTTSpeech(RestartPhrase);
+    MQTT().MQTTSpeech(FailPhrase[random(PhrasesCount)]);
    Display().startAnimation(RANDOM_BLINKING, 120, 0, 0);
    MQTT().msg ="Death: restarting";
    MQTT().MQTTPublishMAZE("failed");
-   //MQTT().MQTTLightControl("power","on");
-   //MQTT().MQTTLightControl("rgb", "255,0,0");
    MQTT().MQTTLightControlRack("255,0,0");
-    delay(5000);
+    delay(3000);
     MQTT().MQTTSpeech(RestartedPhrase);
    MQTT().msg ="Maze: "+ String(Display().maze.lifes)+" left";
    MQTT().MQTTPublishMAZE("active");
@@ -60,6 +52,7 @@ void GameController::checkState()
   if (Display().maze.completedFlag)
   {
     MQTT().msg ="Maze solved";
+
     MQTT().MQTTPublishMAZE("active");
     // MQTT().MQTTLightControl("rgb", "255,0,0");
      MQTT().MQTTLightControlRack("255,0,0");
