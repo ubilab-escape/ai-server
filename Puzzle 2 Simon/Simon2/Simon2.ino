@@ -93,6 +93,7 @@ String red = "255,0,0";
 String dimmed = "100,100,100";
 String off = "0,0,0";
 String blue = "0,0,120";
+String green = "0,255,0";
 
 
 
@@ -121,7 +122,7 @@ void setup()
   xTaskCreate(
                     Wifi_Task,          /* Task function. */
                     "Wifi_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     3,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -131,7 +132,7 @@ void setup()
   xTaskCreate(
                     OTA_Task,          /* Task function. */
                     "OTA_Task",        /* String with name of task. */
-                    10000,            /* Stack size in bytes. */
+                    30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
                     NULL);            /* Task handle. */
@@ -189,6 +190,10 @@ void Wifi_Task( void * parameter )
 // --------------------------------- OTA Setup ---------------------------------
 void OTA_Task( void * parameter )
 {
+  while(WiFi.waitForConnectResult() != WL_CONNECTED)
+  {
+    delay(1000);
+   }
   ArduinoOTA.setHostname("Simon");
   ArduinoOTA.setPassword("1");
   ArduinoOTA
@@ -255,10 +260,13 @@ void loop()
 { 
   if (Simon_active == true && Simon_solved == false)  // Active game
   {
-    Publish("8/rack", "TRIGGER", "rgb", off); 
     Publish("8/puzzle/simon", "status", sta, text);
+    
     puzzle_simon();
-    Publish("8/rack", "TRIGGER", "rgb", blue);
+    
+    Publish("8/rack", "TRIGGER", "rgb", green);  
+    Publish("8/puzzle/maze", "trigger", "rgb", green);
+    
     Simon_active = false;
   }
   
@@ -481,10 +489,11 @@ void w_input()
   Publish("8/puzzle/simon", "status", sta, text);
   
   error++;
-  
-  if (error ==  1) Publish("2/textToSpeech", "message", "", "come on, It is not that difficult");
-  if (error ==  2) Publish("2/textToSpeech", "message", "", "no no no, that one is not");
-  if (error ==  3) Publish("2/textToSpeech", "message", "", "Let me change the sequence, maybe it is too easy");
+
+  if(error == 1) Publish("2/textToSpeech", "message", "", "come on, it is not that difficult");
+  if(error == 2) Publish("2/textToSpeech", "message", "", "no no no, that one is not");
+  if(error == 3) Publish("2/textToSpeech", "message", "", "Let me change the sequence, maybe it is too easy");
+
   
      Publish("2/ledstrip/serverroom", "trigger", "rgb", red);   // turn red the room lights
      Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
@@ -496,11 +505,11 @@ void w_input()
      delay(500);
      ledcWriteTone(channel1, 0);
      
-     delay(2000);
+     delay(2500);
      
      Publish("2/ledstrip/serverroom", "trigger", "rgb", dimmed);   // dimmed the room lights
-     Publish("8/puzzle/maze", "trigger", "rgb", off);   // turn off the server lights
-     Publish("8/rack", "TRIGGER", "rgb", off);   
+     Publish("8/puzzle/maze", "trigger", "rgb", green);   // turn off the server lights
+     Publish("8/rack", "TRIGGER", "rgb", green);   
 }
 
 
@@ -511,11 +520,12 @@ void puzzle_correct()
   //Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
+  Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
+  Publish("8/rack", "TRIGGER", "rgb", red);  
   
   
-  
-  //Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3");
-  Publish("2/textToSpeech", "message", "", "Do not press the big red button");
+  Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3");
+  //Publish("2/textToSpeech", "message", "", "Do not press the big red button");
   while(digitalRead(14) != LOW && sta == "active")
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
@@ -543,7 +553,9 @@ void puzzle_correct()
       }
     }
   }
-    
+
+  Publish("8/puzzle/maze", "trigger", "rgb", green);   // turn red the server lights
+  Publish("8/rack", "TRIGGER", "rgb", green);  
   text = "big-red-button pressed";
   sta = "solved";
   Publish("8/puzzle/simon", "status", sta, text);
