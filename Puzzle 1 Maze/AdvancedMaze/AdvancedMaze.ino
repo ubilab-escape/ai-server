@@ -214,6 +214,7 @@ delay(10000);
     {
       if (MQTT().IPnewstate == "active")
       {
+        MQTT().MQTTSpeech(IPPhrase);
         MQTT().msg ="Forced activation";
         Serial.println("S1");
         workmode = 1;

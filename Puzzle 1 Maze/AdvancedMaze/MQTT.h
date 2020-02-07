@@ -25,6 +25,7 @@
   static void MQTTLightEverywhere(String st, String dat);
   static void MQTTLightControlRack( String dat);
   static void MQTTLightControlRackEye( String dat);
+  static void MQTTSpeech(String dat);
   static void clientloop();
    static String IPstate;
    static String IPnewstate;

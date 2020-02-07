@@ -26,6 +26,7 @@ String  MQTT::MAZEstate = "inactive";
 String  MQTT::IPnewstate = "inactive";
 bool MQTT::IPstatechanged = false;
 String  MQTT::IPstate = "inactive";
+const char* MQTTtopicSpeach =  "2/textToSpeech";
 const char* MQTTtopicMAZE =  "8/puzzle/maze";
 const char* MQTTtopicIP =  "8/puzzle/IP";
 const char* LightControllerTopic =  "2/ledstrip/serverroom";
@@ -269,6 +270,22 @@ void MQTT::MQTTLightControlRackEye(String dat) // this void is used to send mess
   //Serial.println(output);
   doc.clear();
   client.publish(RackLightControllerTopic, output);
+  //doc.clear();
+}
+void MQTT::MQTTSpeech(String dat) // this void is used to send messages in topic
+{
+  //doc.clear();
+  //Serial.print("Message sent on topic: ");
+  //Serial.println(RackLightControllerTopic);
+  //Serial.print(". Message: ");
+  doc["method"] = "MESSAGE";
+  //doc["state"] = "eye";
+  doc["data"] = dat;
+  char output[128];
+  serializeJson(doc, output);
+  //Serial.println(output);
+  doc.clear();
+  client.publish(MQTTtopicSpeach, output);
   //doc.clear();
 }
 
