@@ -1,10 +1,41 @@
 # Puzzle 2 - Simon didn't say. 
 
-#### In a nutshell
+### In a nutshell
 
-The main plan is to design a code in such a way that a sequence of five colors is shown in a random way, this sequence that given a series of conditions (check Instructions_Simon.pdf) will have to be modified by the players, which will then have to be entered by pressing colored buttons.
+The main plan is to design a code in such a way that a sequence of five colors is shown, this showed sequence must be then modified by the group by defined set of conditions (check Instructions_Simon.pdf) and inserted by pressing the correct buttons. If a mistake is made (wrong button), the team has two more posibilities, otherwise, the sequence is changed. 
 
-The players have three chances, in case they fail -bad color modification- the color sequence changes. 
+The group has three chances, in case they fail -conditions applied incorrectly or wrong button pressed- the color sequence changes. 
+
+### Hardware
+
+The components used are listed below. These are used as they were acquired, so no modification is necessary for their implementation.
+
+#### Hardware
+- 1x ESP32
+- 5x 60mm push type buttons (color assorted)
+- 1x 100mm push type button (red)
+- 1x Buzzer
+- 1x Generic 5V 1A power supply with micro usb cable 
+- 1x Perfboard
+- 30x Male headers
+- 15x Female crimp pins  
+
+
+#### Connection schematic
+
+To facilitate and strengthen the connection of the ESP32 and the different cables, a small plate was manufactured in perfboard.
+
+For the input from the buttons, the internal pull down resistor of the ESP32 was activated on each corresponding pin.
+
+The buttons have an internal resistance in the LED, so they are not considered in the schematic.
+
+<p align="center">
+  <img src="https://i.ibb.co/7ym6HCj/circuit.png" width="85%" /> 
+</p>
+
+### Software
+
+
 
 | Nº | OUTPUT      | INPUT         |
 |:----:|:---------------:|:---------------:|
@@ -36,9 +67,6 @@ Expected JSON messages on topic `8/puzzle/simon`
 
 Note: data IS case sensitive.
 
-### Used hardware
-- 1x ESP32
-- 5x 60mm push type buttons (color assorted)
-- 1x 100mm push type button (red)
-- Buzzer
-- 5V Power supply with micro usb cable 
+
+
+

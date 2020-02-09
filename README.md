@@ -2,14 +2,14 @@
 
 The information contained in this readme document ~~is highly classified and~~ will be modified constantly, so it is advisable to review it constantly to keep abreast of the latest decisions, puzzles and code outputs.
 
-## Getting Started
+## Motivation
 **Group 8** are the designers and builders of the server room, the temple where the brain of a high-tech artificial intelligence called **"STASIS"** is located and all the equipment necessary to keep it running.
 
 Our responsibilities are: 
 
 * The manufacture of the technical equipment that allows STASIS to remain in operation, through the use of state-of-the-art materials and technologies.
 
-* The design and implementation of complex algorithms to prevent access to STASIS source code and the two wires that allow it to be shut down directly and "casually" open all the doors leading to a safe and direct exit from the high-security complex.
+* The design and implementation of complex algorithms to prevent access to STASIS source code and the two exposed wires that allow it to be shut down directly leading to a safe and direct exit from the high-security complex aka: Escape Room.
 
 ### Team
 * Cristina Maurette
@@ -19,23 +19,24 @@ Our responsibilities are:
 ### Work done and on-going
 - [x] Every one ready on slack
 - [x] Everyone should commit at least once
-- [x] Speak with @ubilab-escape/environment about lighting inside room.
-- [x] Speak with @ubilab-escape/prototype about prototype shape and puzzle integration.
 - [x] Design puzzles 
-- [x] Design server racks
+- [x] Design mock servers
 - [x] Bill of materials
-- [ ] Software of puzzle 1
-- [ ] Hardware of puzzle 1
-- [ ] Software of puzzle 2 
-- [ ] Hardware of puzzle 2
-- [ ] Contruct both mock server 
+- [x] Hardware of puzzle 1
+- [x] Hardware of puzzle 2
+- [x] Fabrication of both mock servers 
+- [x] Speak with Environment group about usar interation lighting effects and text-to-speech.
+- [x] Speak with Prototype group to define shape and size of their puzzle.
+- [x] Software of puzzle 1
+- [x] Software of puzzle 2 
 
 
-# The Server Room
-Information here is highly volatile.
 
-## Dynamic
-We analyze the Escape Room (ER) as a sequence of stages, being in our responsability, the last one. Thus, given the following flow chart, we infere this sequence:
+
+
+
+## The Server Room
+We analyze the Escape Room as a sequence of stages, being our responsability, the last one. Thus, given the following flow chart, we infere this sequence:
 <p align="center">
   <img src="https://i.ibb.co/Xsz3R65/Flow-Diagram.png" width="85%" /> 
 </p>
@@ -65,10 +66,8 @@ Statis goes rouge.
 ### Stage 1.5
 This is not a proper stage, but a sequence of event which we think is good for story developing.
 
-Since STASIS detects a data/security breach, it infers (is an artificial intelligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator arrives soon enough.  
-
-
-> Note: With environment team (**Group 2**) -if they agree- we can design a sort of aggressive environment with light and sound. The idea is to increase stress level of players.     
+Since STASIS detects a data/security breach, it infers (is an artificial intelligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator will arrive soon enough.  
+  
 
 
 ### Stage 2 (Kill Stasis)
@@ -84,31 +83,31 @@ The main idea behind these puzzles is composed of a set of small puzzles, which 
 
 The dynamic of the puzzles is based on a constant communication similar to a "Keep talking an nobody dies". The participants can adopt two roles:
 
-* Operator: Is the one who physically faces the puzzle. His role is to describe the characteristics of the puzzle and according to the commands of the instructor, solve it. 
-* Instructor: Can be one or more people. Given the description given by the operator, his responsibility is to interpret the information received, decrypt the solution of the puzzle and tell the operator how to solve it.
+* Player: Is the one who physically faces the puzzle. His role is to describe the characteristics of the puzzle and according to the commands of the instructor, solve it. 
+* Instructor: Can be one or more people. Given the description given by the player, his responsibility is to interpret the information received, decrypt the solution of the puzzle and tell the player how to solve it.
 
 The instructions for the puzzles can be located outside the server room (photos on the wall, posters, etc.). 
 
-Given the above, at least two people must solve the room tasks together in constant communication and also constant under pressure, which can lead to errors in their execution. 
+Given the above, at least two people must solve the room tasks together in constant communication and also under constant pressure, which can lead to errors in their execution. 
 
 
 ### Maze
-In this puzzle the operator faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the operator can move one point to the position of the other without making mistakes. 
+In this puzzle the player faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the player can move one point to the position of the other without making mistakes. 
 
-How do errors occur? It turns out that both points are actually inside a maze, which the operator cannot see on his interface. To solve the maze, the instructor must find the solution hidden somewhere and point out the solution correctly.
+How do errors occur? It turns out that both points are actually inside a maze, which the player cannot see on his interface. To solve the maze, the instructor must find the solution hidden somewhere and point out the solution correctly.
 
 Example:
 
-In the figure, on the left is the operator's side and on the right is the solution for the instructor. Once the operator indicates the position of both points, the instructor will be able to identify the solution and deliver it.
+In the figure, on the left is what the player sees and on the right is the solution mean for the instructor. Once the player indicates the position of both points, the instructor will be able to identify the solution and transmit it.
 
 <p align="center">
   <img src="https://i.ibb.co/qjjNtwR/maze.png" width="70%" />
 </p>
 <p align="center">
-Figure: Left, what the operator faces. Right, solution map for instructor.
+Figure: Left, what the player faces. Right, solution map for instructor.
 </p> 
 
-**Note:** If the operator presses a button leading to a wrong sequence, the puzzle is restarted with the markers in different positions.<br/>
+**Note:** If the player presses a button leading to a wrong sequence, the puzzle is restarted with the markers in different positions.<br/>
 <br/>
 
 The solution for the maze showed in the figure above would be:
@@ -116,24 +115,12 @@ The solution for the maze showed in the figure above would be:
 ↑ → ↑ ← ↑ ↑ ↑ ↑ ↑ ← ← ← ↓ ← ← ↑
 ```
 
-In addition, the complexity of the labyrinths may vary depending on what is defined in previous tests. 
-<p align="center">
-  <img src="https://i.ibb.co/71gz9Xd/maze2.png" width="70%" />
-</p>
-<p align="center">
-
-The solution to that maze is: 
-```
-← ↑ → ↑ → ↓ → ↓ → ↑ ↑ → → ↑ ← ↑ ← ↓ ← ← ↑ → ↑ ← ↑ → ↑ ← ← ↓ ↓ ← ↑ ↑
-```
-
-
-### Simon didn't say that
-A slightly more complex version of the traditional "Simon Says" game. Here, the operator must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
+### Simon *did not* say 
+A slightly more complex version of the traditional "Simon Says" game. Here, the player must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
 
 As an example:  
 
-The operator faces the following sequence of colors: 
+The player faces the following sequence of colors: 
 ```
 Red → White → Pink → Green    
 ```
@@ -146,7 +133,7 @@ Yellow  →  Blue
 Pink    →  White 
 White   →  Green 
 ```
-The instructor should tell the operator to press the following sequence:  
+The instructor should tell the player to press the following sequence:  
 ```
 Yellow → Green → White → Pink
 ```
