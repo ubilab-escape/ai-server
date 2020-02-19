@@ -11,7 +11,7 @@
                                                                |___/     
 
 //----------------------------------------------------------------------------------------------------------------//   
-    Code based on Group 4 "Wifi_MQTT_Json_Motor.ino"   
+    Code based on Group 4 (Operator??) "Wifi_MQTT_Json_Motor.ino" code   
 
 //----------------------------------------------------------------------------------------------------------------// 
 */
@@ -27,6 +27,7 @@ long mdnsUpdate = millis();
 String sta = "inactive";          // Simon status
 bool sta_change = false;
 String text = "waiting...";
+
 // Light Publish-variables
 String light_option = "";
 bool Simon_active = false;

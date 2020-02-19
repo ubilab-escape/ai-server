@@ -1,8 +1,8 @@
 /*
 //----------------------------------------------------------------------------------------------------------------//                            
-                                        Group 8                               
-                  _____ _                          _____                 
-                 / ____(_)                        / ____|                
+                                        Group 8                              
+                  _____                            _____                 
+                 / ____|                          / ____|                
                 | (___  _ _ __ ___   ___  _ __   | (___   __ _ _   _ ___ 
                  \___ \| | '_ ` _ \ / _ \| '_ \   \___ \ / _` | | | / __|
                  ____) | | | | | | | (_) | | | |  ____) | (_| | |_| \__ \
@@ -13,14 +13,25 @@
 //----------------------------------------------------------------------------------------------------------------//   
   
    This Code Does:
-     - Play Simon didn't say puzzle with 5 different combinations
+     - Handles Simon didn't say puzzle with 5 different combinations
      - Connects to WiFI
      - Handles Over The Air code updates
-     - Handles MQTT comunication            
+     - Handles MQTT comunication
+     - Correctly reacts to MQTT triggers.            
  
    This code is not:
      - yet perfect
 
+   Last correct implementation: 07/02/2020
+   Last untested modification:  19/02/2020  
+
+   Further improvements:
+     - Visual reaction to correct input (Green lights)
+     - Clear some memory 
+     - Check how ESP handle interrupts and implement accordingly to inputs
+     - ESP ping delay avg 150ms (Home test)
+     - Optimize stack size of tasks
+      
 //-----------------------------------------------------------------------------------------------------------------//  
    
     Out_Pin    G:13 / W:12 / Y:2   / B:27  / R:26
@@ -39,18 +50,14 @@
 #include <EEPROM.h>
 #include <ESPmDNS.h>
 
-#define DEBUG
-
-// WiFi + OTA 
-//const char* ssid = "Guaripolo 2.4GHz";
-//const char* password = "Internet1";
+#define DEBUG // Release serial.print memory usage. 
 
 const char* ssid = "ubilab_wifi";
 const char* password = "ohg4xah3oufohreiPe7e";
  
 // Buttons 
 
-int show[]={13,12,2,27,26}; // Initial led wave to draw user attention (also used in setup() to define output pins)
+int show[]={13,12,2,27,26};   // Initial led wave to draw user attention (also used in setup() to define output pins)
 int input[]={18,19,21,22,23}; // Used in setup() to define input pins
 
 // Sequences      G:13 / W:12 / Y:2   / B:27  / R:26
@@ -73,22 +80,23 @@ int sol[7][5]={{18,23,23,21,21},    // G, R, R, Y, Y
 
 
 int input_sequence[5];
-int pinCount = 5; // Should be constant since is the button counter, but maybe in tests we use less buttons.
+int pinCount = 5; // Should be constant since is the button counter. (Duriing tests we use less buttons)
 int code;
-int randnum; // Random selection of puzzle (row of matrix)
-int error;
+int randnum; // Variable to randomly select the sequence (row of matrix)
+int error;   // Error counter
         
-// Buzzer 
-const int brb = 5; // BRB because it is a big red button
+// Buzzer and Big red button PWM settings
+const int brb = 5; // BRB pin
+const int buzz = 4; // Buzzer pin
 const int freq = 2000;
 const int channel = 0;
 const int resolution = 8;
 int channel1 = 1;
-const int buzz = 4;
+
 
 unsigned long previousMillis = 0;
 
-// Light control
+// Light controls
 String red = "255,0,0";
 String dimmed = "100,100,100";
 String off = "0,0,0";
@@ -104,24 +112,25 @@ void setup()
   #ifdef DEBUG
   Serial.begin(115200);
   #endif
-  //mdnsUpdate = millis();
-  
-  
-  
+ 
 
-  for (int i = 0; i < pinCount; i++) 
+  for (int i = 0; i < pinCount; i++) //Output (leds) and input (buttons) pin mode setup
   {
     pinMode(show[i], OUTPUT);
     pinMode(input[i], INPUT_PULLUP);
   }
-  pinMode(14,INPUT_PULLUP);
+  pinMode(14,INPUT_PULLUP); // BRB inut
   ledcSetup(channel, freq, resolution);  
   ledcAttachPin(brb, channel);
   ledcAttachPin(buzz, channel1);
 
+
+  // Tasks are explained below the definition. 
+  // For more setup parameters info, please refrain to https://docs.espressif.com/projects/esp-idf/en/latest/api-guides/freertos-smp.html
+  
   xTaskCreate(
-                    Wifi_Task,          /* Task function. */
-                    "Wifi_Task",        /* String with name of task. */
+                    Wifi_Task,        /* Task function. */
+                    "Wifi_Task",      /* String with name of task. */
                     30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     3,                /* Priority of the task. */
@@ -130,8 +139,8 @@ void setup()
 
 
   xTaskCreate(
-                    OTA_Task,          /* Task function. */
-                    "OTA_Task",        /* String with name of task. */
+                    OTA_Task,         /* Task function. */
+                    "OTA_Task",       /* String with name of task. */
                     30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
@@ -140,8 +149,8 @@ void setup()
 
 
   xTaskCreate(
-                    Reconnect_Task,          /* Task function. */
-                    "Reconnect_Task",        /* String with name of task. */
+                    Reconnect_Task,   /* Task function. */
+                    "Reconnect_Task", /* String with name of task. */
                     30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
@@ -149,8 +158,8 @@ void setup()
   
 
   xTaskCreate(
-                    Publish_Task,          /* Task function. */
-                    "Publish_Task",        /* String with name of task. */
+                    Publish_Task,     /* Task function. */
+                    "Publish_Task",   /* String with name of task. */
                     30000,            /* Stack size in bytes. */
                     NULL,             /* Parameter passed as input of the task */
                     1,                /* Priority of the task. */
@@ -160,9 +169,9 @@ void setup()
 
 
 // --------------------------------- Wifi Setup ---------------------------------
-void Wifi_Task( void * parameter )
+void Wifi_Task( void * parameter ) 
 {
- WiFi.mode(WIFI_STA);
+ WiFi.mode(WIFI_STA); //ESP defined as Station mode. 
  WiFi.begin(ssid, password);
  while (WiFi.waitForConnectResult() != WL_CONNECTED) 
   {
@@ -174,7 +183,7 @@ void Wifi_Task( void * parameter )
     Serial.println("Connected");
     Setup(); 
   }
- for(;;)
+ for(;;) //Every 5 seconds check connection status
   {
     if (WiFi.waitForConnectResult() != WL_CONNECTED) 
     {
@@ -190,12 +199,12 @@ void Wifi_Task( void * parameter )
 // --------------------------------- OTA Setup ---------------------------------
 void OTA_Task( void * parameter )
 {
-  while(WiFi.waitForConnectResult() != WL_CONNECTED)
+  while(WiFi.waitForConnectResult() != WL_CONNECTED) //First check wifi status
   {
     delay(1000);
    }
-  ArduinoOTA.setHostname("Simon");
-  ArduinoOTA.setPassword("1");
+  ArduinoOTA.setHostname("Simon"); 
+  ArduinoOTA.setPassword("1"); //Simon password, because security matters.
   ArduinoOTA
     .onStart([]() {
       String type;
@@ -203,8 +212,6 @@ void OTA_Task( void * parameter )
         type = "sketch";
       else // U_SPIFFS
         type = "filesystem";
-  
-      // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
       Serial.println("Start updating " + type);
     })
     .onEnd([]() {
@@ -224,7 +231,7 @@ void OTA_Task( void * parameter )
     
   ArduinoOTA.begin();
 
-   for(;;)
+   for(;;) //Every 200ms check if an OTA request is received.
    {
     ArduinoOTA.handle();
     delay(200);
@@ -235,7 +242,7 @@ void OTA_Task( void * parameter )
 // --------------------------------- Reconnect and Publish ---------------------------------
 void Reconnect_Task( void * parameter )
 {
-  delay(5000);
+  delay(5000); //Every 5 seconds check MQTT conection to the server. 
   for(;;)
   {
     Reconnect(); 
@@ -245,11 +252,10 @@ void Reconnect_Task( void * parameter )
 
 void Publish_Task( void * parameter )
 {
-  delay(5000);
+  delay(5000); //Every 5+3 seconds publish last defined state to mantain server conection. 
   for(;;)
   {   
-    Publish("8/puzzle/simon", "status", sta, text);
-    
+    Publish("8/puzzle/simon", "status", sta, text);    
     delay(3000);
   }
 }
@@ -260,13 +266,12 @@ void loop()
 { 
   if (Simon_active == true && Simon_solved == false)  // Active game
   {
-    Publish("8/puzzle/simon", "status", sta, text);
-    
-    puzzle_simon();
-    
+    Publish("8/puzzle/simon", "status", sta, text);  
+      
+    puzzle_simon(); //Function which starts Simon puzzle sequence
+       
     Publish("8/rack", "TRIGGER", "rgb", green);  
-    Publish("8/puzzle/maze", "trigger", "rgb", green);
-    
+    Publish("8/puzzle/maze", "trigger", "rgb", green);    
     Simon_active = false;
   }
   
@@ -283,16 +288,16 @@ void loop()
 // --------------------------------- SIMON ---------------------------------
 void puzzle_simon() 
 { 
-    while(Simon_solved == false && sta == "active"){
-      code = choosecode();
+    while(Simon_solved == false && sta == "active"){ //Checks if Operator sent an active trigger and that Simon has not been previously solved.
+      code = choosecode(); //For "random" sequence selection
       
       Serial.print("Simon didn't say puzzle nº ");
       Serial.println(code);
       
-      error = 0;
+      error = 0; 
       preamble();  
                        
-      while(error < 3 && Simon_solved == false && sta == "active")
+      while(error < 3 && Simon_solved == false && sta == "active") //While error is < 3 the same sequence remains, when bigger, sequence changes
       {
         sequence_show(error);         // Here is where simon[][] is showed to the user.
         Serial.print("User input: ");
@@ -308,7 +313,7 @@ void puzzle_simon()
 // --------------------------------- Choose random input ---------------------------------
 int choosecode()
 {
-    randnum = random(0,6); 
+    randnum = random(0,6); //Number defined sequences. 
     return randnum;
 } // end of choosecode()
 
@@ -316,7 +321,7 @@ int choosecode()
 // --------------------------------- Preamble Sequence ---------------------------------
 void preamble() 
 {
-  Serial.println("Showing preamble");
+  Serial.println("Showing preamble"); //Just to draw players attention and give some time to realize what is happening/comming. 
   for (int k = 0; k < 5; k++) 
   {
     
@@ -332,7 +337,6 @@ void preamble()
       digitalWrite(27, LOW);
       digitalWrite(26, LOW);
       delay(400);      
-      //tone(buzz,800,10); //Commented bcz is super annoying
   }
   delay(1500);
 } // end of preamble()
@@ -346,12 +350,12 @@ void sequence_read()
   Publish("8/puzzle/simon", "status", sta, text);
   
   int flag = 0; // This is the state toggle. Analize inputs, when detected flag == 1. 
-              // The logic is while inputs are correct, while function remains. if the whole sequence is correct (correctly compared), for function ends and final sequence -puzzle_correct()- starts 
+                // The logic is while inputs are correct the -while- function remains. If the whole sequence is correct (correctly compared), the -for- function ends and the final sequence -puzzle_correct()- starts 
 
   for (int i = 0; i < pinCount; i++)
   {
     flag = 0;
-    while(flag == 0 && sta == "active")
+    while(flag == 0 && sta == "active") //The 5 buttons are constantly checked. Incorrect input triggers w_input();, correct input triggers c_input();
     {
         if (digitalRead(18) == LOW) 
         {
@@ -442,7 +446,7 @@ void sequence_read()
     } 
   }
 
-  if (sta == "active"){
+  if (sta == "active"){ //When all inputs are correctly compared, Puzzle status changed and ending sequence called.
     text = "puzzle decoded";
     Publish("8/puzzle/simon", "status", sta, text);
     Simon_solved = true;
@@ -453,7 +457,7 @@ void sequence_read()
 
 
 // --------------------------------- Show Sequence ---------------------------------
-void sequence_show(int x)
+void sequence_show(int x) 
 {
   if(sta == "active"){
       text = "showing pattern";
@@ -472,7 +476,6 @@ void sequence_show(int x)
           ledcWriteTone(channel1, 0);
           digitalWrite(simon[code][s], LOW);
           delay(300);
-          //tone(buzz,800,10); //Commented bcz is super annoying
         }
         Serial.println(" ");
   }
@@ -480,36 +483,38 @@ void sequence_show(int x)
 
 
 // --------------------------------- Wrong input ---------------------------------
-void w_input()
+void w_input() //When players press the wrong button
 {
   Serial.println(" ");
   Serial.println("Input error, puzzle incorrect");
   
   text = "wrong button";
-  Publish("8/puzzle/simon", "status", sta, text);
+  Publish("8/puzzle/simon", "status", sta, text); //Server data update.
   
-  error++;
+  error++; //Remember the counter, if larger than 3, Sequence will change
 
+  //This is the auditive reaction to the user input, only three different text-2-speech options.
   if(error == 1) Publish("2/textToSpeech", "message", "", "come on, it is not that difficult");
   if(error == 2) Publish("2/textToSpeech", "message", "", "no no no, that one is not");
   if(error == 3) Publish("2/textToSpeech", "message", "", "Let me change the sequence, maybe it is too easy");
 
+   //This is the visual reaction to the user, lights turn red. 
+   Publish("2/ledstrip/serverroom", "trigger", "rgb", red);   // turn red the room lights
+   Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
+   Publish("8/rack", "TRIGGER", "rgb", red);   
+   
+   ledcWriteTone(channel1, 200);
+   delay(200);
+   ledcWriteTone(channel1, 100);
+   delay(500);
+   ledcWriteTone(channel1, 0);
+   
+   delay(2500);
   
-     Publish("2/ledstrip/serverroom", "trigger", "rgb", red);   // turn red the room lights
-     Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
-     Publish("8/rack", "TRIGGER", "rgb", red);   
-     
-     ledcWriteTone(channel1, 200);
-     delay(200);
-     ledcWriteTone(channel1, 100);
-     delay(500);
-     ledcWriteTone(channel1, 0);
-     
-     delay(2500);
-     
-     Publish("2/ledstrip/serverroom", "trigger", "rgb", dimmed);   // dimmed the room lights
-     Publish("8/puzzle/maze", "trigger", "rgb", green);   // turn off the server lights
-     Publish("8/rack", "TRIGGER", "rgb", green);   
+   //Serverroom lights back to previous state
+   Publish("2/ledstrip/serverroom", "trigger", "rgb", dimmed);   // dimmed the room lights
+   Publish("8/puzzle/maze", "trigger", "rgb", green);   // turn off the server lights
+   Publish("8/rack", "TRIGGER", "rgb", green);   
 }
 
 
@@ -517,16 +522,14 @@ void w_input()
 void puzzle_correct()
 {
   
-  //Publish_Light("2/ledstrip/serverroom", "TRIGGER", "rgb", off);   // turn off the room lights
   Serial.println(" ");
   Serial.println("Puzzle correctly solved");
   Publish("8/puzzle/maze", "trigger", "rgb", red);   // turn red the server lights
   Publish("8/rack", "TRIGGER", "rgb", red);  
   
   
-  Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3");
-  //Publish("2/textToSpeech", "message", "", "Do not press the big red button");
-  while(digitalRead(14) != LOW && sta == "active")
+  Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3"); //Enviroment team plays auditive reaction to induce player to press the big red button
+  while(digitalRead(14) != LOW && sta == "active") //Big red button glows
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
     {     
@@ -554,17 +557,17 @@ void puzzle_correct()
     }
   }
 
-  Publish("8/puzzle/maze", "trigger", "rgb", green);   // turn red the server lights
+  Publish("8/puzzle/maze", "trigger", "rgb", green);   // turn green the server lights
   Publish("8/rack", "TRIGGER", "rgb", green);  
   text = "big-red-button pressed";
   sta = "solved";
-  Publish("8/puzzle/simon", "status", sta, text);
+  Publish("8/puzzle/simon", "status", sta, text); //Server update, Puzzle state solved
       
 } // end of puzzle_correct()
 
 
 // --------------------------------- Correct input ---------------------------------
-void c_input()
+void c_input() //Just an auditive reaction to a correct input.
 {
      text = "correct button";
      Publish("8/puzzle/simon", "status", sta, text);

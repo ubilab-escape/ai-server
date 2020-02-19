@@ -11,7 +11,7 @@
                                                                  |___/     
 
 //----------------------------------------------------------------------------------------------------------------//   
-    Code based on Group 4 "Wifi_MQTT_Json_Motor.ino"   
+    Code based on Group 4 (Operator??) "Wifi_MQTT_Json_Motor.ino" code    
 
 //----------------------------------------------------------------------------------------------------------------// 
 */
@@ -23,7 +23,6 @@
 #define MAX_MDNS_LEN 16
 #define MDNS_START_ADDRESS 0
 
-//mdns - broadcasting name for OTA
 char mdnsName[MAX_MDNS_LEN] = {'\0'};
 
 const IPAddress mqttServerIP(10,0,0,2); //Main server Ip 
@@ -69,7 +68,6 @@ void Setup()
 --------------------------------------------------------------------------------------------------------------------------------------------------------
     Function: Callback
     
-    IMPORTANTE: Falta agregar las condiciones propias de Simon 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 void Callback(char* topic, byte* payload, unsigned int length) 
