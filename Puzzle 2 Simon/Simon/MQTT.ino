@@ -1,17 +1,17 @@
 /*
 //----------------------------------------------------------------------------------------------------------------//                            
                                         Group 8                               
-                  _____ _                          _____                 
-                 / ____(_)                        / ____|                
-                | (___  _ _ __ ___   ___  _ __   | (___   __ _ _   _ ___ 
-                 \___ \| | '_ ` _ \ / _ \| '_ \   \___ \ / _` | | | / __|
-                 ____) | | | | | | | (_) | | | |  ____) | (_| | |_| \__ \
-                |_____/|_|_| |_| |_|\___/|_| |_| |_____/ \__,_|\__, |___/
-                                                                __/ |    
-                                                               |___/     
+                    _____ _                          _____                 
+                   / ____(_)                        / ____|                
+                  | (___  _ _ __ ___   ___  _ __   | (___   __ _ _   _ ___ 
+                   \___ \| | '_ ` _ \ / _ \| '_ \   \___ \ / _` | | | / __|
+                   ____) | | | | | | | (_) | | | |  ____) | (_| | |_| \__ \
+                  |_____/|_|_| |_| |_|\___/|_| |_| |_____/ \__,_|\__, |___/
+                                                                  __/ |    
+                                                                 |___/     
 
 //----------------------------------------------------------------------------------------------------------------//   
-    Code based on Group 4 "Wifi_MQTT_Json_Motor.ino"  
+    Code based on Group 4 "Wifi_MQTT_Json_Motor.ino"   
 
 //----------------------------------------------------------------------------------------------------------------// 
 */
@@ -30,7 +30,8 @@ const IPAddress mqttServerIP(10,0,0,2); //Main server Ip
 
 const String clientId = "Group8_puzzle_simon";
 const char* Maze = "8/puzzle/maze";
-
+const char* Simon = "8/puzzle/simon";
+//const String Kwargs = "{'TextType': 'ssml', VoiceId='Brian', LanguageCode='en-GB'}";
 
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
@@ -93,34 +94,42 @@ void Callback(char* topic, byte* payload, unsigned int length)
   if (error) {
     Serial.print(F("deserializeJson() failed: "));
     Serial.println(error.c_str());
+    //Serial.println(error);
     return;
   }
 
   //first puzzle controller handles only method and state
   String Method = doc["method"];
   String State = doc["state"];
-  String Data = doc["data"]; //should be 0 if not data argument was received (see https://arduinojson.org/v6/doc/deserialization/ --> 3.3.3 in pdf) 
+  String Data = doc["data"]; 
+  String Topic = topic;
 
-  if(Method == "STATUS" && State == "solved")
-  { // waiting for maze to be solved
-
-    //set 
-    mazesolved = true;
-    Serial.println();
-    Serial.println();
-    Serial.println();
-    Serial.print(mazesolved);
-    Serial.println();
-    Serial.println();
-    Serial.println();
-    
-    //respond to activation message
-    //{"method":"STATUS","state":"active", "data":"opening"}
-    //Publish("MQTT_8_puzzle_simon", "status", "active", "");
-
+  if(Topic == Simon && Method == "trigger" && State == "off")                        // Reset puzzle  
+  { 
+          Simon_active = false;
+          Simon_solved = false;
+          sta = "inactive";
+          text = "waiting...";
+          sta_change = true;
   }
-  
+  if(Topic == Simon && Method == "trigger" && State == "off" && Data == "skipped")   // Puzzle solved + reset  
+  { 
+          Simon_active = false;
+          Simon_solved = true;
+          sta = "solved";
+          text = "skipped";
+          sta_change = true;
   }
+  if(Topic == Simon && Method == "trigger" && State == "on")                        // Puzzle active 
+  { 
+          Simon_active = true;
+          Simon_solved = false;
+          sta = "active";
+          text = "";
+          
+  }
+
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -131,11 +140,13 @@ void Reconnect() // this void resubscribes to topics on start or in case of disc
    {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect(clientId.c_str())) 
+   // if (client.connect(clientId.c_str())) 
+      if (client.connect("Simon"))
       { // change clientName to name of your device
         Serial.println("connected");
         // Subscribe to all topics you need here
         client.subscribe(Maze);
+        client.subscribe(Simon);
       } 
     
     else 
@@ -153,97 +164,79 @@ void Reconnect() // this void resubscribes to topics on start or in case of disc
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void Publish(String topic_name, String Method, String State, String Data) // this void is used to send messages in topic
+void Publish(char* Topic, String Method, String State, String Data) // this void is used to send messages in topic
 {   
-  //Example:
-  //                              {"method":"STATUS",  "state":"active",  "data":"closing"}
-  //   mqtt_publish("MQTT_4_door_entrance", "STATUS",          "active",         "closing");
-
-  //Create the JSON format
-  //const int capacity = JSON_ARRAY_SIZE(length_of_array) + 2*JSON_OBJECT_SIZE(3)
-  //allocate a Json Document
   StaticJsonDocument<300> doc;
+  Serial.print("Message to: ");
+  Serial.println(Topic);
+  Serial.print("Message: ");
   doc["method"] = Method;
-  doc["state"] = State;
-
-
-  //in case a data (integer value) was handed as parameter
-  if(Data != "")
+  doc["state"] =  State;
+  if(Data != "")//in case a data (integer value) was handed as parameter
   {
     doc["data"] = Data;
   }
 
+
   //create a buffer that holds the serialized JSON message
-  int msg_length = measureJson(doc) + 1;                    //measureJson return value doesn't count the null-terminator
-  char JSONmessageBuffer[msg_length];                         
-  // Generate the minified JSON and send it to the Serial port.
+  //int msg_length = measureJson(doc) + 1;                    //measureJson return value doesn't count the null-terminator
+  char message[128]; 
+  serializeJson(doc, message); // Generate the minified JSON                        
+  
+ 
   #ifdef DEBUG
   Serial.print("JSON message created for publishing: ");
-  serializeJson(doc, Serial);
-  Serial.println();
+  Serial.println(message);  
   #endif
-  // Generate the minified JSON and save it in the message buffer
-  serializeJson(doc, JSONmessageBuffer, sizeof(JSONmessageBuffer));
 
   //send the JSON message to the specified topic
-  if (client.publish(topic_name.c_str(), JSONmessageBuffer) == false) 
-  {
-    Serial.println("Error sending message");
-  }
 
-    if (client.publish(topic_name.c_str(), JSONmessageBuffer) == true) 
+    if (client.publish(Topic, message) == true) 
   {
     Serial.println("Message sent");
   }
+   else 
+  {
+    Serial.println("Error sending message");
+  }
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void initMDNS() {
-  // Load the MDNS name from eeprom
-  EEPROM.begin(2*MAX_MDNS_LEN);
+void Publish_t2s(char* Topic, String Method, String State, String Data) // this void is used to send messages in topic
+{   
+  StaticJsonDocument<1024> doc;
+  Serial.print("Message to: ");
+  Serial.println(Topic);
+  Serial.print("Message: ");
+  doc["method"] = Method;
+  doc["state"] =  State;
+  if(Data != "")//in case a data (integer value) was handed as parameter
+  {
+    doc["file_location"] = Data;
+  }
+  doc["play_from_file"] = true;
   
-  char * name = getMDNS();
-  if (strlen(name) == 0) 
+  //create a buffer that holds the serialized JSON message
+  //int msg_length = measureJson(doc) + 1;                    //measureJson return value doesn't count the null-terminator
+  char message[1024]; 
+  serializeJson(doc, message); // Generate the minified JSON                        
+  
+ 
+  #ifdef DEBUG
+  Serial.print("JSON message created for publishing: ");
+  Serial.println(message);  
+  #endif
+
+  //send the JSON message to the specified topic
+
+    if (client.publish(Topic, message) == true) 
   {
-    Serial.println(F("Info:Sth wrong with mdns"));
-    //use clientID as default mdns name
-    strcpy(name, clientId.c_str());
+    Serial.println("Message sent");
   }
-  // Setting up MDNs with the given Name
-  Serial.print(F("Info:MDNS Name: ")); Serial.println(name);
-  if (!MDNS.begin(String(name).c_str())) 
-  {             // Start the mDNS responder for esp8266.local
-    Serial.println(F("Info:Error setting up MDNS responder!"));
-  }
-}
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
-
-char * getMDNS() 
-{
-  uint16_t address = MDNS_START_ADDRESS;
-  uint8_t chars = 0;
-  EEPROM.get(address, chars);
-  address += sizeof(chars);
-  if (chars < MAX_MDNS_LEN) 
+   else 
   {
-    EEPROM.get(address, mdnsName);
+    Serial.println("Error sending message");
   }
-  return mdnsName;
-}
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
-
-void writeMDNS(const char * newName) {
-  uint16_t address = MDNS_START_ADDRESS;
-  uint8_t chars = strlen(newName);
-  EEPROM.put(address, chars);
-  address += sizeof(chars);
-  for (uint8_t i = 0; i < chars; i++) EEPROM.put(address+i, newName[i]);
-  EEPROM.put(address+chars, '\0');
-  EEPROM.commit();
 }
