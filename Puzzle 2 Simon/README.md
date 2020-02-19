@@ -37,7 +37,7 @@ The buttons have an internal resistance in the LED, so they are not considered i
 
 
 <p align="center">
-  <img src="https://i.ibb.co/GQT59Gz/flow.png" width="85%" /> 
+  <img src="https://i.ibb.co/98cCF6m/Flow-d.png" width="85%" /> 
 </p>
 
 
