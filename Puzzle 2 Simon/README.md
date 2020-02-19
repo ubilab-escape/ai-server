@@ -23,9 +23,9 @@ The components used are listed below. These are used as they were acquired, so n
 
 #### Connection schematic
 
-To facilitate and strengthen the connection of the ESP32 and the different cables, a small plate was manufactured in perfboard.
+To facilitate and strengthen the connection to the ESP32, a small plate was manufactured in perfboard.
 
-For the input from the buttons, the internal pull down resistor of the ESP32 was activated on each corresponding pin.
+For the input of the ESP32 (coming from the buttons), the internal pull down resistor of the ESP32 was activated on each corresponding pin.
 
 The buttons have an internal resistance in the LED, so they are not considered in the schematic.
 
@@ -34,6 +34,11 @@ The buttons have an internal resistance in the LED, so they are not considered i
 </p>
 
 ### Software
+
+
+<p align="center">
+  <img src="https://i.ibb.co/GQT59Gz/flow.png" width="85%" /> 
+</p>
 
 
 
