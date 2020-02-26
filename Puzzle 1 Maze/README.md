@@ -1,8 +1,8 @@
 # Maze puzzle
 
-This folder contains source [code](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze/AdvancedMaze) and other files of the Maze puzzle. 
+This folder contains the source [code](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze/AdvancedMaze) and other files of the Maze puzzle. 
 
-##Legend
+## Legend
 
 You are private secret agent and you got wery important information which you must send to your customer as soon as possible using available servers. The problem is, that most of the routers in the local network contain firewalls which blocks any data comming through. You are limited in time and attempts, but you must find a path through to the internet.
 
