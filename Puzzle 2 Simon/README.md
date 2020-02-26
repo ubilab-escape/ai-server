@@ -2,7 +2,7 @@
 
 ### In a nutshell
 
-The main plan is to design a code in such a way that a sequence of five colors is shown, this showed sequence must be then modified by the group by defined set of conditions (check Instructions_Simon.pdf) and inserted by pressing the correct buttons. If a mistake is made (wrong button), the team has two more posibilities, otherwise, the sequence is changed. 
+The main plan is to design a code in such a way that a sequence of five colors is shown, this showed sequence must be then modified by the group by defined set of conditions (check **[Instructions_Simon](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%202%20Simon/Poster/Instructions_Simon.pdf)**) and inserted by pressing the correct buttons. If a mistake is made (wrong button), the team has two more posibilities, otherwise, the sequence is changed. 
 
 The group has three chances, in case they fail -conditions applied incorrectly or wrong button pressed- the color sequence changes. 
 
@@ -10,7 +10,6 @@ The group has three chances, in case they fail -conditions applied incorrectly o
 
 The components used are listed below. These are used as they were acquired, so no modification is necessary for their implementation.
 
-#### Hardware
 - 1x ESP32
 - 5x 60mm push type buttons (color assorted)
 - 1x 100mm push type button (red)
@@ -35,12 +34,15 @@ The buttons have an internal resistance in the LED, so they are not considered i
 
 ### Software
 
+The **[code](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%202%20Simon/Simon/Simon.ino)** is done in arduino format and its flow diagram is shown below.
 
 <p align="center">
   <img src="https://i.ibb.co/vq7xXsW/Flow-d.png" width="85%" /> 
 </p>
 
+#### Color Sequences
 
+Predetermined color sequences (randomly choosed) are shown in the table. A limited number of sequences is used (instead of a random generator) to simplify the puzzle runs.
 
 | Nº | OUTPUT      | INPUT         |
 |:----:|:---------------:|:---------------:|
@@ -52,22 +54,23 @@ The buttons have an internal resistance in the LED, so they are not considered i
 | 5  | W, Y, B, W, G | W, Y, B, W, R |
 | 6  | B, G, Y, Y, R | G, Y, R, R, Y |
 
+| B ≡ Blue ; Y ≡ Yellow ; R ≡ Red ; G ≡ Green ; W ≡ White |
 
-#### Syntaxis to control the puzzle
+#### Syntaxis to control the puzzle using MQTT
 
 Expected JSON messages on topic `8/puzzle/simon`
 
-* Force the puzzle state as active ≈ initial state, skipping the requirement of ending MAZE first. 
+* Forces the puzzle state as **active** ≈ reset puzzle and start of sequence.
 ```json
-{"method": "TRIGGER", "state": "on", "data": "start" }
+{"method": "trigger", "state": "on", "data": "" }
 ```
-* Force puzzle to end, skipping the big red button sequence. It is meant for ending the Escape Room quickly. 
+* Forces puzzle state as **solved** ≈ skipped puzzle. 
 ```json
-{"method": "TRIGGER", "state": "off", "data": "end" }
+{"method": "trigger", "state": "off", "data": "skipped" }
 ```
-* Force final stage of the puzzle, which is to press the big red button to kill STASIS.
+* Forces puzzle state as **inactive** ≈ reset puzzle.
 ```json
-{"method": "TRIGGER", "state": "on", "data": "brb" }
+{"method": "trigger", "state": "off", "data": "" }
 ```
 
 Note: data IS case sensitive.
