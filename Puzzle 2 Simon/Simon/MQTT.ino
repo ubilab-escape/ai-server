@@ -35,22 +35,6 @@ const char* Simon = "8/puzzle/simon";
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);
 
-long lastMsg = 0;
-char msg[50];
-int value = 0;
-
-void wifi()
-{  
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  mdnsUpdate = millis();
-  while (WiFi.waitForConnectResult() != WL_CONNECTED) 
-  {
-    Serial.println("Connection Failed! Rebooting...");
-    delay(5000);
-    ESP.restart();
-  }
-}
 
 /*
 --------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,7 +86,7 @@ void Callback(char* topic, byte* payload, unsigned int length)
   String Data = doc["data"]; 
   String Topic = topic;
 
-  if(Topic == Simon && Method == "trigger" && State == "off")                        // Reset puzzle  
+  if(Topic == Simon && Method == "trigger" && State == "off")                        // Reset puzzle and puzzle state inactive
   { 
           Simon_active = false;
           Simon_solved = false;
@@ -110,7 +94,7 @@ void Callback(char* topic, byte* payload, unsigned int length)
           text = "waiting...";
           sta_change = true;
   }
-  if(Topic == Simon && Method == "trigger" && State == "off" && Data == "skipped")   // Puzzle solved + reset  
+  if(Topic == Simon && Method == "trigger" && State == "off" && Data == "skipped")   // Reset puzzle and puzzle state solved
   { 
           Simon_active = false;
           Simon_solved = true;
@@ -118,7 +102,7 @@ void Callback(char* topic, byte* payload, unsigned int length)
           text = "skipped";
           sta_change = true;
   }
-  if(Topic == Simon && Method == "trigger" && State == "on")                        // Puzzle active 
+  if(Topic == Simon && Method == "trigger" && State == "on")                        // Puzzle active and starts puzzle_simon()
   { 
           Simon_active = true;
           Simon_solved = false;

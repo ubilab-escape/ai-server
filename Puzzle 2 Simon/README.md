@@ -54,7 +54,7 @@ Predetermined color sequences (randomly choosed) are shown in the table. A limit
 | 5  | W, Y, B, W, G | W, Y, B, W, R |
 | 6  | B, G, Y, Y, R | G, Y, R, R, Y |
 
-| B ≡ Blue ; Y ≡ Yellow ; R ≡ Red ; G ≡ Green ; W ≡ White |
+_B ≡ Blue ; Y ≡ Yellow ; R ≡ Red ; G ≡ Green ; W ≡ White_
 
 #### Syntaxis to control the puzzle using MQTT
 

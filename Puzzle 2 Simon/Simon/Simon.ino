@@ -321,7 +321,7 @@ int choosecode()
 // --------------------------------- Preamble Sequence ---------------------------------
 void preamble() 
 {
-  Serial.println("Showing preamble"); //Just to draw players attention and give some time to realize what is happening/comming. 
+  Serial.println("Showing preamble"); //Just to draw players attention and give some time to realize what is happening/coming. 
   for (int k = 0; k < 5; k++) 
   {
     
@@ -349,13 +349,13 @@ void sequence_read()
   text = "waititng input..";
   Publish("8/puzzle/simon", "status", sta, text);
   
-  int flag = 0; // This is the state toggle. Analize inputs, when detected flag == 1. 
+  int flag = 0; // This is the state toggle. To analize inputs, when detected flag == 1. 
                 // The logic is while inputs are correct the -while- function remains. If the whole sequence is correct (correctly compared), the -for- function ends and the final sequence -puzzle_correct()- starts 
 
   for (int i = 0; i < pinCount; i++)
   {
     flag = 0;
-    while(flag == 0 && sta == "active") //The 5 buttons are constantly checked. Incorrect input triggers w_input();, correct input triggers c_input();
+    while(flag == 0 && sta == "active") //The 5 buttons are constantly checked. Incorrect input triggers w_input();, correct input triggers c_input(); If the state is changed to 'solved' or 'inactive' (MQTT) then the puzzle is interrupted.
     {
         if (digitalRead(18) == LOW) 
         {
@@ -446,10 +446,10 @@ void sequence_read()
     } 
   }
 
-  if (sta == "active"){ //When all inputs are correctly compared, Puzzle status changed and ending sequence called.
+  if (sta == "active"){ //When all inputs are correctly compared ending sequence is called.
     text = "puzzle decoded";
     Publish("8/puzzle/simon", "status", sta, text);
-    Simon_solved = true;
+    Simon_solved = true; //Variable used to exit function puzzle_simon() after red button is pushed
     
     puzzle_correct();     // This is the puzzle ending sequence. 
   }
@@ -459,7 +459,7 @@ void sequence_read()
 // --------------------------------- Show Sequence ---------------------------------
 void sequence_show(int x) 
 {
-  if(sta == "active"){
+  if(sta == "active"){  //If the status is changed to 'solved' or 'inactive' the puzzle is interrupted
       text = "showing pattern";
       Publish("8/puzzle/simon", "status", sta, text);
       
@@ -528,7 +528,7 @@ void puzzle_correct()
   Publish("8/rack", "TRIGGER", "rgb", red);  
   
   
-  Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3"); //Enviroment team plays auditive reaction to induce player to press the big red button
+  Publish_t2s("2/textToSpeech", "message", "", "simon_says.mp3"); //Environment team plays auditive reaction to induce player to press the big red button
   while(digitalRead(14) != LOW && sta == "active") //Big red button glows
   {
     for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++)
