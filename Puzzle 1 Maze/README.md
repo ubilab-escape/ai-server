@@ -23,7 +23,7 @@ In the figure, on the left is what the player sees and on the right is the solut
 Figure: Left, what the player faces. Right, solution map for instructor.
 </p> 
 
-**Note:** If the player presses a button leading to the firewall, the puzzle is restarted with the markers in different positions.<br/>
+**Note:** If the player fail (presses a button leading to the firewall), the puzzle is restarted with the markers in different positions.<br/>
 <br/>
 
 The solution for the maze showed in the figure above would be:
@@ -33,12 +33,34 @@ The solution for the maze showed in the figure above would be:
 ### Required materials
 
 * ESP 32 as a brain of the system with Wi-Fi
-* Arduino board for interface with the LCD display
+* Arduino Uno board for interface with the LCD display
+* ESP32 and Arduino Uno are communiocating via serial port.
 * RGB address strip used as display
 * Numpad with 3D printed [holder](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%201%20Maze/3D%20Prints/Keypad_holder.stl)
 * LCD Display with 3D printed [holder](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%201%20Maze/3D%20Prints/LCD_holder.stl)
 
 * [Poster](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze/Poster) with instructions
+
+### Connectivity
+
+|ESP pin|Matrix Keypad Pin|LED matrix pin|Arduino Uno pin|
+|GPIO 12|PIN 0|-|-|
+|GPIO 14|PIN 1|-|-|
+|GPIO 27|PIN 2|-|-|
+|GPIO 26|PIN 3|-|-|
+|GPIO 0|PIN 4|-|-|
+|GPIO 33|PIN 5|-|-|
+|GPIO 32|PIN 6|-|-|
+|GPIO 13|PIN 7|-|-|
+|GPIO 17|-|-|D0|
+|GPIO 16|-|-|D1|
+|GPIO 23|-|IN|-|
+|GND|-|GND|GND|
+|VDD|-|VDD|+5V|
+
+<p align="center">
+  <img src="https://ibb.co/6v0W9dw" width="70%" />
+</p>
 
 
 ### Work done and on-going
@@ -52,6 +74,8 @@ The solution for the maze showed in the figure above would be:
 
 
 ## Compilation of the project
+
+### ESP32 setup
 
 1. Install Arduino IDE
 https://www.arduino.cc/en/Main/Software
@@ -71,29 +95,21 @@ https://github.com/bblanchon/ArduinoJson
 6. Install library for the MQTT from here:
 https://github.com/knolleary/pubsubclient
 
-7. Select ESP32 Dev Module from board manager and press compile
+7. Select ESP32 Dev Module from board manager and upload AdvancedMaze.ino sketch to the ESP32
+
+### Arduino Uno setup
+
+1. Install Elegoo GFX Library
+https://github.com/wkelly1/EES/tree/master/lib/Elegoo_GFX
+
+2. Upload IP.ino sketch to the arduino Uno
 
 
-All relevant vesrions of libraries are provided [here](https://github.com/ubilab-escape/ai-server/tree/master/Libraries)
+All used vesrions of libraries are provided [here](https://github.com/ubilab-escape/ai-server/tree/master/Libraries)
 
 
-## Plagiarism
 
-All code is written based on original documentation such as:
-1. [arduino](https://www.arduino.cc/en/main/docs)
-2. [ESP32](https://docs.espressif.com/projects/esp-idf/en/latest/)
-3. [freeRTOS](https://www.freertos.org/Documentation/RTOS_book.html)
- 
-and examples of libraries:
-
-1. [FastLED](https://github.com/FastLED/FastLED)
-2. [Keypad](https://www.arduinolibraries.info/libraries/keypad)
-3. [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
-4. [PubSubClient](https://github.com/knolleary/pubsubclient)
-
-so it may contain some unreferenced parts/blocks of provided in documentations/examples code.
-
-### Syntaxis to control the puzzle using MQTT
+### Syntaxis to control the MAZE puzzle using MQTT
 
 Expected JSON messages on topic `8/puzzle/maze`
 
@@ -111,3 +127,39 @@ Expected JSON messages on topic `8/puzzle/maze`
 ```
 
 Note: data IS case sensitive.
+### Syntaxis to control the IP puzzle using MQTT
+
+Expected JSON messages on topic `8/puzzle/IP`
+
+* Forces the puzzle state as **active** ≈ reset puzzle and starts the game.
+```json
+{"method": "trigger", "state": "on", "data": "" }
+```
+* Forces puzzle state as **solved** ≈ skipped puzzle. 
+```json
+{"method": "trigger", "state": "off", "data": "skip" }
+```
+* Forces puzzle state as **inactive** ≈ reset puzzle.
+```json
+{"method": "trigger", "state": "off", "data": "" }
+```
+
+Note: data IS case sensitive.
+
+Both buzzles are controlled with ESP32! Arduino Uno is used just for screen amination!!!
+
+## Plagiarism
+
+All code is written based on original documentation such as:
+1. [arduino](https://www.arduino.cc/en/main/docs)
+2. [ESP32](https://docs.espressif.com/projects/esp-idf/en/latest/)
+3. [freeRTOS](https://www.freertos.org/Documentation/RTOS_book.html)
+ 
+and examples of libraries:
+
+1. [FastLED](https://github.com/FastLED/FastLED)
+2. [Keypad](https://www.arduinolibraries.info/libraries/keypad)
+3. [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
+4. [PubSubClient](https://github.com/knolleary/pubsubclient)
+
+so it may contain some unreferenced parts/blocks of provided in documentations/examples code.
