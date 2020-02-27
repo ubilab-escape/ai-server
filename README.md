@@ -144,7 +144,7 @@ All information about the servers and the LED-lighting is found in the Servers +
 
 #### Fabrication
 
-For a detailed view of what is being ordered in the first and second items, please refer to the pdf [documents](https://github.com/ubilab-escape/ai-server/blob/master/Servers%20%2B%20LEDs%20code/OSB-Platte%20Cutlist%20(12mm).pdf) in the [Servers + LEDs code folder](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code). 
+For a detailed view of what is being ordered in the first and second items, please refer to the pdf [documents](https://github.com/ubilab-escape/ai-server/blob/master/Servers%20%2B%20LEDs%20code/OSB-Platte%20Cutlist%20(12mm).pdf) in the Servers + LEDs code [folder](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code). 
 
 |  Name  | Qty. | Link | Price | Comment |
 | ------------- | :---:  |------------- |:---  | ------------- |
