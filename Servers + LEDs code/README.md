@@ -41,7 +41,7 @@ _data can also be a number between 0-255_
 |VDD|VDD|
 
 <p align="center">
-  <img src="https://ibb.co/F4Ttpgt" width="70%" />
+  <img src="https://ibb.co/F4Ttpgt/2.png" width="70%" />
 </p>
 
 

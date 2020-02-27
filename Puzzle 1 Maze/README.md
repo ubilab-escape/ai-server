@@ -43,23 +43,24 @@ The solution for the maze showed in the figure above would be:
 
 ### Connectivity
 
-|ESP pin|Matrix Keypad Pin|LED matrix pin|Arduino Uno pin|
-|GPIO 12|PIN 0|-|-|
-|GPIO 14|PIN 1|-|-|
-|GPIO 27|PIN 2|-|-|
-|GPIO 26|PIN 3|-|-|
-|GPIO 0|PIN 4|-|-|
-|GPIO 33|PIN 5|-|-|
-|GPIO 32|PIN 6|-|-|
-|GPIO 13|PIN 7|-|-|
-|GPIO 17|-|-|D0|
-|GPIO 16|-|-|D1|
-|GPIO 23|-|IN|-|
-|GND|-|GND|GND|
-|VDD|-|VDD|+5V|
+| ESP pin | Matrix Keypad Pin | LED matrix pin | Arduino Uno pin |
+| --- | --- | --- | --- |
+| GPIO 12 | PIN 0 | | |
+| GPIO 14 | PIN 1 | | |
+| GPIO 27 | PIN 2 | | |
+| GPIO 26 | PIN 3 | | |
+| GPIO 0 | PIN 4 | | |
+| GPIO 33 | PIN 5 | | |
+| GPIO 32 | PIN 6 | | |
+| GPIO 13 | PIN 7 | | |
+| GPIO 17 | | |D0|
+| GPIO 16 | | | D1 |
+| GPIO 23 | |IN | |
+| GND | |GND | GND |
+| VDD ||VDD | +5V |
 
 <p align="center">
-  <img src="https://ibb.co/6v0W9dw" width="70%" />
+  <img src="https://i.ibb.co/CJKHCr8/Untitled-Sketch-bb.png" width="70%" />
 </p>
 
 
