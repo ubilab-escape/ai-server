@@ -72,3 +72,21 @@ and examples of libraries:
 
 so it may contain some unreferenced parts/blocks of provided in documentations/examples code.
 
+### Syntaxis to control the puzzle using MQTT
+
+Expected JSON messages on topic `8/puzzle/maze`
+
+* Forces the puzzle state as **active** ≈ reset puzzle and starts the game.
+```json
+{"method": "trigger", "state": "on", "data": "" }
+```
+* Forces puzzle state as **solved** ≈ skipped puzzle. 
+```json
+{"method": "trigger", "state": "off", "data": "skip" }
+```
+* Forces puzzle state as **inactive** ≈ reset puzzle.
+```json
+{"method": "trigger", "state": "off", "data": "" }
+```
+
+Note: data IS case sensitive.

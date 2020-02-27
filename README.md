@@ -1,6 +1,7 @@
 # AI-Server &amp; Puzzles
 
-The information contained in this readme document ~~is highly classified and~~ will be modified constantly, so it is advisable to review it constantly to keep abreast of the latest decisions, puzzles and code outputs.
+The information contained in this readme document ~~is highly classified and~~ describes the fabrication and coding for different puzzles implemented in the **UbiLab - Escape Room**.
+
 
 ## Motivation
 **[Group 8](https://github.com/ubilab-escape/ai-server)** are the designers and builders of the server room, the temple where the brain of a high-tech artificial intelligence called **"STASIS"** is located and all the equipment necessary to keep it running.
@@ -16,7 +17,7 @@ Our responsibilities are:
 * Konstantin Kuliabin
 * Claudio Ray 
 
-### Work done and on-going
+### Work done
 - [x] Every one ready on slack
 - [x] Everyone should commit at least once
 - [x] Design puzzles 
@@ -29,10 +30,6 @@ Our responsibilities are:
 - [x] Speak with Prototype group to define shape and size of their puzzle.
 - [x] Software of puzzle 1
 - [x] Software of puzzle 2 
-
-
-
-
 
 
 ## The Server Room
@@ -67,8 +64,6 @@ Statis goes rouge.
 This is not a proper stage, but a sequence of event which we think is good for story developing.
 
 Since STASIS detects a data/security breach, it infers (is an artificial intelligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator will arrive soon enough.  
-  
-
 
 ### Stage 2 (Kill Stasis)
 In this final stage, players must locate STASIS core and solve the puzzle in order to shut it down (eliminate). 
@@ -77,19 +72,23 @@ At the same time, we think that STASIS should not have a silent death, so it cre
 
 The final puzzle (yet to be defined) once it is solved, a LED button turns ON, and once pressed the escape room is resolved, the doors open (talk to **Group 4**) and the lights return to normal.
 
+
 ## Puzzles
 
-The main idea behind these puzzles is composed of a set of small puzzles, which are distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence, each time a mini puzzle is solved, the next one is activated. To finish the room, all puzzles must be solved.
+The main idea behind these puzzles is composed of a set of small puzzles, which are distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence, each time a mini puzzle is solved, the next one is activated. To finish the room, all puzzles must be solved. The implemented puzzles (explained below) are called:
 
-The dynamic of the puzzles is based on a constant communication similar to a "Keep talking an nobody dies". The participants can adopt two roles:
+* Maze
+* Simon didn't say
+* IP
+
+The dynamic of the puzzles is based on a constant communication similar to a "Keep talking and nobody dies". The participants can adopt two roles:
 
 * Player: Is the one who physically faces the puzzle. His role is to describe the characteristics of the puzzle and according to the commands of the instructor, solve it. 
-* Instructor: Can be one or more people. Given the description given by the player, his responsibility is to interpret the information received, decrypt the solution of the puzzle and tell the player how to solve it.
+* Instructor: Can be one person or more. Using the descriptions given by the player, his/her/their responsibility is to interpret the information received, decrypt the solution of the puzzle and tell the player how to solve it.
 
-The instructions for the puzzles can be located outside the server room (photos on the wall, posters, etc.). 
+The instructions for the puzzles can be located outside/inside the server room (posters, drawings oly seen with UV light, etc.). 
 
 Given the above, at least two people must solve the room tasks together in constant communication and also under constant pressure, which can lead to errors in their execution. 
-
 
 ### Maze
 In this puzzle the player faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the player can move one point to the position of the other without making mistakes. 
@@ -115,39 +114,29 @@ The solution for the maze showed in the figure above would be:
 ↑ → ↑ ← ↑ ↑ ↑ ↑ ↑ ← ← ← ↓ ← ← ↑
 ```
 
-### Simon *did not* say 
+### Simon *didn't* say 
 A slightly more complex version of the traditional "Simon Says" game. Here, the player must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
 
-As an example:  
+All the information related to the puzzle: its fabrication and source code, is found in the [Puzzle 2 Simon folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon).
 
-The player faces the following sequence of colors: 
-```
-Red → White → Pink → Green    
-```
-And the instructor has the following relation:  
-```
-Red     →  Yellow 
-Green   →  Pink 
-Blue    →  Red 
-Yellow  →  Blue 
-Pink    →  White 
-White   →  Green 
-```
-The instructor should tell the player to press the following sequence:  
-```
-Yellow → Green → White → Pink
-```
+### IP 
+By the activation of the puzzle, the player is asked on the LCD screen to insert the IP address using the keyboard. The IP address (unknown by the players) is written on the walls of the server room and the escape room with a UV marker; in order to find it, a UV flashlight (placed inside the server room) must be used. 
+
+The source code and the information for the IP puzzle is found in the [Puzzle 3 IP folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP).
+
 
 ## Environment Design
-First, let's start by defining how we imagine the server part and how the components of each puzzle will be distributed. 
+First, let's start by defining how we imagine the server part and how the components of each puzzle are distributed. 
 
-In the sketch below (kudos to Cristina), it is possible to identify the server (1), which is where the puzzle "MAZE" and the IP sequence will be developed. A little lower, it is possible to identify the table or "desk" (2) where the puzzle "Simon didn't say" will be developed. Also, it may seem strange the gap that exists in one of the servers (the right one), but the purpose of that space is to give a defined volume to group 6 so they can implement their puzzle. 
+In the sketch below (kudos to Cristina), it is possible to identify the server (1), which is where the puzzles Maze and IP are developed. A little lower, it is possible to identify the table or "desk" (2) where the puzzle "Simon didn't say" is developed. Also, it may seem strange the gap that exists in one of the servers (the right one), but the purpose of that space is to give a defined volume to [Group 6](https://github.com/ubilab-escape/prototype) so they can implement their puzzle. 
 
 <p align="center">
   <img src="https://i.ibb.co/qFjp7jR/SR-G8.png" width="85%" /> 
 </p>
 
-The main construction material will be wood, due to its price and ease of work. The servers and the table will be constructed by means of an internal wooden frame, which will be covered with other wood planks and then painted. In addition, since these structures will be hollow inside, the lighting will be given by a large internal light source (led strip) and a series of holes in the external structure, thus avoiding the installation of individual LEDs. 
+The main construction material is wood, due to its price and ease of work. In addition, since these structures will be hollow inside, the lighting will be given by a large internal light source (LED strip) and a series of holes in the external structure.
+
+All information about the servers and the LED-lighting is found in the [Servers + LEDs code folder](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code).
 
 ### Bill of Materials
 
@@ -175,7 +164,7 @@ The main construction material will be wood, due to its price and ease of work. 
 
 #### Fabrication
 
-For a detailed view of what is being ordered in the first and second items, please refer to the pdf documents of the chipboard and Rahmenholz cutting list.The name of the documents is Cutlist_1 and Cutlist_2 respectively. 
+For a detailed view of what is being ordered in the first and second items, please refer to the pdf [documents](https://github.com/ubilab-escape/ai-server/blob/master/Servers%20%2B%20LEDs%20code/OSB-Platte%20Cutlist%20(12mm).pdf) in the [Servers + LEDs code folder](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code). 
 
 |  Name  | Qty. | Link | Price | Comment |
 | ------------- | :---:  |------------- |:---  | ------------- |
