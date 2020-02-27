@@ -35,10 +35,11 @@ _data can also be a number between 0-255_
 
 ### Connectivity
 
-|ESP pin|LED matrix pin|
-|GPIO 23|IN|
-|GND|GND|
-|VDD|VDD|
+| ESP pin | LED matrix pin |
+| ---| --- |
+| GPIO 23 | IN |
+| GND | GND |
+| VDD | VDD |
 
 <p align="center">
   <img src="https://ibb.co/F4Ttpgt/2.png" width="70%" />

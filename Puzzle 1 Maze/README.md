@@ -147,7 +147,7 @@ Expected JSON messages on topic `8/puzzle/IP`
 
 Note: data IS case sensitive.
 
-Both buzzles are controlled with ESP32! Arduino Uno is used just for screen amination!!!
+Both puzzles are controlled with ESP32! Arduino Uno is used just for screen amination!!!
 
 ## Plagiarism
 
