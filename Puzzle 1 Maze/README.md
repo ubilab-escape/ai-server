@@ -1,23 +1,44 @@
-# Maze puzzle
+# Puzzle 1 - Maze
 
 This folder contains the source [code](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze/AdvancedMaze) and other files of the Maze puzzle. 
 
 ## Legend
 
-You are private secret agent and you got wery important information which you must send to your customer as soon as possible using available servers. The problem is, that most of the routers in the local network contain firewalls which blocks any data comming through. You are limited in time and attempts, but you must find a path through to the internet.
+You are private secret agent and you got very important information which you must send to your customer as soon as possible using available servers. The problem is, that most of the routers in the local network contain firewalls which blocks any data comming through. You are limited in time and attempts, but you must find a path through to the internet.
 
 ## Getting Started
 
-Maze puzzle is a advanced version of well known puzzle, when you should find a correct path to the exit, but you dont see the obstacles. When you reach firewall it initiate disconnection from this subnet and you should start again with other subnet, other map and other position.
-To find right path, players should find a drawing of the maze. Then they shoud determine the right maze and corrent path according to the start and end point drawn on the screen.
+Maze puzzle is a advanced version of well known puzzle with a twist: finding a correct path to the exit without seeing the obstacles. If the player reaches the firewall it initiates disconnection from this subnet and the player should start again with other subnet and other position.
 
+To find right path, the players should find a [poster](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze/Poster) of the maze. Then, they shoud determine the corrent path according to the start and end point drawn on the screen.
+
+* Example:
+
+In the figure, on the left is what the player sees and on the right is the solution meant for the instructor. Once the player indicates the position of both points, the instructor is able to identify the solution and transmit it.
+
+<p align="center">
+  <img src="https://i.ibb.co/qjjNtwR/maze.png" width="70%" />
+</p>
+<p align="center">
+Figure: Left, what the player faces. Right, solution map for instructor.
+</p> 
+
+**Note:** If the player presses a button leading to the firewall, the puzzle is restarted with the markers in different positions.<br/>
+<br/>
+
+The solution for the maze showed in the figure above would be:
+```
+↑ → ↑ ← ↑ ↑ ↑ ↑ ↑ ← ← ← ↓ ← ← ↑
+```
 ### Required materials
 
 * ESP 32 as a brain of the system with Wi-Fi
+* Arduino board for interface with the LCD display
 * RGB address strip used as display
-* Buttons for movement
+* Numpad with 3D printed [holder](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%201%20Maze/3D%20Prints/Keypad_holder.stl)
+* LCD Display with 3D printed [holder](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%201%20Maze/3D%20Prints/LCD_holder.stl)
 
-* Poster with instructions
+* [Poster](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze/Poster) with instructions
 
 
 ### Work done and on-going

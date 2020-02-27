@@ -1,6 +1,6 @@
 # AI-Server &amp; Puzzles
 
-The information contained in this readme document ~~is highly classified and~~ describes the fabrication and coding for different puzzles implemented in the **UbiLab - Escape Room**.
+The information contained in this readme document ~~is highly classified and~~ describe the fabrication and coding for different puzzles implemented in the **UbiLab - Escape Room**.
 
 
 ## Motivation
@@ -33,26 +33,24 @@ Our responsibilities are:
 
 
 ## The Server Room
-We analyze the Escape Room as a sequence of stages, being our responsability, the last one. Thus, given the following flow chart, we infere this sequence:
+We analyze the Escape Room as a sequence of stages ending up in the server room (our responsability). Thus, given the following flow chart, we infere this sequence:
+
 <p align="center">
-  <img src="https://i.ibb.co/Xsz3R65/Flow-Diagram.png" width="85%" /> 
+  <img src="https://i.ibb.co/Z8tpMtK/flow-diagram-lab.png" width="85%" /> 
 </p>
 
-### Stage 0
-This stage is like the preamble or the conditions that are needed to start the next stage. 
+#### Stage 0
+This stage is like the preamble or the conditions that are needed to start the next stage. In this case would be to open the second door of the Escape Room to access the server room, finishing the puzzles of [Group 7](https://github.com/ubilab-escape/second-door).
 
-* Since mission briefing was self destroyed, players must have memorized the encrypted "IP" (Since that sequence has a sort of encryption, we have to provide it to **Group 3**).
-* Participants satisfactorily resolve the previous stage.
+#### Stage 1
+Once players can access the server room, the next stage is to send the data to the client, by finishing the [Group 6](https://github.com/ubilab-escape/prototype) puzzle and successfully solving:
 
-### Stage 1 (Send Data)
-Once players can access the prototype data, the next stage is to send that to the client. To do that, they must first successfully solve two puzzles:
+* [Maze](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze)
+* [IP](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP)
 
-* Decode encrypted IP
-* Solve first puzzle "Maze"
+The puzzles must be solved regardless of the order.
 
-In this case, the order of resolution of the puzzles is not so important because at the end, when the players resolve the maze, they must enter the decrypted IP in a fake terminal, and by fake we mean a screen with a keyboard that only compares the input with a given reference.
-
-Once the input matches the reference, a mock "Sending..." progress bar will appear, which means that the data is being sent properly until...
+Once the IP is inserted, a mock "Sending..." progress bar will appear, which means that the data is being sent properly until...
 
 <p align="center">
   <img src="https://media1.tenor.com/images/3f8b9aec89d8fc5395f3ad3d82f0d697/tenor.gif?itemid=14560182" width="35%" /> 
@@ -60,26 +58,24 @@ Once the input matches the reference, a mock "Sending..." progress bar will appe
 
 Statis goes rouge.
 
-### Stage 1.5
+#### Stage 1.5
 This is not a proper stage, but a sequence of event which we think is good for story developing.
 
-Since STASIS detects a data/security breach, it infers (is an artificial intelligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete lock-out expecting that a terminator will arrive soon enough.  
+Since STASIS detects a data/security breach, it infers (is an artificial intelligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete chaos environment expecting that a terminator will arrive soon enough. This is done by [Group 1](https://github.com/ubilab-escape/operator) and [Group 2](https://github.com/ubilab-escape/environment).
 
-### Stage 2 (Kill Stasis)
-In this final stage, players must locate STASIS core and solve the puzzle in order to shut it down (eliminate). 
+#### Stage 2
+In this final stage, players must locate STASIS core and solve the [Simon didn't say](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon) puzzle in order to shut it down (eliminate). 
 
-At the same time, we think that STASIS should not have a silent death, so it creates a lot of noise and variates the illumination (that decision is not ours) like a kid outburst.  
-
-The final puzzle (yet to be defined) once it is solved, a LED button turns ON, and once pressed the escape room is resolved, the doors open (talk to **Group 4**) and the lights return to normal.
+Once the puzzle is solved a big red button turns ON (while STASIS says "Do not press the big red button") and once pressed STASIS is killed and after the protoype is returned to its place the escape room is over, the doors open ([Group 4](https://github.com/ubilab-escape/first-door)) and the lights return to normal.
 
 
 ## Puzzles
 
 The main idea behind these puzzles is composed of a set of small puzzles, which are distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence, each time a mini puzzle is solved, the next one is activated. To finish the room, all puzzles must be solved. The implemented puzzles (explained below) are called:
 
-* Maze
-* Simon didn't say
-* IP
+	- Maze
+	- Simon didn't say
+	- IP
 
 The dynamic of the puzzles is based on a constant communication similar to a "Keep talking and nobody dies". The participants can adopt two roles:
 
@@ -90,39 +86,23 @@ The instructions for the puzzles can be located outside/inside the server room (
 
 Given the above, at least two people must solve the room tasks together in constant communication and also under constant pressure, which can lead to errors in their execution. 
 
-### Maze
+### Puzzle 1 - Maze
 In this puzzle the player faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the player can move one point to the position of the other without making mistakes. 
 
-How do errors occur? It turns out that both points are actually inside a maze, which the player cannot see on his interface. To solve the maze, the instructor must find the solution hidden somewhere and point out the solution correctly.
+How do errors occur? It turns out that both points are actually inside a maze, which the player cannot see on his interface. To solve the maze, the instructor must find the solution hidden on a poster somewhere and point it out correctly.
 
-Example:
+The information related to the puzzle: its components and source code, is found in the Puzzle 1 Maze [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze).
 
-In the figure, on the left is what the player sees and on the right is the solution mean for the instructor. Once the player indicates the position of both points, the instructor will be able to identify the solution and transmit it.
 
-<p align="center">
-  <img src="https://i.ibb.co/qjjNtwR/maze.png" width="70%" />
-</p>
-<p align="center">
-Figure: Left, what the player faces. Right, solution map for instructor.
-</p> 
-
-**Note:** If the player presses a button leading to a wrong sequence, the puzzle is restarted with the markers in different positions.<br/>
-<br/>
-
-The solution for the maze showed in the figure above would be:
-```
-↑ → ↑ ← ↑ ↑ ↑ ↑ ↑ ← ← ← ↓ ← ← ↑
-```
-
-### Simon *didn't* say 
+### Puzzle 2 - Simon *didn't* say 
 A slightly more complex version of the traditional "Simon Says" game. Here, the player must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
 
-All the information related to the puzzle: its fabrication and source code, is found in the [Puzzle 2 Simon folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon).
+All the information related to the puzzle: its fabrication and source code, is found in the Puzzle 2 Simon [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon).
 
-### IP 
+### Puzzle 3 - IP 
 By the activation of the puzzle, the player is asked on the LCD screen to insert the IP address using the keyboard. The IP address (unknown by the players) is written on the walls of the server room and the escape room with a UV marker; in order to find it, a UV flashlight (placed inside the server room) must be used. 
 
-The source code and the information for the IP puzzle is found in the [Puzzle 3 IP folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP).
+The source code and the information for the IP puzzle is found in the puzzle 3 IP [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP).
 
 
 ## Environment Design
@@ -136,7 +116,7 @@ In the sketch below (kudos to Cristina), it is possible to identify the server (
 
 The main construction material is wood, due to its price and ease of work. In addition, since these structures will be hollow inside, the lighting will be given by a large internal light source (LED strip) and a series of holes in the external structure.
 
-All information about the servers and the LED-lighting is found in the [Servers + LEDs code folder](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code).
+All information about the servers and the LED-lighting is found in the Servers + LEDs code [folder](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code).
 
 ### Bill of Materials
 

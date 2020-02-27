@@ -7,7 +7,7 @@ The second rack has the puzzle from [Group 6](https://github.com/ubilab-escape/p
 The **[code](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code/Sketch_4_SecondRack)** for the LEDs is done in arduino format.
 
 
-### Syntaxis to control the LEDs from second rack
+### Syntaxis to control the LEDs from second rack using MQTT
 
 Expected JSON messages on topic `8/rack`
 

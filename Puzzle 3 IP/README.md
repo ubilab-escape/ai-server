@@ -1,14 +1,17 @@
-# IP puzzle
+# Puzzle 3 - IP
 
 This folder contains the source [code](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%203%20IP/IP/IP.ino) and information of the IP puzzle.
 
 As explained, the player is asked on the LCD screen to insert the IP address hidden on the walls of the escape room and only visible using the UV flashlight (placed inside the server room).
+
+The components are the ones listed in the [Maze](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze) puzzle.
 
 The IP address is _128.0.32.16_, but it is written on the walls as:
 * A128
 * B0
 * C32
 * D16
+
 The letter and numbers must be inserted using the keyboard, as seen on the walls regardless of the order.
 
 
