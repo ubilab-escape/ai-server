@@ -56,7 +56,7 @@ Once the IP is inserted, a mock "Sending..." progress bar will appear, which mea
   <img src="https://media1.tenor.com/images/3f8b9aec89d8fc5395f3ad3d82f0d697/tenor.gif?itemid=14560182" width="35%" /> 
 </p>
 
-Statis goes rouge.
+STASIS goes rouge.
 
 #### Stage 1.5
 This is not a proper stage, but a sequence of event which we think is good for story developing.
