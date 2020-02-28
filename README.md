@@ -10,9 +10,9 @@ Our responsibilities are:
 
 * The manufacture of the technical equipment that allows STASIS to remain in operation, through the use of state-of-the-art materials and technologies.
 
-* The design and implementation of complex algorithms to prevent access to STASIS source code and the two exposed wires that allow it to be shut down directly leading to a safe and direct exit from the high-security complex aka: Escape Room.
+* The design and implementation of complex algorithms to prevent access to STASIS source code and also, the two wires that allows any stranger to shut it down directly, which leads to a safe and direct exit from the high-security complex aka: The Escape Room.
 
-### Team
+### Team Members
 * Cristina Maurette
 * Konstantin Kuliabin
 * Claudio Ray 
@@ -33,10 +33,10 @@ Our responsibilities are:
 
 
 ## The Server Room
-We analyze the Escape Room as a sequence of stages ending up in the server room (our responsability). Thus, given the following flow chart, we infere this sequence:
+We visualize the Escape Room as a sequence of stages ending in the server room (our responsibility). Therefore, given the following flow chart, we infer the following sequence:
 
 <p align="center">
-  <img src="https://i.ibb.co/Z8tpMtK/flow-diagram-lab.png" width="85%" /> 
+  <img src="https://i.ibb.co/Z8tpMtK/flow-diagram-lab.png" width="90%" /> 
 </p>
 
 #### Stage 0
@@ -50,41 +50,32 @@ Once players can access the server room, the next stage is to send the data to t
 
 The puzzles must be solved regardless of the order.
 
-Once the IP is inserted, a mock "Sending..." progress bar will appear, which means that the data is being sent properly until...
+Once the IP is inserted, a mock "Access Granted" messagge will appear, which means that the data hass been accessed/sent properly
 
 <p align="center">
-  <img src="https://media1.tenor.com/images/3f8b9aec89d8fc5395f3ad3d82f0d697/tenor.gif?itemid=14560182" width="35%" /> 
+  <img src="https://i.ytimg.com/vi/yXr3z7fOa7A/hqdefault.jpg" width="35%" /> 
 </p>
 
-STASIS goes rouge.
-
-#### Stage 1.5
-This is not a proper stage, but a sequence of event which we think is good for story developing.
-
-Since STASIS detects a data/security breach, it infers (is an artificial intelligence right..) that there are people in the server room who are performing prohibited actions, so their very existence is in danger. Thus it activates a complete chaos environment expecting that a terminator will arrive soon enough. This is done by [Group 1](https://github.com/ubilab-escape/operator) and [Group 2](https://github.com/ubilab-escape/environment).
 
 #### Stage 2
-In this final stage, players must locate STASIS core and solve the [Simon didn't say](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon) puzzle in order to shut it down (eliminate). 
+In this final stage, players must kill STASIS core and solve the [Simon didn't say](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon) puzzle in order to shut it down. 
 
-Once the puzzle is solved a big red button turns ON (while STASIS says "Do not press the big red button") and once pressed STASIS is killed and after the protoype is returned to its place the escape room is over, the doors open ([Group 4](https://github.com/ubilab-escape/first-door)) and the lights return to normal.
+Once the puzzle is solved a big red button turns ON. Once the participants press it, the escape room has been completely solved.
 
 
 ## Puzzles
 
-The main idea behind these puzzles is composed of a set of small puzzles, which are distributed in the control panel or hidden in the server room. The small puzzles have a defined sequence, each time a mini puzzle is solved, the next one is activated. To finish the room, all puzzles must be solved. The implemented puzzles (explained below) are called:
+The dynamic of the puzzles is based on a constant communication similar to the game "Keep talking and nobody dies", that means that the instructions for the puzzles can be located outside/inside the server room (posters, secret messages, etc.). The implemented puzzles (explained below) names are:
 
-	- Maze
-	- Simon didn't say
-	- IP
+* Maze
+* IP
+* Simon didn't say
 
-The dynamic of the puzzles is based on a constant communication similar to a "Keep talking and nobody dies". The participants can adopt two roles:
+Given the above, at least two participants must try to solve the room tasks together. For ease of explanation, participants will be named in two ways:
 
 * Player: Is the one who physically faces the puzzle. His role is to describe the characteristics of the puzzle and according to the commands of the instructor, solve it. 
 * Instructor: Can be one person or more. Using the descriptions given by the player, his/her/their responsibility is to interpret the information received, decrypt the solution of the puzzle and tell the player how to solve it.
-
-The instructions for the puzzles can be located outside/inside the server room (posters, drawings oly seen with UV light, etc.). 
-
-Given the above, at least two people must solve the room tasks together in constant communication and also under constant pressure, which can lead to errors in their execution. 
+ 
 
 ### Puzzle 1 - Maze
 In this puzzle the player faces an interface that only displays two dots within an 8x8 matrix. The idea is that by using four buttons that indicate directions (arrows), the player can move one point to the position of the other without making mistakes. 
@@ -114,9 +105,7 @@ In the sketch below (kudos to Cristina), it is possible to identify the server (
   <img src="https://i.ibb.co/qFjp7jR/SR-G8.png" width="85%" /> 
 </p>
 
-The main construction material is wood, due to its price and ease of work. In addition, since these structures will be hollow inside, the lighting will be given by a large internal light source (LED strip) and a series of holes in the external structure.
-
-All information about the servers and the LED-lighting is found in the Servers + LEDs code [folder](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code).
+The main construction material is wood, due to its price and ease of work. All information about the servers and the LED-lighting is found in the Servers + LEDs code [folder](https://github.com/ubilab-escape/ai-server/tree/master/Servers%20%2B%20LEDs%20code).
 
 ### Bill of Materials
 
