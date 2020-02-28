@@ -1,6 +1,6 @@
 # AI-Server &amp; Puzzles
 
-The information contained in this readme document ~~is highly classified and~~ describe the fabrication and coding for different puzzles implemented in the **UbiLab - Escape Room**.
+The information contained in this readme document ~~is highly classified and~~ describes the fabrication and coding for different puzzles implemented in the **UbiLab - Escape Room**.
 
 
 ## Motivation
