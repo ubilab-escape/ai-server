@@ -50,7 +50,7 @@ Once players can access the server room, the next stage is to send the data to t
 
 The puzzles must be solved regardless of the order.
 
-Once the IP is inserted, a mock "Access Granted" messagge will appear, which means that the data hass been accessed/sent properly
+Once the IP is inserted, a mock "Access Granted" messagge will appear, which means that the data has been accessed/sent properly.
 
 <p align="center">
   <img src="https://www.avecsys.com/wp-content/uploads/2014/11/access-granted-hacked.jpg" width="35%" /> 
