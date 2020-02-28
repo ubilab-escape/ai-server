@@ -1,6 +1,6 @@
 # Puzzle 3 - IP
 
-This folder contains information about the IP puzzle.
+This folder contains information about the IP puzzle and the [code](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%203%20IP/Screen/IP/IP.ino) for the LCD display.
 
 As explained, the player is asked on the LCD screen to insert the IP address hidden on the walls of the escape room and only visible using the UV flashlight (placed inside the server room).
 
