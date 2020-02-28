@@ -36,7 +36,7 @@ Our responsibilities are:
 We visualize the Escape Room as a sequence of stages ending in the server room (our responsibility). Therefore, given the following flow chart, we infer the following sequence:
 
 <p align="center">
-  <img src="https://i.ibb.co/2KYccVk/flow.png" width="90%" /> 
+  <img src="https://i.ibb.co/2KYccVk/flow.png" width="95%" /> 
 </p>
 
 #### Stage 0
@@ -73,8 +73,8 @@ The dynamic of the puzzles is based on a constant communication similar to the g
 
 Given the above, at least two participants must try to solve the room tasks together. For ease of explanation, participants will be named in two ways:
 
-* Player: Is the one who physically faces the puzzle. His role is to describe the characteristics of the puzzle and according to the commands of the instructor, solve it. 
-* Instructor: Can be one person or more. Using the descriptions given by the player, his/her/their responsibility is to interpret the information received, decrypt the solution of the puzzle and tell the player how to solve it.
+* **Player:** Is the one who physically faces the puzzle. His role is to describe the characteristics of the puzzle and according to the commands of the instructor, solve it. 
+* **Instructor:** Can be one person or more. Using the descriptions given by the player, his/her/their responsibility is to interpret the information received, decrypt the solution of the puzzle and tell the player how to solve it.
  
 
 ### Puzzle 1 - Maze
