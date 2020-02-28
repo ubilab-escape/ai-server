@@ -63,7 +63,6 @@ The solution for the maze showed in the figure above would be:
   <img src="https://i.ibb.co/CJKHCr8/Untitled-Sketch-bb.png" width="70%" />
 </p>
 
-
 ### Work done and on-going
 
 - [x] Create plan of implementation
@@ -73,6 +72,7 @@ The solution for the maze showed in the figure above would be:
 - [x] Implement button control
 - [x] Make the poster with map and instructions
 
+### Plase note, that IP and maze puzzle are controlled by one esp32 and cant wor independently. This readme describes mainly maze puzzle. Please look at corresponding folder to see description of the IP puzzle.
 
 ## Compilation of the project
 

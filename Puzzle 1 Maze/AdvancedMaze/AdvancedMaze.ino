@@ -40,7 +40,7 @@ Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, rows, cols );
 IP ip = IP();
 
 
-int workmode  = 0;
+int workmode  = 0; // Idle mode on startup
 
 
 void setup() {
@@ -99,7 +99,7 @@ Display().startAnimation(RANDOM_BLINKING, 0, 0, 120);
 
 void loop() {
 delay(500);
-if (workmode == 1)
+if (workmode == 1) // IP puzzle gameflow control
 {
   if (ip.check()) 
       {
@@ -113,7 +113,7 @@ if (workmode == 1)
       MQTT().MQTTPublishIP("solved");
       }
 }
-if (workmode == 2)
+if (workmode == 2) // Maze puzzle gameflow control
 {
   if (maze.isCompleted)
   {
@@ -184,7 +184,7 @@ delay(10000);
     MQTT().clientloop();
     if (MQTT().MAZEstatechanged)
     {
-      if (MQTT().MAZEnewstate == "active")
+      if (MQTT().MAZEnewstate == "active")//Switch to Maze puzzle
       {
         MQTT().msg ="Forced activation";
         maze.startGame(MODE_NORMAL_TEAMPLAY, 1);
@@ -212,12 +212,12 @@ delay(10000);
     }
     if (MQTT().IPstatechanged)
     {
-      if (MQTT().IPnewstate == "active")
+      if (MQTT().IPnewstate == "active")//Switch to IP puzzle
       {
         MQTT().MQTTSpeech(IPPhrase);
         MQTT().msg ="Forced activation";
         Serial.println("S1");
-        workmode = 1;
+        workmode = 1; 
         Display().startAnimation(EYE_D, 0, 0, 120);
         MQTT().MQTTLightControlRackEye("0,0,120");
         

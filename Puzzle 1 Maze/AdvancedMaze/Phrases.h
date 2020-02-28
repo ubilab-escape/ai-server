@@ -1,3 +1,5 @@
+// This file contains phrases for text to speach
+
 const int PhrasesCount = 14;
 
 const String FailPhrase[PhrasesCount] =
