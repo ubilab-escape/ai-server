@@ -36,7 +36,7 @@ Our responsibilities are:
 We visualize the Escape Room as a sequence of stages ending in the server room (our responsibility). Therefore, given the following flow chart, we infer the following sequence:
 
 <p align="center">
-  <img src="https://i.ibb.co/Z8tpMtK/flow-diagram-lab.png" width="90%" /> 
+  <img src="https://i.ibb.co/2KYccVk/flow.png" width="90%" /> 
 </p>
 
 #### Stage 0
@@ -53,7 +53,7 @@ The puzzles must be solved regardless of the order.
 Once the IP is inserted, a mock "Access Granted" messagge will appear, which means that the data hass been accessed/sent properly
 
 <p align="center">
-  <img src="https://i.ytimg.com/vi/yXr3z7fOa7A/hqdefault.jpg" width="35%" /> 
+  <img src="https://www.avecsys.com/wp-content/uploads/2014/11/access-granted-hacked.jpg" width="35%" /> 
 </p>
 
 
