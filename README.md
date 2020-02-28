@@ -93,7 +93,7 @@ All the information related to the puzzle: its fabrication and source code, is f
 ### Puzzle 3 - IP 
 By the activation of the puzzle, the player is asked on the LCD screen to insert the IP address using the keyboard. The IP address (unknown by the players) is written on the walls of the server room and the escape room with a UV marker; in order to find it, a UV flashlight (placed inside the server room) must be used. 
 
-The source code and the information for the IP puzzle is found in the puzzle 3 IP [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP).
+The information for the IP puzzle is found in the Puzzle 3 IP [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP).
 
 
 ## Environment Design

@@ -56,7 +56,7 @@ Predetermined color sequences (randomly choosed) are shown in the table. A limit
 
 _B ≡ Blue ; Y ≡ Yellow ; R ≡ Red ; G ≡ Green ; W ≡ White_
 
-### Syntaxis to control the puzzle using MQTT
+### Syntaxis to control the Simon didn't say puzzle using MQTT
 
 Expected JSON messages on topic `8/puzzle/simon`
 

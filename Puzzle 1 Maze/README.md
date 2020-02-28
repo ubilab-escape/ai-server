@@ -72,7 +72,7 @@ The solution for the maze showed in the figure above would be:
 - [x] Implement button control
 - [x] Make the poster with map and instructions
 
-### Plase note, that IP and maze puzzle are controlled by one esp32 and cant wor independently. This readme describes mainly maze puzzle. Please look at corresponding folder to see description of the IP puzzle.
+### Please note, that IP and maze puzzle are controlled by one esp32 and cannot work independently. This readme describes mainly maze puzzle. Please look at corresponding [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP) to see description of the IP puzzle.
 
 ## Compilation of the project
 
@@ -128,26 +128,8 @@ Expected JSON messages on topic `8/puzzle/maze`
 ```
 
 Note: data IS case sensitive.
-### Syntaxis to control the IP puzzle using MQTT
 
-Expected JSON messages on topic `8/puzzle/IP`
-
-* Forces the puzzle state as **active** ≈ reset puzzle and starts the game.
-```json
-{"method": "trigger", "state": "on", "data": "" }
-```
-* Forces puzzle state as **solved** ≈ skipped puzzle. 
-```json
-{"method": "trigger", "state": "off", "data": "skip" }
-```
-* Forces puzzle state as **inactive** ≈ reset puzzle.
-```json
-{"method": "trigger", "state": "off", "data": "" }
-```
-
-Note: data IS case sensitive.
-
-Both puzzles are controlled with ESP32! Arduino Uno is used just for screen amination!!!
+Both puzzles Maze and IP are controlled with ESP32! Arduino Uno is used just for screen amination!!!
 
 ## Plagiarism
 
@@ -163,4 +145,4 @@ and examples of libraries:
 3. [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
 4. [PubSubClient](https://github.com/knolleary/pubsubclient)
 
-so it may contain some unreferenced parts/blocks of provided in documentations/examples code.
+so it may contain some unreferenced parts/blocks provided in documentations/examples code.
