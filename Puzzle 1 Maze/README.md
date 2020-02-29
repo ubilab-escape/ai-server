@@ -106,7 +106,7 @@ https://github.com/wkelly1/EES/tree/master/lib/Elegoo_GFX
 2. Upload IP.ino sketch to the arduino Uno
 
 
-All used vesrions of libraries are provided [here](https://github.com/ubilab-escape/ai-server/tree/master/Libraries)
+All used versions of libraries are provided [here](https://github.com/ubilab-escape/ai-server/tree/master/Libraries)
 
 
 
@@ -129,7 +129,7 @@ Expected JSON messages on topic `8/puzzle/maze`
 
 Note: data IS case sensitive.
 
-Both puzzles Maze and IP are controlled with ESP32! Arduino Uno is used just for screen amination!!!
+Both, Maze and IP puzzles are controlled with an ESP32, the Arduino Uno board is used just for the screen amination.
 
 ## Plagiarism
 

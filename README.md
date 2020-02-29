@@ -43,14 +43,8 @@ We visualize the Escape Room as a sequence of stages ending in the server room (
 This stage is like the preamble or the conditions that are needed to start the next stage. In this case would be to open the second door of the Escape Room to access the server room, finishing the puzzles of [Group 7](https://github.com/ubilab-escape/second-door).
 
 #### Stage 1
-Once players can access the server room, the next stage is to send the data to the client, by finishing the [Group 6](https://github.com/ubilab-escape/prototype) puzzle and successfully solving:
-
-* [Maze](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze)
-* [IP](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP)
-
-The puzzles must be solved regardless of the order.
-
-Once the IP is inserted, a mock "Access Granted" messagge will appear, which means that the data has been accessed/sent properly.
+Once players can access the server room, the next stage is to send the data to the client, by finishing [Group 6](https://github.com/ubilab-escape/prototype) puzzle and successfully solving [Maze](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze)
+and [IP](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP) puzzle. These puzzles can be solved regardless of the order, nonetheless, once the IP is inserted, a mock "Access Granted" messagge will appear, which means that the data has been accessed/sent properly, and if all the other puzzles are solved, stage 1 ends.
 
 <p align="center">
   <img src="https://www.avecsys.com/wp-content/uploads/2014/11/access-granted-hacked.jpg" width="35%" /> 
@@ -58,7 +52,7 @@ Once the IP is inserted, a mock "Access Granted" messagge will appear, which mea
 
 
 #### Stage 2
-In this final stage, players must kill STASIS core and solve the [Simon didn't say](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon) puzzle in order to shut it down. 
+In this final stage, players must kill STASIS core and solve [Simon didn't say](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon) puzzle in order to shut it down. 
 
 Once the puzzle is solved a big red button turns ON. Once the participants press it, the escape room has been completely solved.
 
@@ -84,16 +78,15 @@ How do errors occur? It turns out that both points are actually inside a maze, w
 
 The information related to the puzzle: its components and source code, is found in the Puzzle 1 Maze [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%201%20Maze).
 
-
-### Puzzle 2 - Simon *didn't* say 
-A slightly more complex version of the traditional "Simon Says" game. Here, the player must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
-
-All the information related to the puzzle: its fabrication and source code, is found in the Puzzle 2 Simon [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon).
-
-### Puzzle 3 - IP 
+### Puzzle 2 - IP 
 By the activation of the puzzle, the player is asked on the LCD screen to insert the IP address using the keyboard. The IP address (unknown by the players) is written on the walls of the server room and the escape room with a UV marker; in order to find it, a UV flashlight (placed inside the server room) must be used. 
 
 The information for the IP puzzle is found in the Puzzle 3 IP [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%203%20IP).
+
+### Puzzle 3 - Simon *didn't* say 
+A slightly more complex version of the traditional "Simon Says" game. Here, the player must repeat a given sequence of colors by pressing the corresponding buttons, only that this sequence of colors is "coded", this means that the color red does not necessarily mean repeating red, but another color. 
+
+All the information related to the puzzle: its fabrication and source code, is found in the Puzzle 2 Simon [folder](https://github.com/ubilab-escape/ai-server/tree/master/Puzzle%202%20Simon).
 
 
 ## Environment Design

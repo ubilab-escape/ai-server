@@ -2,13 +2,11 @@
 
 ### In a nutshell
 
-The main plan is to design a code in such a way that a sequence of five colors is shown, this showed sequence must be then modified by the group by defined set of conditions (check **[Instructions_Simon](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%202%20Simon/Poster/Instructions_Simon.pdf)**) and inserted by pressing the correct buttons. If a mistake is made (wrong button), the team has two more posibilities, otherwise, the sequence is changed. 
-
-The group has three chances, in case they fail -conditions applied incorrectly or wrong button pressed- the color sequence changes. 
+The main plan is to design a code in such a way that a sequence of five colors is shown, this showed sequence must be then modified by the group by a previously defined set of conditions (check **[Instructions_Simon](https://github.com/ubilab-escape/ai-server/blob/master/Puzzle%202%20Simon/Poster/Instructions_Simon.pdf)**) and inserted by pressing the correct buttons. The group has three chances, in case they fail -conditions applied incorrectly or wrong button pressed- the color sequence changes.  
 
 ### Hardware
 
-The components used are listed below. These are used as they were acquired, so no modification is necessary for their implementation.
+The components used are listed below. These are used as they were acquired, so no modification are necessary for their implementation.
 
 - 1x ESP32
 - 5x 60mm push type buttons (color assorted)
@@ -22,9 +20,7 @@ The components used are listed below. These are used as they were acquired, so n
 
 #### Connection schematic
 
-To facilitate and strengthen the connection to the ESP32, a small plate was manufactured in perfboard.
-
-For the input of the ESP32 (coming from the buttons), the internal pull down resistor of the ESP32 was activated on each corresponding pin.
+To facilitate and strengthen the connection to the ESP32, a small board was manufactured in perfboard.Also, for the input of the ESP32 (coming from the buttons), the internal pull down resistor of the ESP32 was activated on each corresponding pin.
 
 The buttons have an internal resistance in the LED, so they are not considered in the schematic.
 
